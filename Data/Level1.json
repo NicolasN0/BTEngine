@@ -1,0 +1,22 @@
+{
+	"Ladders": 	[
+			{
+			"posX" : 25,
+			"posY" : 50
+			},
+			{
+			"posX" : 25,
+			"posY" : 75
+			}
+			],
+	"Platforms":	[
+			{
+			"posX" : 25,
+			"posY" : 50
+			},
+			{
+			"posX" : 50,
+			"posY" : 50
+			}
+			]
+}
