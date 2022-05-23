@@ -63,6 +63,7 @@ namespace dae
 		bool GetIsOverlapping(std::shared_ptr<dae::GameObject> object);
 		bool IsOverlappingAny();
 		bool IsOverlappingAnyWithTag(std::string tag);
+		bool IsCenterOverlappingAnyWithTag(std::string tag);
 
 		Scene* GetScene() const;
 		void SetScene(Scene* scene);

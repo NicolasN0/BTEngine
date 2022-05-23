@@ -4,8 +4,10 @@
 
 void dae::BasicEnemyComponent::Update(float dt)
 {
-	std::cout << m_Target->GetTransform().GetPosition().x;
+	//std::cout << m_Target->GetTransform().GetPosition().x;
 	CheckOverlaps();
+	UpdateDirection();
+	UpdatePos(dt);
 	//if(m_IsOnPlatform == true)
 	//{
 	//	if(m_Target->GetPosition().x < GetParent()->GetPosition().x)
@@ -64,8 +66,20 @@ void dae::BasicEnemyComponent::CheckOverlaps()
 	}
 }
 
-void dae::BasicEnemyComponent::UpdatePos()
+void dae::BasicEnemyComponent::UpdatePos(float dt)
 {
+	glm::vec3 curPos = GetParent()->GetPosition();
+	glm::vec3 furPos = glm::vec3(curPos.x + (m_Direction.x * dt), curPos.y + (m_Direction.y * dt), 1);
+	GetParent()->SetPosition(furPos.x, furPos.y);
+
+	//glm::vec3 dirNor = m_Direction / m_MoveSpeed;
+	//glm::vec3 furPosSize = glm::vec3(curPos.x + (GetParent()->GetSize().x * dirNor.x), curPos.y + (GetParent()->GetSize().y * dirNor.y), 1);
+	//GetParent()->SetPosition(furPosSize.x, furPosSize.y); 
+
+	if (m_IsOnPlatform == false)
+	{
+		GetParent()->SetPosition(curPos.x, curPos.y);
+	}
 }
 
 void dae::BasicEnemyComponent::UpdateDirection()
@@ -121,6 +135,7 @@ void dae::BasicEnemyComponent::UpdateDirection()
 			//Return so it doesnt constantly checks
 			m_CanSwitch = false;
 			//return;
+			
 		}
 	}
 }

@@ -106,32 +106,217 @@ public:
 		 go = std::make_shared<dae::GameObject>();
 		 go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
 		 go->SetPosition(100, 100);
-		 go->SetScale(2, 2);
+		 go->SetScale(1.8f, 1.8f);
 		 scene.Add(go);
 
 
+#pragma region levelMovement
+		 glm::vec3 LadderSize = glm::vec3(9, 28, 1);
+		 glm::vec3 PlatformSize = glm::vec3(91, 10, 1);
+
+		/* float lowPart{ 320 };
+		 float highPart{135};*/
+
+		/* go = std::make_shared<dae::GameObject>();
+		 go->SetSize(LadderSize);
+		 go->SetPosition(190, 135);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+
+
+	 	go = std::make_shared<dae::GameObject>();
+		 go->SetSize(LadderSize);
+		 go->SetPosition(275, 210);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
 		 go = std::make_shared<dae::GameObject>();
-		 go->SetSize(glm::vec3(25, 60, 1));
-		 go->SetPosition(295, 225);
+		 go->SetSize(LadderSize);
+		 go->SetPosition(190, 210);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(LadderSize);
+		 go->SetPosition(190, 270);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(LadderSize);
+		 go->SetPosition(190, 320);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);*/
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 2, LadderSize.z));
+		 go->SetPosition(111, 120);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
+		 go->SetPosition(111, 245);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
+		 go->SetPosition(153, 185);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x,LadderSize.y * 10,LadderSize.z));
+		 go->SetPosition(196, 120);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
+		 go->SetPosition(241, 120);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Ladder");
 		 scene.Add(go);
 
 
 		 go = std::make_shared<dae::GameObject>();
-		 go->SetSize(glm::vec3(120, 25, 1));
-		 go->SetPosition(200, 260);
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
+		 go->SetPosition(283, 120);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
+		 go->SetPosition(326, 185);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
+		 go->SetPosition(369, 120);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
+		 go->SetPosition(412, 242);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 4, LadderSize.z));
+		 go->SetPosition(456, 120);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
+		 go->SetPosition(456, 300);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Ladder");
+		 scene.Add(go);
+
+
+
+	 	go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x *4, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(111, 120);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Platform");
 		 scene.Add(go);
 
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(111, 165);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x *2, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(283, 165);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(196, 195);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(111, 220);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(369, 220);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+
+
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x * 2, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(196, 250);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(369, 280);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x * 3, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(111, 310);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = std::make_shared<dae::GameObject>();
+		 go->SetSize(glm::vec3(PlatformSize.x * 4, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(111, 365);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+#pragma endregion levelMovement
 
 #pragma region player1
 		 //PeterPepper Player1
 		 auto peterPepperP1 = std::make_shared<GameObject>();
 		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
-		 peterPepperP1->SetPosition(250, 265);
+		 peterPepperP1->SetPosition(250, 250);
 	 	peterPepperP1->SetTag("Player");
 		 //commands
 		 Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonA,0 }, std::make_unique<DamagePlayer>(peterPepperP1->GetComponent<PeterPepperComponent>()));
@@ -144,10 +329,10 @@ public:
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1, glm::vec3(50.0f, 0.0f, 0.0f)));
 	 	Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1, glm::vec3(0.0f, -50.0f, 0.0f)));
 	 	Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1, glm::vec3(0.0f,50.0f,0.0f)));*/
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-50.0f, 0.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(50.0f, 0.0f, 0.0f)));
-		Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -50.0f, 0.0f)));
-		Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f,50.0f,0.0f)));
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
+		Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
+		Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f,80.0f,0.0f)));
 #pragma endregion player1
 
 
@@ -179,7 +364,7 @@ public:
 		 auto HotDog = std::make_shared<GameObject>();
 		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent());
 		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(300, 265);
+		 HotDog->SetPosition(283, 250);
 		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
 		 HotDog->SetTag("Enemy");
 		 scene.Add(HotDog);

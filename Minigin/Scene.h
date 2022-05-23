@@ -23,6 +23,8 @@ namespace dae
 
 		std::vector < std::shared_ptr<GameObject>> GetAllObjectsInWorld();
 		std::vector < std::shared_ptr<GameObject>> GetObjectsInWorldWithTag(std::string tag);
+
+		bool IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec3 sizeRectangle);
 	private: 
 		explicit Scene(const std::string& name);
 

@@ -80,7 +80,11 @@ namespace dae
 
 					m_pObject->GetParent()->SetPosition(furPos.x, furPos.y);
 
-					if(m_pObject->GetParent()->IsOverlappingAnyWithTag("Ladder") == false)
+					/*if(m_pObject->GetParent()->IsOverlappingAnyWithTag("Ladder") == false)
+					{
+						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
+					}*/
+					if (m_pObject->GetParent()->IsCenterOverlappingAnyWithTag("Ladder") == false)
 					{
 						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
 					}
@@ -95,9 +99,11 @@ namespace dae
 					glm::vec3 curPos = m_pObject->GetParent()->GetTransform().GetPosition();
 					glm::vec3 furPos = glm::vec3(curPos.x + (m_MoveSpeed.x * dt), curPos.y + (m_MoveSpeed.y * dt), 1);
 					m_pObject->GetParent()->SetPosition(furPos.x, furPos.y);
-					if (m_pObject->GetParent()->IsOverlappingAnyWithTag("Platform") == false)
+
+					if (m_pObject->GetParent()->IsCenterOverlappingAnyWithTag("Platform") == false)
 					{
 						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
+						
 					}
 
 				}

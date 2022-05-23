@@ -292,6 +292,59 @@ bool dae::GameObject::IsOverlappingAnyWithTag(std::string tag)
 	return false;
 }
 
+bool dae::GameObject::IsCenterOverlappingAnyWithTag(std::string tag)
+{
+	if (m_Scene != nullptr)
+	{
+		std::vector < std::shared_ptr<GameObject> > objects = m_Scene->GetObjectsInWorldWithTag(tag);
+		for (auto o : objects)
+		{
+
+			glm::vec3 l1 = GetPosition();
+			l1.x += m_Size.x / 2;
+			l1.y += m_Size.y / 2;
+			glm::vec3 r1 = l1;
+			//One to work with point
+			r1.x += 1;
+			r1.y += 1;
+
+			glm::vec3 l2 = o->GetPosition();
+			glm::vec3 r2 = l2;
+			r2.x += o->GetSize().x;
+			r2.y += o->GetSize().y;
+
+
+			if (l1.x == r1.x || l1.y == r1.y || l2.x == r2.x
+				|| l2.y == r2.y) {
+				// the line cannot have positive overlap
+				//return false;
+				continue;
+			}
+
+			// If one rectangle is on left side of other
+			if (l1.x >= r2.x || l2.x >= r1.x)
+			{
+				//return false;
+				continue;
+			}
+
+			// If one rectangle is above other
+
+			//test if works the same with y coordinates from this scene
+			if (r1.y <= l2.y || r2.y <= l1.y)
+			{
+				//return false;
+				continue;
+			}
+
+
+
+			return true;
+		}
+	}
+	return false;
+}
+
 dae::Scene* dae::GameObject::GetScene() const
 {
 	return m_Scene;

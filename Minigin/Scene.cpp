@@ -24,6 +24,23 @@ std::vector<std::shared_ptr<GameObject>> dae::Scene::GetObjectsInWorldWithTag(st
 	return m_ObjectsWithTag;
 }
 
+bool Scene::IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec3 sizeRectangle)
+{
+	float tlx, tly, brx, bry;
+	tlx = posRectangle.x;
+	tly = posRectangle.y;
+
+	brx = posRectangle.x + sizeRectangle.x;
+	bry = posRectangle.y + sizeRectangle.y;
+
+	if(point.x >= tlx && point.x <= brx && point.y >= tly && point.y <= brx)
+	{
+		return true;
+	}
+	return false;
+
+}
+
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene() = default;

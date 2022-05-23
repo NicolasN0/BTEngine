@@ -17,7 +17,7 @@ namespace dae
 		void SetTarget(std::shared_ptr<GameObject> target) { m_Target = target; }
 	private:
 		void CheckOverlaps();
-		void UpdatePos();
+		void UpdatePos(float dt);
 		void UpdateDirection();
 
 		bool m_IsOnLadder{};

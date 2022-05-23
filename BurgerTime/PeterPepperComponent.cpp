@@ -14,20 +14,40 @@ dae::PeterPepperComponent::PeterPepperComponent() : m_Lives{3}
 void dae::PeterPepperComponent::Update(float)
 {
 
-	if(GetParent()->IsOverlappingAnyWithTag("Ladder"))
+	//if(GetParent()->IsOverlappingAnyWithTag("Ladder"))
+	//{
+	//	//std::cout << "ladder";
+	//	m_IsOnLadder = true;
+	//} else
+	//{
+	//	m_IsOnLadder = false;
+	//}
+
+	//if (GetParent()->IsOverlappingAnyWithTag("Platform"))
+	//{
+	//	//std::cout << "platform";
+	//	m_IsOnPlatform = true;
+	//} else
+	//{
+	//	m_IsOnPlatform = false;
+	//}
+
+	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
 		//std::cout << "ladder";
 		m_IsOnLadder = true;
-	} else
+	}
+	else
 	{
 		m_IsOnLadder = false;
 	}
 
-	if (GetParent()->IsOverlappingAnyWithTag("Platform"))
+	if (GetParent()->IsCenterOverlappingAnyWithTag("Platform"))
 	{
 		//std::cout << "platform";
 		m_IsOnPlatform = true;
-	} else
+	}
+	else
 	{
 		m_IsOnPlatform = false;
 	}
