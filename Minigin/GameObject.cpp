@@ -11,6 +11,10 @@ dae::GameObject::GameObject()
 {
 	m_Transform.SetScale(1, 1, 1);
 	m_Size = glm::vec3(1, 1, 1);
+	if(m_Parent != nullptr)
+	{
+		m_Transform.SetPosition(m_Parent->GetPosition());
+	}
 }
 
 dae::GameObject::~GameObject()
@@ -20,12 +24,12 @@ dae::GameObject::~GameObject()
 		delete component;
 		component = nullptr;
 	}
-	if(m_Subject != nullptr)
-	{
-		delete m_Subject;
-		m_Subject = nullptr;
-		
-	}
+	//if(m_Subject != nullptr)
+	//{
+	//	delete m_Subject;
+	//	m_Subject = nullptr;
+	//	
+	//}
 };
 //LOOP OVER COMPONENTS AND UPDATE?
 void dae::GameObject::Update(float dt)
@@ -67,7 +71,56 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_Transform.SetPosition(x, y, 0.0f);
+	if(m_Parent == nullptr)
+	{
+		m_Transform.SetPosition(x, y, 0.0f);
+
+		for(auto c : m_Childs)
+		{
+			//c->SetPosition(GetPosition() + c->GetPosition());
+			//c->SetPosition(c->GetPosition());
+			c->UpdatePos();
+		}
+	} else
+	{
+		SetLocalPosition(x, y);
+
+		//m_Transform.SetPosition(x + m_Parent->GetPosition().x, y + m_Parent->GetPosition().y, 0.0f);
+
+		m_Transform.SetPosition(GetLocalPosition().x + GetParent()->GetPosition().x, GetLocalPosition().y + GetParent()->GetPosition().y, 0);
+
+		for (auto c : m_Childs)
+		{
+			//c->SetPosition(GetPosition() + c->GetPosition());
+			//c->SetPosition(c->GetPosition());
+			c->UpdatePos();
+
+		}
+	}
+}
+
+void dae::GameObject::SetPosition(glm::vec3 pos)
+{
+	if (m_Parent == nullptr)
+	{
+		m_Transform.SetPosition(pos);
+
+		for (auto c : m_Childs)
+		{
+			//c->SetPosition(GetPosition() + c->GetPosition());
+			c->SetPosition(c->GetPosition());
+		}
+	}
+	else
+	{
+		//m_Transform.SetPosition(m_Parent->GetPosition() + pos);
+
+		for (auto c : m_Childs)
+		{
+			//c->SetPosition(GetPosition() + c->GetPosition());
+			c->SetPosition(c->GetPosition());
+		}
+	}
 }
 
 void dae::GameObject::SetScale(float x, float y)
@@ -97,6 +150,9 @@ dae::GameObject* dae::GameObject::GetParent() const
 	return m_Parent;
 }
 
+
+
+
 size_t dae::GameObject::GetChildCount() const
 {
 	return m_Childs.size();
@@ -107,6 +163,8 @@ dae::GameObject* dae::GameObject::GetChildAt(int index) const
 	return m_Childs.at(index);
 }
 
+
+
 void dae::GameObject::RemoveChild(int index) 
 {
 	m_Childs.erase(m_Childs.begin() + index);
@@ -116,17 +174,17 @@ void dae::GameObject::AddChild(GameObject* go)
 {
 	m_Childs.push_back(go);
 	go->SetParent(this);
+	go->SetLocalPosition(0, 0);
+	//go->SetPosition(0, 0);
+	this->SetPosition(GetPosition());
+	
 }
 
-void dae::GameObject::SetSubject(Subject* subject)
+std::vector<dae::GameObject*> dae::GameObject::GetChilds() const
 {
-	m_Subject = subject;
+	return m_Childs;
 }
 
-dae::Subject* dae::GameObject::GetSubject()
-{
-	return m_Subject;
-}
 
 const glm::vec3& dae::GameObject::GetSize() const
 {
@@ -136,6 +194,29 @@ const glm::vec3& dae::GameObject::GetSize() const
 void dae::GameObject::SetSize(glm::vec3 size)
 {
 	m_Size = size;
+}
+
+void dae::GameObject::SetLocalPosition(float x, float y)
+{
+	m_LocalPos = glm::vec3(x, y, 0);
+}
+
+void dae::GameObject::SetLocalPosition(glm::vec3 pos)
+{
+	m_LocalPos = pos;
+}
+
+const glm::vec3& dae::GameObject::GetLocalPosition() const
+{
+	return m_LocalPos;
+}
+
+void dae::GameObject::UpdatePos()
+{
+	if(m_Parent != nullptr)
+	{
+		m_Transform.SetPosition(m_LocalPos + m_Parent->GetPosition());
+	}
 }
 
 std::string dae::GameObject::GetTag() const
@@ -148,7 +229,7 @@ void dae::GameObject::SetTag(std::string tag)
 	m_Tag = tag;
 }
 
-bool dae::GameObject::GetIsOverlapping(std::shared_ptr<dae::GameObject> object)
+bool dae::GameObject::GetIsOverlapping(GameObject* object)
 {
 	glm::vec3 l1 = GetPosition();
 	glm::vec3 r1 = l1;
@@ -194,7 +275,7 @@ bool dae::GameObject::IsOverlappingAny()
 {
 	if(m_Scene != nullptr)
 	{
-		std::vector < std::shared_ptr<GameObject> > objects = m_Scene->GetAllObjectsInWorld();
+		std::vector < GameObject* > objects = m_Scene->GetAllObjectsInWorld();
 		for(auto o :objects)
 		{
 		
@@ -246,7 +327,7 @@ bool dae::GameObject::IsOverlappingAnyWithTag(std::string tag)
 {
 	if (m_Scene != nullptr)
 	{
-		std::vector < std::shared_ptr<GameObject> > objects = m_Scene->GetObjectsInWorldWithTag(tag);
+		std::vector < GameObject* > objects = m_Scene->GetObjectsInWorldWithTag(tag);
 		for (auto o : objects)
 		{
 
@@ -296,7 +377,7 @@ bool dae::GameObject::IsCenterOverlappingAnyWithTag(std::string tag)
 {
 	if (m_Scene != nullptr)
 	{
-		std::vector < std::shared_ptr<GameObject> > objects = m_Scene->GetObjectsInWorldWithTag(tag);
+		std::vector <GameObject* > objects = m_Scene->GetObjectsInWorldWithTag(tag);
 		for (auto o : objects)
 		{
 

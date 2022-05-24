@@ -35,7 +35,7 @@ void dae::BasicEnemyComponent::Update(float dt)
 
 }
 
-void dae::BasicEnemyComponent::FixedUpdate(float timestep)
+void dae::BasicEnemyComponent::FixedUpdate(float )
 {
 }
 

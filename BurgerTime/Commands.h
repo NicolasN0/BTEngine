@@ -17,7 +17,7 @@ namespace dae
 		{
 			
 		};
-		void Execute(float dt) override
+		void Execute(float ) override
 		{
 			m_pComp->Damage();
 		};

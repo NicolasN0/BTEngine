@@ -6,14 +6,14 @@ using namespace dae;
 
 unsigned int Scene::m_IdCounter = 0;
 
-std::vector<std::shared_ptr<GameObject>> dae::Scene::GetAllObjectsInWorld()
+std::vector<GameObject*> dae::Scene::GetAllObjectsInWorld()
 {
 	return m_Objects;
 }
 
-std::vector<std::shared_ptr<GameObject>> dae::Scene::GetObjectsInWorldWithTag(std::string tag)
+std::vector<GameObject*> dae::Scene::GetObjectsInWorldWithTag(std::string tag)
 {
-	std::vector<std::shared_ptr<GameObject>> m_ObjectsWithTag;
+	std::vector<GameObject*> m_ObjectsWithTag;
 	for(auto o : m_Objects)
 	{
 		if(o->GetTag() == tag)
@@ -43,12 +43,28 @@ bool Scene::IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec
 
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
-Scene::~Scene() = default;
+Scene::~Scene()
+{
+	for(auto o : m_Objects)
+	{
+		delete o;
+		o = nullptr;
+	}
+}
 
-void Scene::Add(const std::shared_ptr<GameObject>& object)
+
+void Scene::Add(GameObject* object)
 {
 	m_Objects.push_back(object);
 	object->SetScene(this);
+
+	//Add all child objects
+	for(auto c : object->GetChilds())
+	{
+		m_Objects.push_back(c);
+		c->SetScene(this);
+	}
+	
 }
 
 void Scene::Update(float dt)

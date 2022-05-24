@@ -9,7 +9,9 @@ namespace dae
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		void Add(const std::shared_ptr<GameObject>& object);
+		//void Add(const std::shared_ptr<GameObject>& object);
+		void Add(GameObject* object);
+
 
 		void Update(float dt);
 		void FixedUpdate(float timestep);
@@ -21,15 +23,15 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-		std::vector < std::shared_ptr<GameObject>> GetAllObjectsInWorld();
-		std::vector < std::shared_ptr<GameObject>> GetObjectsInWorldWithTag(std::string tag);
+		std::vector < GameObject*> GetAllObjectsInWorld();
+		std::vector < GameObject*> GetObjectsInWorldWithTag(std::string tag);
 
 		bool IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec3 sizeRectangle);
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_Name;
-		std::vector < std::shared_ptr<GameObject>> m_Objects{};
+		std::vector <GameObject*> m_Objects{};
 
 		static unsigned int m_IdCounter; 
 	};

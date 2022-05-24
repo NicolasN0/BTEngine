@@ -11,6 +11,16 @@ dae::PeterPepperComponent::PeterPepperComponent() : m_Lives{3}
 	
 }
 
+dae::PeterPepperComponent::~PeterPepperComponent()
+{
+	if (m_Subject != nullptr)
+	{
+		delete m_Subject;
+		m_Subject = nullptr;
+
+	}
+}
+
 void dae::PeterPepperComponent::Update(float)
 {
 
@@ -61,10 +71,22 @@ void dae::PeterPepperComponent::Render() const
 {
 }
 
+void dae::PeterPepperComponent::SetSubject(Subject* subject)
+{
+	m_Subject = subject;
+}
+
+dae::Subject* dae::PeterPepperComponent::GetSubject()
+{
+	return m_Subject;
+}
+
+
 void dae::PeterPepperComponent::Damage()
 {
 	//notify dingetje
-	GetParent()->GetSubject()->Notify(*GetParent(), Event::PlayerDied);
+	//GetParent()->GetSubject()->Notify(*GetParent(), Event::PlayerDied);
+	m_Subject->Notify(*GetParent(), Event::PlayerDied);
 	m_Lives--;
 }
 

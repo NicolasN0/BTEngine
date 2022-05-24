@@ -7,6 +7,7 @@ namespace dae
 	{
 	public:
 		PeterPepperComponent();
+		~PeterPepperComponent();
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
@@ -17,11 +18,16 @@ namespace dae
 
 		bool GetIsOnLadder() const { return m_IsOnLadder; }
 		bool GetIsOnPlatform() const { return m_IsOnPlatform; }
+
+		void SetSubject(Subject* subject);
+		Subject* GetSubject();
 	private:
 		int m_Lives{};
 		int m_Score{};
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
+
+		Subject* m_Subject{};
 	};
 	
 }
