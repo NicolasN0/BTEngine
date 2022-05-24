@@ -405,21 +405,20 @@ public:
 
 
 #pragma region audio
-		 Audio* audioService = Locator::getAudio();
-		//Music
-		 audioService->LoadMusic("../Data/Sounds/Electric_Light_Orchestra_-_Mr_Blue_Sky.mp3");
-		 audioService->SetMusicVolume(5);
-		 audioService->PlayMusic();
-		//Sound
-		 audioService->SetEffectVolume(10);
-		 int soundId;
-		 soundId =audioService->LoadSound("../Data/Sounds/power_up1.wav");
-		 audioService->playSound(soundId);
-		 soundId = audioService->LoadSound("../Data/Sounds/book_page_turn.wav");
-		 audioService->playSound(soundId);
+		// Audio* audioService = Locator::getAudio();
+		////Music
+		// audioService->LoadMusic("../Data/Sounds/Electric_Light_Orchestra_-_Mr_Blue_Sky.mp3");
+		// audioService->SetMusicVolume(5);
+		// audioService->PlayMusic();
+		////Sound
+		// audioService->SetEffectVolume(10);
+		// int soundId;
+		// soundId =audioService->LoadSound("../Data/Sounds/power_up1.wav");
+		// audioService->playSound(soundId);
+		// soundId = audioService->LoadSound("../Data/Sounds/book_page_turn.wav");
+		// audioService->playSound(soundId);
 
 #pragma endregion audio
-		 //std::vector<std::shared_ptr<GameObject>> testo = scene.GetObjectsInWorldWithTag("Ladder");
 	}
 	
 };

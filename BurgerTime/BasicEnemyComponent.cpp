@@ -45,9 +45,9 @@ void dae::BasicEnemyComponent::Render() const
 
 void dae::BasicEnemyComponent::CheckOverlaps()
 {
-	if (GetParent()->IsOverlappingAnyWithTag("Ladder"))
+	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
-		//std::cout << "ladder";
+		std::cout << "ladder";
 		m_IsOnLadder = true;
 	}
 	else
@@ -55,9 +55,9 @@ void dae::BasicEnemyComponent::CheckOverlaps()
 		m_IsOnLadder = false;
 	}
 
-	if (GetParent()->IsOverlappingAnyWithTag("Platform"))
+	if (GetParent()->IsCenterOverlappingAnyWithTag("Platform"))
 	{
-		//std::cout << "platform";
+		std::cout << "platform";
 		m_IsOnPlatform = true;
 	}
 	else
@@ -76,19 +76,37 @@ void dae::BasicEnemyComponent::UpdatePos(float dt)
 	//glm::vec3 furPosSize = glm::vec3(curPos.x + (GetParent()->GetSize().x * dirNor.x), curPos.y + (GetParent()->GetSize().y * dirNor.y), 1);
 	//GetParent()->SetPosition(furPosSize.x, furPosSize.y); 
 
-	if (m_IsOnPlatform == false)
+	if(m_Direction.x > 0 && m_Direction.x < 0)
 	{
-		GetParent()->SetPosition(curPos.x, curPos.y);
+		if (m_IsOnPlatform == false)
+		{
+			GetParent()->SetPosition(curPos.x, curPos.y);
+		}
 	}
+
+	if (m_Direction.y > 0 && m_Direction.y < 0)
+	{
+		if (m_IsOnLadder == false)
+		{
+			GetParent()->SetPosition(curPos.x, curPos.y);
+		}
+	}
+
 }
 
 void dae::BasicEnemyComponent::UpdateDirection()
 {
+	if(m_IsOnPlatform == true && m_IsOnLadder == true)
+	{
+		m_CanSwitch = true;
+	}
+
+
 	if(m_CanSwitch == true)
 	{
 
 		//Check if same line
-		if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 50.f) )
+		if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) )
 		{
 			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
 			{
@@ -101,7 +119,7 @@ void dae::BasicEnemyComponent::UpdateDirection()
 			}
 
 			//Return so it doesnt constantly checks
-			m_CanSwitch = false;
+			//m_CanSwitch = false;
 			return;
 		}
 
