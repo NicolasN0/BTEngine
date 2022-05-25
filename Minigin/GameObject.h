@@ -65,10 +65,12 @@ namespace dae
 		void SetSize(glm::vec3 size);
 
 		void SetLocalPosition(float x, float y);
+		void SetLocalScale(float x, float y);
 		void SetLocalPosition(glm::vec3 pos);
 		const glm::vec3& GetLocalPosition() const;
 
 		void UpdatePos();
+		void UpdateScale();
 		//Tag
 		std::string GetTag() const;
 		void SetTag(std::string tag);
@@ -89,6 +91,7 @@ namespace dae
 	private:
 		glm::vec3 m_Size;
 		glm::vec3 m_LocalPos;
+		glm::vec3 m_LocalScale;
 		Transform m_Transform;
 		std::vector<MonoBehaviour*> m_pComponents{};
 		GameObject* m_Parent{};

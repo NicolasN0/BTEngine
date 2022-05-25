@@ -22,6 +22,8 @@
 #include "TextureComponent.h"
 #include "PeterPepperComponent.h"
 #include "BasicEnemyComponent.h"
+#include "IngredientComponent.h"
+#include "IngredientPartComponent.h"
 
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
@@ -315,22 +317,45 @@ public:
 #pragma endregion displays
 
 
+#pragma region ingredients
 		 auto bun = new GameObject;
-		 //GameObject* bunL =  new GameObject;
+
 		 auto bunP1 = new GameObject;
 		 auto bunP2 = new GameObject;
 		 auto bunP3 = new GameObject;
 		 auto bunP4 = new GameObject;
 		 bunP1->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		 bunP2->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		 bunP3->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		 bunP4->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
 
-		 bun->SetPosition(250, 250);
+		 bunP1->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		 bunP2->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		 bunP3->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		 bunP4->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+
 		 bun->AddChild(bunP1);
-		 bunP1->SetPosition(-50, 0);
+		 bun->AddChild(bunP2);
+		 bun->AddChild(bunP3);
+		 bun->AddChild(bunP4);
+		 bunP1->SetPosition(0, 0);
+		 bunP2->SetPosition(bunP1->GetSize().x, 0);
+		 bunP3->SetPosition(bunP1->GetSize().x*2, 0);
+		 bunP4->SetPosition(bunP1->GetSize().x*3, 0);
+		 //bun->SetDebugDraw(true);
+		 bunP1->SetDebugDraw(true);
+		 bunP2->SetDebugDraw(true);
+		 bunP3->SetDebugDraw(true);
+		 bunP4->SetDebugDraw(true);
+		 bun->SetScale(1.8f, 1.8f);
 
-	 	bun->SetPosition(250, 300);
-		bunP1->SetPosition(-30, 0);
-		 scene.Add(bun);
+		
+	 	bun->SetPosition(215, 300);
+		bun->AddComponent<IngredientComponent>(new IngredientComponent);
+	 	scene.Add(bun);
 		// scene.Add(bunP1);
+
+#pragma endregion ingedients
 
 #pragma region enemy
 		/* auto HotDog = std::make_shared<GameObject>();

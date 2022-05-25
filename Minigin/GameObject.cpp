@@ -11,6 +11,7 @@ dae::GameObject::GameObject()
 {
 	m_Transform.SetScale(1, 1, 1);
 	m_Size = glm::vec3(1, 1, 1);
+	m_LocalScale = glm::vec3(1, 1, 1);
 	if(m_Parent != nullptr)
 	{
 		m_Transform.SetPosition(m_Parent->GetPosition());
@@ -89,6 +90,19 @@ void dae::GameObject::SetPosition(float x, float y)
 
 		m_Transform.SetPosition(GetLocalPosition().x + GetParent()->GetPosition().x, GetLocalPosition().y + GetParent()->GetPosition().y, 0);
 
+
+		//Change size
+	
+
+		/*if (componentSize.x > m_Size.x)
+		{
+			m_Size = (glm::vec3(componentSize.x, m_Size.y, m_Size.z));
+		}
+		if (componentSize.y > m_Size.y)
+		{
+			m_Size = (glm::vec3(m_Size.x, componentSize.y, m_Size.z));
+		}*/
+
 		for (auto c : m_Childs)
 		{
 			//c->SetPosition(GetPosition() + c->GetPosition());
@@ -108,24 +122,61 @@ void dae::GameObject::SetPosition(glm::vec3 pos)
 		for (auto c : m_Childs)
 		{
 			//c->SetPosition(GetPosition() + c->GetPosition());
-			c->SetPosition(c->GetPosition());
+
+			//c->SetPosition(c->GetPosition());
+			c->UpdatePos();
 		}
 	}
 	else
 	{
 		//m_Transform.SetPosition(m_Parent->GetPosition() + pos);
 
+		SetLocalPosition(pos.x, pos.y);
+
+		//m_Transform.SetPosition(x + m_Parent->GetPosition().x, y + m_Parent->GetPosition().y, 0.0f);
+
+		m_Transform.SetPosition(GetLocalPosition().x + GetParent()->GetPosition().x, GetLocalPosition().y + GetParent()->GetPosition().y, 0);
+
 		for (auto c : m_Childs)
 		{
 			//c->SetPosition(GetPosition() + c->GetPosition());
-			c->SetPosition(c->GetPosition());
+
+			//c->SetPosition(c->GetPosition());
+			c->UpdatePos();
 		}
 	}
 }
 
 void dae::GameObject::SetScale(float x, float y)
 {
-	m_Transform.SetScale(x, y, 0.0f);
+	//m_Transform.SetScale(x, y, 1.0f);
+
+
+	if (m_Parent == nullptr)
+	{
+		m_Transform.SetScale(x, y, 1.0f);
+
+		//ChangeSize depending on scale
+		m_Size *= GetScale();
+
+		for (auto c : m_Childs)
+		{
+			//updatescale
+			c->UpdateScale();
+		}
+	}
+	else
+	{
+
+		SetLocalScale(x, y);
+		m_Transform.SetScale(m_LocalScale.x * GetParent()->GetScale().x, m_LocalScale.y* GetParent()->GetScale().y, 1);
+		m_Size *= GetScale();
+		for (auto c : m_Childs)
+		{
+			//updateScale
+			c->UpdateScale();
+		}
+	}
 }
 
 const glm::vec3& dae::GameObject::GetPosition() const
@@ -177,6 +228,18 @@ void dae::GameObject::AddChild(GameObject* go)
 	go->SetLocalPosition(0, 0);
 	//go->SetPosition(0, 0);
 	this->SetPosition(GetPosition());
+
+	//change size if size of Child is bigger
+	glm::vec3 childSize = go->GetSize();
+	if (childSize.x > m_Size.x)
+	{
+		m_Size = (glm::vec3(childSize.x, m_Size.y, m_Size.z));
+	}
+	if (childSize.y > m_Size.y)
+	{
+		m_Size = (glm::vec3(m_Size.x, childSize.y, m_Size.z));
+	}
+	
 	
 }
 
@@ -201,6 +264,11 @@ void dae::GameObject::SetLocalPosition(float x, float y)
 	m_LocalPos = glm::vec3(x, y, 0);
 }
 
+void dae::GameObject::SetLocalScale(float x, float y)
+{
+	m_LocalScale = glm::vec3(x, y, 1.f);
+}
+
 void dae::GameObject::SetLocalPosition(glm::vec3 pos)
 {
 	m_LocalPos = pos;
@@ -216,6 +284,26 @@ void dae::GameObject::UpdatePos()
 	if(m_Parent != nullptr)
 	{
 		m_Transform.SetPosition(m_LocalPos + m_Parent->GetPosition());
+	}
+}
+
+void dae::GameObject::UpdateScale()
+{
+	if (m_Parent != nullptr)
+	{
+		m_Transform.SetScale(m_LocalScale.x * m_Parent->GetScale().x, m_LocalScale.y * m_Parent->GetScale().y,1);
+		//Change local pos depending on scale
+	/*	m_LocalPos.x *= m_LocalScale.x;
+		m_LocalPos.y *= m_LocalScale.y;
+		m_LocalPos.z *= m_LocalScale.z;*/
+		m_LocalPos.x *= GetScale().x;
+		m_LocalPos.y *= GetScale().y;
+		m_LocalPos.z *= GetScale().z;
+
+		m_Size.x *= GetScale().x;
+		m_Size.y *= GetScale().y;
+		m_Size.z *= GetScale().z;
+		UpdatePos();
 	}
 }
 

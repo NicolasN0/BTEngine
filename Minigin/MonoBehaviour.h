@@ -17,7 +17,7 @@ namespace dae
 		const glm::vec3 &GetSize() const { return m_Size; }
 		bool GetHasSize() const { return m_HasSize; }
 		// Transform& GetTransform() const { return m_Transform; }
-	private:
+	protected:
 		//Transform m_Transform;
 		GameObject* m_Parent;
 		glm::vec3 m_Size;
