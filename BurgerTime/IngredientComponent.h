@@ -18,6 +18,8 @@ private:
 	bool m_isBouncing;
 	float m_curPlatformHeight;
 	float m_lastPlatformHeight;
+	float m_PlatformSize;
+	float m_IngredientSize;
 };
 	
 }
