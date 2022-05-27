@@ -14,6 +14,8 @@ void dae::IngredientComponent::Update(float dt)
 		GetParent()->SetPosition(GetParent()->GetPosition().x, GetParent()->GetPosition().y + (m_FallSpeed * dt));
 	}
 
+
+	//Update pressed count and let fall if all
 	m_PressedCount = 0;
 	for(auto c : m_Parent->GetChilds())
 	{
@@ -25,9 +27,10 @@ void dae::IngredientComponent::Update(float dt)
 	}
 	if(m_PressedCount == m_Parent->GetChildCount())
 	{
-		std::cout << "FALL" << std::endl;
+		//std::cout << "FALL" << std::endl;
 		m_isFalling = true;
 	}
+
 
 	if(m_Parent->IsOverlappingAnyWithTag("Platform"))
 	{
@@ -60,7 +63,7 @@ void dae::IngredientComponent::Update(float dt)
 		//check if current value is bigger diff then platform size then last value if true reset everything and let stand still
 		if((m_curPlatformHeight - m_lastPlatformHeight) > (m_PlatformSize + m_IngredientSize))
 		{
-			std::cout << "Reset" << std::endl;;
+			//std::cout << "Reset" << std::endl;;
 			for(auto c : m_Parent->GetChilds())
 			{
 				c->GetComponent<IngredientPartComponent>()->SetIsPressed(false);
@@ -70,6 +73,8 @@ void dae::IngredientComponent::Update(float dt)
 			m_lastPlatformHeight = m_curPlatformHeight;
 		}
 	}
+
+	CheckCollisionIngredient();
 }
 
 void dae::IngredientComponent::FixedUpdate(float timestep)
@@ -78,4 +83,28 @@ void dae::IngredientComponent::FixedUpdate(float timestep)
 
 void dae::IngredientComponent::Render() const
 {
+}
+
+bool dae::IngredientComponent::GetIsFalling() const
+{
+	return m_isFalling;
+}
+
+void dae::IngredientComponent::SetIsFalling(bool isFalling)
+{
+	m_isFalling = isFalling;
+}
+
+void dae::IngredientComponent::CheckCollisionIngredient()
+{
+	if (m_Parent->IsOverlappingAnyWithTag("Ingredient"))
+	{
+		GameObject* other = m_Parent->GetFirstOverlappingObjectWithTag("Ingredient");
+		//if bigger (so lower) let the other fall
+		if(other->GetPosition().y > m_Parent->GetPosition().y)
+		{
+			//std::cout << "happens";
+			other->GetComponent<IngredientComponent>()->SetIsFalling(true);
+		}
+	}
 }

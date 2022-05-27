@@ -11,7 +11,12 @@ public:
 	void Update(float dt);
 	void FixedUpdate(float timestep);
 	void Render() const;
+
+	bool GetIsFalling() const;
+	void SetIsFalling(bool isFalling);
 private:
+	void CheckCollisionIngredient();
+
 	float m_FallSpeed;
 	int m_PressedCount;
 	bool m_isFalling;

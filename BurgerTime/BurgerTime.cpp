@@ -274,6 +274,69 @@ public:
 
 #pragma endregion levelMovement
 
+
+#pragma region IngredientContainer
+		 float containerWidth{ 65 };
+		 float containerHeight{ 70 };
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(125, 455);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		 go->SetPosition(125, 395);
+		 go->SetDebugDraw(true);
+		 go->SetTag("IngredientContainer");
+		 scene.Add(go);
+
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(212, 455);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		 go->SetPosition(212, 395);
+		 go->SetDebugDraw(true);
+		 go->SetTag("IngredientContainer");
+		 scene.Add(go);
+
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(298, 455);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		 go->SetPosition(298, 395);
+		 go->SetDebugDraw(true);
+		 go->SetTag("IngredientContainer");
+		 scene.Add(go);
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		 go->SetPosition(384, 455);
+		 go->SetDebugDraw(true);
+		 go->SetTag("Platform");
+		 scene.Add(go);
+
+		 go = new GameObject;
+		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		 go->SetPosition(384, 395);
+		 go->SetDebugDraw(true);
+		 go->SetTag("IngredientContainer");
+		 scene.Add(go);
+#pragma endregion IngredientContainer
+
 #pragma region player1
 		 //PeterPepper Player1
 		 auto peterPepperP1 = new GameObject;
@@ -319,7 +382,6 @@ public:
 
 #pragma region ingredients
 		 auto bun = new GameObject;
-
 		 auto bunP1 = new GameObject;
 		 auto bunP2 = new GameObject;
 		 auto bunP3 = new GameObject;
@@ -348,12 +410,48 @@ public:
 		 bunP3->SetDebugDraw(true);
 		 bunP4->SetDebugDraw(true);
 		 bun->SetScale(1.8f, 1.8f);
-
+		 bun->SetTag("Ingredient");
 		
 	 	bun->SetPosition(215, 300);
 		bun->AddComponent<IngredientComponent>(new IngredientComponent);
 	 	scene.Add(bun);
-		// scene.Add(bunP1);
+
+
+		auto bun2 = new GameObject;
+		auto bun2P1 = new GameObject;
+		auto bun2P2 = new GameObject;
+		auto bun2P3 = new GameObject;
+		auto bun2P4 = new GameObject;
+		bun2P1->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		bun2P2->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		bun2P3->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		bun2P4->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+
+		bun2P1->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		bun2P2->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		bun2P3->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		bun2P4->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+
+		bun2->AddChild(bun2P1);
+		bun2->AddChild(bun2P2);
+		bun2->AddChild(bun2P3);
+		bun2->AddChild(bun2P4);
+		bun2P1->SetPosition(0, 0);
+		bun2P2->SetPosition(bun2P1->GetSize().x, 0);
+		bun2P3->SetPosition(bun2P1->GetSize().x * 2, 0);
+		bun2P4->SetPosition(bun2P1->GetSize().x * 3, 0);
+		//bun->SetDebugDraw(true);
+		bun2P1->SetDebugDraw(true);
+		bun2P2->SetDebugDraw(true);
+		bun2P3->SetDebugDraw(true);
+		bun2P4->SetDebugDraw(true);
+		bun2->SetScale(1.8f, 1.8f);
+		bun2->SetTag("Ingredient");
+
+		bun2->SetPosition(215, 200);
+		bun2->AddComponent<IngredientComponent>(new IngredientComponent);
+		scene.Add(bun2);
+		
 
 #pragma endregion ingedients
 
