@@ -3,12 +3,27 @@
 #include <iostream>
 
 #include "IngredientPartComponent.h"
-dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f},m_PressedCount{}, m_curPlatformHeight{},m_lastPlatformHeight{},m_PlatformSize{}
+dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
+,m_PressedCount{}
+,m_curPlatformHeight{}
+,m_lastPlatformHeight{}
+,m_PlatformSize{}
+,m_inContainer{}
+,m_isFalling{}
+,m_isBouncing{}
+,m_IngredientSize{}
+, m_isCollected{}
 {
 }
 
 void dae::IngredientComponent::Update(float dt)
 {
+	if (m_inContainer == false)
+	{
+		CheckContainerOverlap();
+	}
+
+
 	if (m_isFalling == true)
 	{
 		GetParent()->SetPosition(GetParent()->GetPosition().x, GetParent()->GetPosition().y + (m_FallSpeed * dt));
@@ -19,61 +34,26 @@ void dae::IngredientComponent::Update(float dt)
 	m_PressedCount = 0;
 	for(auto c : m_Parent->GetChilds())
 	{
-		if(c->GetComponent<IngredientPartComponent>()->GetIsPressed() == true)
+		
+		IngredientPartComponent* part = c->GetComponent<IngredientPartComponent>();
+		if(part != nullptr)
 		{
-			m_PressedCount++;
+			if(part->GetIsPressed() == true)
+			{
+				
+				m_PressedCount++;
+			}
 
 		}
 	}
 	if(m_PressedCount == m_Parent->GetChildCount())
 	{
-		//std::cout << "FALL" << std::endl;
 		m_isFalling = true;
 	}
 
 
-	if(m_Parent->IsOverlappingAnyWithTag("Platform"))
-	{
-		//check if last platform is given value otherwise set both last and current
-		//Check for 0 because initialized on 0
-		if(m_lastPlatformHeight == 0 && m_curPlatformHeight == 0)
-		{
-			//Set to parent position + size because bottom parent will be top ingredient
-			m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
-			m_lastPlatformHeight = m_curPlatformHeight;
-		}
-
-		//If not both 0 set new platformheight
-		m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
-
-		//If platform size is not initialized get it
-		if(m_PlatformSize == 0)
-		{
-			m_PlatformSize = m_Parent->GetFirstOverlappingObjectWithTag("Platform")->GetSize().y;
-		}
-
-		//IngredientSize
-		if(m_IngredientSize == 0)
-		{
-			m_IngredientSize = m_Parent->GetChildAt(0)->GetSize().y;
-		}
-		//before resetting start bouncing function
-
-
-		//check if current value is bigger diff then platform size then last value if true reset everything and let stand still
-		if((m_curPlatformHeight - m_lastPlatformHeight) > (m_PlatformSize + m_IngredientSize))
-		{
-			//std::cout << "Reset" << std::endl;;
-			for(auto c : m_Parent->GetChilds())
-			{
-				c->GetComponent<IngredientPartComponent>()->SetIsPressed(false);
-			}
-			m_isFalling = false;
-			m_PressedCount = 0;
-			m_lastPlatformHeight = m_curPlatformHeight;
-		}
-	}
-
+	CheckCollisionPlatform();
+	
 	CheckCollisionIngredient();
 }
 
@@ -97,14 +77,113 @@ void dae::IngredientComponent::SetIsFalling(bool isFalling)
 
 void dae::IngredientComponent::CheckCollisionIngredient()
 {
+
 	if (m_Parent->IsOverlappingAnyWithTag("Ingredient"))
 	{
-		GameObject* other = m_Parent->GetFirstOverlappingObjectWithTag("Ingredient");
-		//if bigger (so lower) let the other fall
-		if(other->GetPosition().y > m_Parent->GetPosition().y)
+		if(m_inContainer == false)
 		{
-			//std::cout << "happens";
-			other->GetComponent<IngredientComponent>()->SetIsFalling(true);
+			GameObject* other = m_Parent->GetFirstOverlappingObjectWithTag("Ingredient");
+			//if bigger (so lower) let the other fall
+			if(other->GetPosition().y > m_Parent->GetPosition().y)
+			{
+				//Should not only set to falling true but also lower the is pressed vor everyChild
+				//Else Resetting will always set ingredients higher
+
+				//Check for is falling so it doenst get called multiple times
+				if(other->GetComponent<IngredientComponent>()->GetIsFalling() == false)
+				{
+					other->GetComponent<IngredientComponent>()->SetIsFalling(true);
+					for(auto c : other->GetChilds())
+					{
+						c->GetComponent<IngredientPartComponent>()->SetIsPressed(true);
+					}
+					
+				}
+
+			}
+		} else
+		{
+			if(m_isCollected == false)
+			{
+				std::cout << "now?";
+				ResetFalling();
+				//m_isCollected = true;
+			}
 		}
+	}
+}
+
+void dae::IngredientComponent::CheckContainerOverlap()
+{
+	if (m_Parent->IsOverlappingAnyWithTag("Container"))
+	{
+		m_inContainer = true;
+	}
+}
+
+void dae::IngredientComponent::ResetFalling()
+{
+	if(m_inContainer == true)
+	{
+		m_isCollected = true;
+	}
+
+	std::cout << "happens";
+	for (auto c : m_Parent->GetChilds())
+	{
+		c->GetComponent<IngredientPartComponent>()->Reset();
+	}
+	m_isFalling = false;
+	m_PressedCount = 0;
+	m_lastPlatformHeight = m_curPlatformHeight;
+}
+
+void dae::IngredientComponent::CheckCollisionPlatform()
+{
+	if (m_Parent->IsOverlappingAnyWithTag("Platform"))
+	{
+		//check if last platform is given value otherwise set both last and current
+		//Check for 0 because initialized on 0
+		if (m_lastPlatformHeight == 0 && m_curPlatformHeight == 0)
+		{
+			//Set to parent position + size because bottom parent will be top ingredient
+			m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
+			m_lastPlatformHeight = m_curPlatformHeight;
+		}
+
+		//If not both 0 set new platformheight
+		m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
+
+		//If platform size is not initialized get it
+		if (m_PlatformSize == 0)
+		{
+			m_PlatformSize = m_Parent->GetFirstOverlappingObjectWithTag("Platform")->GetSize().y;
+		}
+
+		//IngredientSize
+		if (m_IngredientSize == 0)
+		{
+			m_IngredientSize = m_Parent->GetChildAt(0)->GetSize().y;
+		}
+		//before resetting start bouncing function
+
+
+		//check if current value is bigger diff then platform size then last value if true reset everything and let stand still
+		if ((m_curPlatformHeight - m_lastPlatformHeight) > (m_PlatformSize + m_IngredientSize))
+		{
+
+			ResetFalling();
+		}
+
+		/*if(m_inContainer == true)
+		{
+			if (m_isCollected == false)
+			{
+				std::cout << "now?";
+				ResetFalling();
+				m_isCollected = true;
+			}
+		}*/
+
 	}
 }

@@ -6,15 +6,18 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
-		IngredientPartComponent() = default;
+		IngredientPartComponent();
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
 
 		bool GetIsPressed() const;
 		void SetIsPressed(bool isPressed);
+
+		void Reset();
 	private:
 		bool m_IsPressed;
+		float m_HeightDiff;
 	};
 	
 }

@@ -135,6 +135,7 @@ namespace dae
 		if (iterator == m_pComponents.cend())
 		{
 			return nullptr;
+			
 		}
 		return static_cast<T*>(*iterator);
 	}

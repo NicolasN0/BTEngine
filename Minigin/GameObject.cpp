@@ -430,6 +430,11 @@ bool dae::GameObject::IsOverlappingAnyWithTag(std::string tag)
 			r2.y += o->GetSize().y;
 
 
+			if(o == this)
+			{
+				continue;
+			}
+
 			if (l1.x == r1.x || l1.y == r1.y || l2.x == r2.x
 				|| l2.y == r2.y) {
 				// the line cannot have positive overlap

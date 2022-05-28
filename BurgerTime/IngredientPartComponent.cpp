@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+dae::IngredientPartComponent::IngredientPartComponent() : m_IsPressed(), m_HeightDiff(5.f)
+{
+}
+
 void dae::IngredientPartComponent::Update(float dt)
 {
 	if(m_IsPressed == false)
@@ -11,7 +15,8 @@ void dae::IngredientPartComponent::Update(float dt)
 		{
 			m_IsPressed = true;
 			std::cout << "pressed";
-			GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y +5.f);
+			GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y + m_HeightDiff);
+			//SetIsPressed(true);
 		}
 	}
 }
@@ -31,5 +36,13 @@ bool dae::IngredientPartComponent::GetIsPressed() const
 
 void dae::IngredientPartComponent::SetIsPressed(bool isPressed)
 {
+	std::cout << "wtf'";
 	m_IsPressed = isPressed;
+	GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y + m_HeightDiff);
+}
+
+void dae::IngredientPartComponent::Reset()
+{
+	m_IsPressed = false;
+	GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y - m_HeightDiff);
 }
