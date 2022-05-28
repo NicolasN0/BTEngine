@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "IngredientPartComponent.h"
+#include "BasicEnemyComponent.h"
 dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
 ,m_PressedCount{}
 ,m_curPlatformHeight{}
@@ -13,6 +14,8 @@ dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
 ,m_isBouncing{}
 ,m_IngredientSize{}
 , m_isCollected{}
+,m_StandingEnemies{}
+,m_HasMoved{}
 {
 }
 
@@ -27,6 +30,12 @@ void dae::IngredientComponent::Update(float dt)
 	if (m_isFalling == true)
 	{
 		GetParent()->SetPosition(GetParent()->GetPosition().x, GetParent()->GetPosition().y + (m_FallSpeed * dt));
+
+		//Also move all enemies with it below
+		for(auto o : m_FallingEnemies)
+		{
+			o->SetPosition(o->GetPosition().x, o->GetPosition().y + (m_FallSpeed * dt));
+		}
 	}
 
 
@@ -48,6 +57,18 @@ void dae::IngredientComponent::Update(float dt)
 	}
 	if(m_PressedCount == m_Parent->GetChildCount())
 	{
+		//Add the enemies to the list if they were already overlapping otherwise check for overlap later and destroy them
+		//Should only happen once
+		if(m_HasMoved == false)
+		{
+			m_FallingEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
+			m_StandingEnemies = m_FallingEnemies.size();
+			for(auto o : m_FallingEnemies)
+			{
+				o->GetComponent<BasicEnemyComponent>()->SetIsFalling(true);
+			}
+		}
+		m_HasMoved = true;
 		m_isFalling = true;
 	}
 
@@ -55,6 +76,17 @@ void dae::IngredientComponent::Update(float dt)
 	CheckCollisionPlatform();
 	
 	CheckCollisionIngredient();
+
+	if(m_isFalling == false)
+	{
+		if(m_StandingEnemies > 0)
+		{
+			std::cout << "oh lord";
+			InstantLetFall();
+			m_StandingEnemies--;
+		}
+		
+	}
 }
 
 void dae::IngredientComponent::FixedUpdate(float timestep)
@@ -75,6 +107,16 @@ void dae::IngredientComponent::SetIsFalling(bool isFalling)
 	m_isFalling = isFalling;
 }
 
+void dae::IngredientComponent::InstantLetFall()
+{
+
+	SetIsFalling(true);
+	for (auto c : m_Parent->GetChilds())
+	{
+		c->GetComponent<IngredientPartComponent>()->SetIsPressed(true);
+	}
+}
+
 void dae::IngredientComponent::CheckCollisionIngredient()
 {
 
@@ -92,11 +134,8 @@ void dae::IngredientComponent::CheckCollisionIngredient()
 				//Check for is falling so it doenst get called multiple times
 				if(other->GetComponent<IngredientComponent>()->GetIsFalling() == false)
 				{
-					other->GetComponent<IngredientComponent>()->SetIsFalling(true);
-					for(auto c : other->GetChilds())
-					{
-						c->GetComponent<IngredientPartComponent>()->SetIsPressed(true);
-					}
+		
+					other->GetComponent<IngredientComponent>()->InstantLetFall();
 					
 				}
 
@@ -105,9 +144,7 @@ void dae::IngredientComponent::CheckCollisionIngredient()
 		{
 			if(m_isCollected == false)
 			{
-				std::cout << "now?";
 				ResetFalling();
-				//m_isCollected = true;
 			}
 		}
 	}
@@ -128,7 +165,6 @@ void dae::IngredientComponent::ResetFalling()
 		m_isCollected = true;
 	}
 
-	std::cout << "happens";
 	for (auto c : m_Parent->GetChilds())
 	{
 		c->GetComponent<IngredientPartComponent>()->Reset();
@@ -175,15 +211,15 @@ void dae::IngredientComponent::CheckCollisionPlatform()
 			ResetFalling();
 		}
 
-		/*if(m_inContainer == true)
-		{
-			if (m_isCollected == false)
-			{
-				std::cout << "now?";
-				ResetFalling();
-				m_isCollected = true;
-			}
-		}*/
+	}
+}
+
+void dae::IngredientComponent::CheckCollisionEnemy()
+{
+	if(m_isFalling == true)
+	{
+		std::vector<GameObject*> overlapping;
+		//get all of them and check if not falling and if not kill them
 
 	}
 }

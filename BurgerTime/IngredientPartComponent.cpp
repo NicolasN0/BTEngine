@@ -14,9 +14,7 @@ void dae::IngredientPartComponent::Update(float dt)
 		if(GetParent()->IsOverlappingAnyWithTag("Player"))
 		{
 			m_IsPressed = true;
-			std::cout << "pressed";
 			GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y + m_HeightDiff);
-			//SetIsPressed(true);
 		}
 	}
 }
@@ -36,7 +34,6 @@ bool dae::IngredientPartComponent::GetIsPressed() const
 
 void dae::IngredientPartComponent::SetIsPressed(bool isPressed)
 {
-	std::cout << "wtf'";
 	m_IsPressed = isPressed;
 	GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y + m_HeightDiff);
 }

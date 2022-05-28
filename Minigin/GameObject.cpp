@@ -378,6 +378,11 @@ bool dae::GameObject::IsOverlappingAny()
 			r2.y += m_Size.y;
 
 
+			if (o == this)
+			{
+				continue;
+			}
+
 			if (l1.x == r1.x || l1.y == r1.y || l2.x == r2.x
 				|| l2.y == r2.y) {
 				// the line cannot have positive overlap
@@ -488,6 +493,11 @@ bool dae::GameObject::IsCenterOverlappingAnyWithTag(std::string tag)
 			r2.y += o->GetSize().y;
 
 
+			if (o == this)
+			{
+				continue;
+			}
+
 			if (l1.x == r1.x || l1.y == r1.y || l2.x == r2.x
 				|| l2.y == r2.y) {
 				// the line cannot have positive overlap
@@ -538,6 +548,11 @@ dae::GameObject* dae::GameObject::GetFirstOverlappingObjectWithTag(std::string t
 			r2.y += o->GetSize().y;
 
 
+			if (o == this)
+			{
+				continue;
+			}
+
 			if (l1.x == r1.x || l1.y == r1.y || l2.x == r2.x
 				|| l2.y == r2.y) {
 				// the line cannot have positive overlap
@@ -567,6 +582,62 @@ dae::GameObject* dae::GameObject::GetFirstOverlappingObjectWithTag(std::string t
 		}
 	}
 	return nullptr;
+}
+
+std::vector<dae::GameObject*> dae::GameObject::GetAllOverlappingWithTag(std::string tag)
+{
+	std::vector<GameObject*> overlapping;
+	if (m_Scene != nullptr)
+	{
+		std::vector < GameObject* > objects = m_Scene->GetObjectsInWorldWithTag(tag);
+		for (auto o : objects)
+		{
+
+			glm::vec3 l1 = GetPosition();
+			glm::vec3 r1 = l1;
+			r1.x += m_Size.x;
+			r1.y += m_Size.y;
+
+			glm::vec3 l2 = o->GetPosition();
+			glm::vec3 r2 = l2;
+			r2.x += o->GetSize().x;
+			r2.y += o->GetSize().y;
+
+
+			if (o == this)
+			{
+				continue;
+			}
+
+			if (l1.x == r1.x || l1.y == r1.y || l2.x == r2.x
+				|| l2.y == r2.y) {
+				// the line cannot have positive overlap
+				//return false;
+				continue;
+			}
+
+			// If one rectangle is on left side of other
+			if (l1.x >= r2.x || l2.x >= r1.x)
+			{
+				//return false;
+				continue;
+			}
+
+			// If one rectangle is above other
+
+			//test if works the same with y coordinates from this scene
+			if (r1.y <= l2.y || r2.y <= l1.y)
+			{
+				//return false;
+				continue;
+			}
+
+
+			overlapping.push_back(o);
+			
+		}
+	}
+	return overlapping;
 }
 
 dae::Scene* dae::GameObject::GetScene() const

@@ -14,11 +14,13 @@ public:
 
 	bool GetIsFalling() const;
 	void SetIsFalling(bool isFalling);
+	void InstantLetFall();
 private:
 	void CheckCollisionIngredient();
 	void CheckContainerOverlap();
 	void ResetFalling();
 	void CheckCollisionPlatform();
+	void CheckCollisionEnemy();
 
 	float m_FallSpeed;
 	int m_PressedCount;
@@ -30,6 +32,9 @@ private:
 	float m_lastPlatformHeight;
 	float m_PlatformSize;
 	float m_IngredientSize;
+	std::vector<GameObject*> m_FallingEnemies;
+	int m_StandingEnemies;
+	bool m_HasMoved;
 };
 	
 }

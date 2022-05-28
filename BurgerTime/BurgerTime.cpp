@@ -410,14 +410,6 @@ public:
 		 bunP3->SetDebugDraw(true);
 		 bunP4->SetDebugDraw(true);
 
-		/* auto bun1Top = new GameObject;
-		 float bun1TopHeight = 25.f;
-		 bun1Top->SetSize(glm::vec3(bunP1->GetSize().x * 4, bun1TopHeight, 0));
-		 bun->AddChild(bun1Top);
-		 bun1Top->SetPosition(0, -bun1TopHeight + bunP1->GetSize().y);
-		 bun1Top->SetDebugDraw(true);*/
-
-		 
 		 bun->SetScale(1.8f, 1.8f);
 		 bun->SetSize(glm::vec3(bunP1->GetSize().x * 4, bunP1->GetSize().y, 0));
 		 bun->SetTag("Ingredient");
@@ -425,6 +417,8 @@ public:
 	 	bun->SetPosition(215, 300);
 		bun->AddComponent<IngredientComponent>(new IngredientComponent);
 	 	scene.Add(bun);
+
+		//Bun2
 
 
 		auto bun2 = new GameObject;
@@ -456,14 +450,7 @@ public:
 		bun2P2->SetDebugDraw(true);
 		bun2P3->SetDebugDraw(true);
 		bun2P4->SetDebugDraw(true);
-		//EnemyTopOverlap
 
-		/*auto bun2Top = new GameObject;
-		float bunTopHeight = 25.f;
-		bun2Top->SetSize(glm::vec3(bun2P1->GetSize().x * 4, bunTopHeight, 0));
-		bun2->AddChild(bun2Top);
-		bun2Top->SetPosition(0, -bunTopHeight +bun2P1->GetSize().y);
-		bun2Top->SetDebugDraw(true);*/
 
 		//IngredientSettings
 		bun2->SetScale(1.8f, 1.8f);
@@ -479,13 +466,13 @@ public:
 #pragma endregion ingedients
 
 #pragma region enemy
-		/* auto HotDog = std::make_shared<GameObject>();
+		auto HotDog = new GameObject;
 		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent());
 		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 		 HotDog->SetPosition(283, 250);
 		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
 		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);*/
+		 scene.Add(HotDog);
 
 #pragma endregion enemy
 
