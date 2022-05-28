@@ -16,6 +16,9 @@ dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
 , m_isCollected{}
 ,m_StandingEnemies{}
 ,m_HasMoved{}
+,m_CurrentBounceHeight{}
+,m_MaxBounceHeight{10.f}
+,m_BounceSpeed{50.f}
 {
 }
 
@@ -61,12 +64,19 @@ void dae::IngredientComponent::Update(float dt)
 		//Should only happen once
 		if(m_HasMoved == false)
 		{
-			m_FallingEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
-			m_StandingEnemies = m_FallingEnemies.size();
-			for(auto o : m_FallingEnemies)
+			std::vector<GameObject*> allEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
+
+			//Check if not from other already set to is falling
+			for(auto o : allEnemies)
 			{
-				o->GetComponent<BasicEnemyComponent>()->SetIsFalling(true);
+				if(o->GetComponent<BasicEnemyComponent>()->GetIsFalling() == false)
+				{
+					m_FallingEnemies.push_back(o);
+					o->GetComponent<BasicEnemyComponent>()->SetIsFalling(true);
+				}
 			}
+			m_StandingEnemies = m_FallingEnemies.size();
+			
 		}
 		m_HasMoved = true;
 		m_isFalling = true;
@@ -82,11 +92,15 @@ void dae::IngredientComponent::Update(float dt)
 		if(m_StandingEnemies > 0)
 		{
 			std::cout << "oh lord";
-			InstantLetFall();
 			m_StandingEnemies--;
+			InstantLetFall();
 		}
 		
 	}
+
+
+	//test
+	Bounce(dt);
 }
 
 void dae::IngredientComponent::FixedUpdate(float timestep)
@@ -172,6 +186,9 @@ void dae::IngredientComponent::ResetFalling()
 	m_isFalling = false;
 	m_PressedCount = 0;
 	m_lastPlatformHeight = m_curPlatformHeight;
+
+	//test
+	m_isBouncing = true;
 }
 
 void dae::IngredientComponent::CheckCollisionPlatform()
@@ -222,4 +239,36 @@ void dae::IngredientComponent::CheckCollisionEnemy()
 		//get all of them and check if not falling and if not kill them
 
 	}
+}
+
+void dae::IngredientComponent::Bounce(float dt)
+{
+	//m_isBouncing = true;
+	if(m_isBouncing == true)
+	{
+		if(m_BouncingDown == false)
+		{
+			m_CurrentBounceHeight += m_BounceSpeed * dt;
+			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y - m_BounceSpeed *dt);
+			
+		} else
+		{
+			m_CurrentBounceHeight -= m_BounceSpeed * dt;
+			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y + m_BounceSpeed * dt);
+		}
+
+		if(m_CurrentBounceHeight > m_MaxBounceHeight)
+		{
+			m_BouncingDown = true;
+		}
+
+
+		if(m_CurrentBounceHeight < 0)
+		{
+			m_BouncingDown = false;
+			m_isBouncing = false;
+		}
+		
+	}
+
 }

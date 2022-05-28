@@ -21,6 +21,12 @@ private:
 	void ResetFalling();
 	void CheckCollisionPlatform();
 	void CheckCollisionEnemy();
+	void Bounce(float dt);
+
+	float m_CurrentBounceHeight;
+	float m_MaxBounceHeight;
+	float m_BounceSpeed;
+	bool m_BouncingDown;
 
 	float m_FallSpeed;
 	int m_PressedCount;
