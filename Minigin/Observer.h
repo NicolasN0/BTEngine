@@ -6,7 +6,17 @@ namespace dae
 	enum class Event
 	{
 		PlayerDied,
-		PlayerPickup
+		PlayerPickup,
+		HotDogKilled,
+		EggKilled,
+		PickleKilled,
+		BurgerDropped,
+		Kill,
+		DoubleKill,
+		TripleKill,
+		QuadraKill,
+		PentaKill,
+		HexaKill
 	};
 
 	class Observer

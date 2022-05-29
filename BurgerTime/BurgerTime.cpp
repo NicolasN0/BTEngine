@@ -371,11 +371,12 @@ public:
 		 go->SetPosition(10, 200);
 		 scene.Add(go);
 
-		 Subject* peterPepperSubject = new Subject;
-		 peterPepperSubject->AddObserver(new HealthObserver(healthDisplayComp));
-		 peterPepperSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
-		 peterPepperP1->GetComponent<PeterPepperComponent>()->SetSubject(peterPepperSubject);
-		 //peterPepperP1->SetSubject(peterPepperSubject);
+		 Subject* ValuesSubject = new Subject;
+		 ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
+		 ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
+		 peterPepperP1->GetComponent<PeterPepperComponent>()->SetSubject(ValuesSubject);
+
+		
 		 scene.Add(peterPepperP1);
 #pragma endregion displays
 

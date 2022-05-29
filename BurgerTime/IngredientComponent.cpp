@@ -41,6 +41,8 @@ void dae::IngredientComponent::Update(float dt)
 		}
 	}
 
+	
+
 
 	//Update pressed count and let fall if all
 	m_PressedCount = 0;
@@ -60,13 +62,11 @@ void dae::IngredientComponent::Update(float dt)
 	}
 	if(m_PressedCount == m_Parent->GetChildCount())
 	{
-		//Add the enemies to the list if they were already overlapping otherwise check for overlap later and destroy them
-		//Should only happen once
+		//Should only happen once per enemyFill
 		if(m_HasMoved == false)
 		{
 			std::vector<GameObject*> allEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
 
-			//Check if not from other already set to is falling
 			for(auto o : allEnemies)
 			{
 				if(o->GetComponent<BasicEnemyComponent>()->GetIsFalling() == false)
@@ -87,20 +87,28 @@ void dae::IngredientComponent::Update(float dt)
 	
 	CheckCollisionIngredient();
 
-	if(m_isFalling == false)
+	Bounce(dt);
+
+	if(m_isFalling == false && m_isBouncing == false)
 	{
 		if(m_StandingEnemies > 0)
 		{
-			std::cout << "oh lord";
 			m_StandingEnemies--;
 			InstantLetFall();
+		} else if(m_StandingEnemies == 0 && m_FallingEnemies.size() > 0)
+		{
+			for(auto o : m_FallingEnemies)
+			{
+				o->GetComponent<BasicEnemyComponent>()->Kill();
+			}
+			m_FallingEnemies.clear();
+			m_HasMoved = false;
 		}
 		
 	}
 
 
-	//test
-	Bounce(dt);
+	CheckCollisionEnemy();
 }
 
 void dae::IngredientComponent::FixedUpdate(float timestep)
@@ -139,13 +147,10 @@ void dae::IngredientComponent::CheckCollisionIngredient()
 		if(m_inContainer == false)
 		{
 			GameObject* other = m_Parent->GetFirstOverlappingObjectWithTag("Ingredient");
-			//if bigger (so lower) let the other fall
+			
 			if(other->GetPosition().y > m_Parent->GetPosition().y)
 			{
-				//Should not only set to falling true but also lower the is pressed vor everyChild
-				//Else Resetting will always set ingredients higher
 
-				//Check for is falling so it doenst get called multiple times
 				if(other->GetComponent<IngredientComponent>()->GetIsFalling() == false)
 				{
 		
@@ -233,28 +238,47 @@ void dae::IngredientComponent::CheckCollisionPlatform()
 
 void dae::IngredientComponent::CheckCollisionEnemy()
 {
-	if(m_isFalling == true)
+	if(m_isFalling == true || m_isBouncing == true)
 	{
-		std::vector<GameObject*> overlapping;
+		std::vector<GameObject*> overlapping = m_Parent->GetAllOverlappingWithTag("Enemy");
 		//get all of them and check if not falling and if not kill them
+		for(auto o : overlapping)
+		{
+			BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();
+			if(enemy->GetIsFalling() == false)
+			{
+				enemy->Kill();
+			}
+		}
 
 	}
 }
 
 void dae::IngredientComponent::Bounce(float dt)
 {
-	//m_isBouncing = true;
+	
 	if(m_isBouncing == true)
 	{
+		
 		if(m_BouncingDown == false)
 		{
 			m_CurrentBounceHeight += m_BounceSpeed * dt;
 			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y - m_BounceSpeed *dt);
+			//Move enemies too
+			for (auto o : m_FallingEnemies)
+			{
+				o->SetPosition(o->GetPosition().x, o->GetPosition().y - m_BounceSpeed * dt);
+			}
 			
 		} else
 		{
 			m_CurrentBounceHeight -= m_BounceSpeed * dt;
 			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y + m_BounceSpeed * dt);
+			//Move enemies too
+			for (auto o : m_FallingEnemies)
+			{
+				o->SetPosition(o->GetPosition().x, o->GetPosition().y + m_BounceSpeed * dt);
+			}
 		}
 
 		if(m_CurrentBounceHeight > m_MaxBounceHeight)
@@ -262,11 +286,14 @@ void dae::IngredientComponent::Bounce(float dt)
 			m_BouncingDown = true;
 		}
 
+		
 
 		if(m_CurrentBounceHeight < 0)
 		{
 			m_BouncingDown = false;
 			m_isBouncing = false;
+			m_CurrentBounceHeight = 0;
+			std::cout << "bounceDone";
 		}
 		
 	}

@@ -8,7 +8,6 @@ dae::BasicEnemyComponent::BasicEnemyComponent()
 
 void dae::BasicEnemyComponent::Update(float dt)
 {
-	//std::cout << m_Target->GetTransform().GetPosition().x;
 	if(m_Falling == false)
 	{
 		CheckOverlaps();
@@ -17,31 +16,6 @@ void dae::BasicEnemyComponent::Update(float dt)
 		
 	}
 
-
-	//if(m_IsOnPlatform == true)
-	//{
-	//	if(m_Target->GetPosition().x < GetParent()->GetPosition().x)
-	//	{
-	//		glm::vec3 curPos = GetParent()->GetPosition();
-	//		glm::vec3 furPos = glm::vec3(curPos.x - (m_MoveSpeed * dt), curPos.y, 1);
-	//		GetParent()->SetPosition(furPos.x, furPos.y);
-
-	//		if (m_IsOnPlatform == false)
-	//		{
-	//			GetParent()->SetPosition(curPos.x, curPos.y);
-	//		}
-	//	} else
-	//	{
-	//		glm::vec3 curPos = GetParent()->GetPosition();
-	//		glm::vec3 furPos = glm::vec3(curPos.x + (m_MoveSpeed * dt), curPos.y, 1);
-	//		GetParent()->SetPosition(furPos.x, furPos.y);
-
-	//		if (m_IsOnPlatform == false)
-	//		{
-	//			GetParent()->SetPosition(curPos.x, curPos.y);
-	//		}
-	//	}
-	//}
 
 }
 
@@ -78,6 +52,11 @@ bool dae::BasicEnemyComponent::GetIsFalling() const
 void dae::BasicEnemyComponent::Kill()
 {
 	std::cout << "kill";
+}
+
+void dae::BasicEnemyComponent::SetSubject(Subject* subject)
+{
+	m_Subject = subject;
 }
 
 void dae::BasicEnemyComponent::CheckOverlaps()
@@ -153,7 +132,6 @@ void dae::BasicEnemyComponent::UpdateDirection()
 			}
 
 			//Return so it doesnt constantly checks
-			//m_CanSwitch = false;
 			return;
 		}
 

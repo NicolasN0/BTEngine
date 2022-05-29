@@ -24,6 +24,9 @@ namespace dae
 		bool GetIsFalling() const;
 
 		void Kill();
+
+		void SetSubject(Subject* subject);
+		
 	private:
 		void CheckOverlaps();
 		void UpdatePos(float dt);
@@ -37,6 +40,7 @@ namespace dae
 		float m_MoveSpeed{20};
 		bool m_CanSwitch{true};
 		glm::vec3 m_Direction{};
+		Subject* m_Subject{};
 		
 	};
 

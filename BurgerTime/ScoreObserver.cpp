@@ -13,6 +13,9 @@ void dae::ScoreObserver::Notify(const GameObject& , Event event)
 	case Event::PlayerPickup:
 		m_pTextComponent->SetText("Score increased");
 		break;
+	case Event::HotDogKilled:
+		//m_pTextComponent->SetText()
+		break;
 	}
 }
 
