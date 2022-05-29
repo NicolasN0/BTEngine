@@ -5,20 +5,20 @@
 
 #include "Observer.h"
 #include "Scene.h"
-
-dae::PeterPepperComponent::PeterPepperComponent() : m_Lives{3}
+#include "ValuesComponent.h"
+dae::PeterPepperComponent::PeterPepperComponent() 
 {
 	
 }
 
 dae::PeterPepperComponent::~PeterPepperComponent()
 {
-	if (m_Subject != nullptr)
+	/*if (m_Subject != nullptr)
 	{
 		delete m_Subject;
 		m_Subject = nullptr;
 
-	}
+	}*/
 }
 
 void dae::PeterPepperComponent::Update(float)
@@ -57,37 +57,38 @@ void dae::PeterPepperComponent::Render() const
 {
 }
 
-void dae::PeterPepperComponent::SetSubject(Subject* subject)
-{
-	m_Subject = subject;
-}
-
-dae::Subject* dae::PeterPepperComponent::GetSubject()
-{
-	return m_Subject;
-}
+//void dae::PeterPepperComponent::SetSubject(Subject* subject)
+//{
+//	m_Subject = subject;
+//}
+//
+//dae::Subject* dae::PeterPepperComponent::GetSubject()
+//{
+//	return m_Subject;
+//}
 
 void dae::PeterPepperComponent::Respawn()
 {
-	if(m_Lives > 0)
+	if(m_Parent->GetComponent<ValuesComponent>()->GetLives() > 0)
 	{
-		Damage();
+		//Damage();
+		m_Parent->GetComponent<ValuesComponent>()->Damage();
 		m_Parent->SetPosition(m_StartPos);
-	} else
+	} /*else
 	{
 		m_Subject->Notify(*GetParent(), Event::GameOver);
-	}
+	}*/
 }
 
 
-void dae::PeterPepperComponent::Damage()
-{
-	
-	m_Lives--;
-	m_Subject->Notify(*GetParent(), Event::PlayerDied);
-}
-
-void dae::PeterPepperComponent::IncreaseScore()
-{
-	m_Score += 5;
-}
+//void dae::PeterPepperComponent::Damage()
+//{
+//	
+//	m_Lives--;
+//	m_Subject->Notify(*GetParent(), Event::PlayerDied);
+//}
+//
+//void dae::PeterPepperComponent::IncreaseScore()
+//{
+//	m_Score += 5;
+//}

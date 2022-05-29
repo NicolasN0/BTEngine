@@ -7,16 +7,7 @@ namespace dae
 	{
 		PlayerDied,
 		PlayerPickup,
-		HotDogKilled,
-		EggKilled,
-		PickleKilled,
-		BurgerDropped,
-		Kill,
-		DoubleKill,
-		TripleKill,
-		QuadraKill,
-		PentaKill,
-		HexaKill,
+		ScoreIncreased,
 		GameOver
 	};
 

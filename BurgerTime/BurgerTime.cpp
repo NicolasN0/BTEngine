@@ -24,7 +24,7 @@
 #include "BasicEnemyComponent.h"
 #include "IngredientComponent.h"
 #include "IngredientPartComponent.h"
-
+#include "ValuesComponent.h"
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
 #include <SDL.h>
@@ -342,10 +342,11 @@ public:
 		 auto peterPepperP1 = new GameObject;
 		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
 		 peterPepperP1->SetPosition(250, 250);
 	 	peterPepperP1->SetTag("Player");
 		 //commands
-		 Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonA,0 }, std::make_unique<DamagePlayer>(peterPepperP1->GetComponent<PeterPepperComponent>()));
+		// Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonA,0 }, std::make_unique<DamagePlayer>(peterPepperP1->GetComponent<PeterPepperComponent>()));
 		
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
@@ -374,7 +375,7 @@ public:
 		 Subject* ValuesSubject = new Subject;
 		 ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
 		 ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
-		 peterPepperP1->GetComponent<PeterPepperComponent>()->SetSubject(ValuesSubject);
+		 peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
 
 		
 		 scene.Add(peterPepperP1);
@@ -468,7 +469,7 @@ public:
 
 #pragma region enemy
 		auto HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent());
+		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
 		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 		 HotDog->SetPosition(283, 250);
 		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);

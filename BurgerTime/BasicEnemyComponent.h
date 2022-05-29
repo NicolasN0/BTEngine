@@ -2,11 +2,19 @@
 #include "MonoBehaviour.h"
 namespace dae
 {
+	enum class EnemyType
+	{
+		Hotdog,
+		Egg,
+		Pickle
+	};
+
+
 	class BasicEnemyComponent :
 		public MonoBehaviour
 	{
 	public:
-		BasicEnemyComponent();
+		BasicEnemyComponent(EnemyType enemyType);
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
@@ -19,7 +27,6 @@ namespace dae
 		glm::vec3 GetPosition() const;
 		void SetPosition(glm::vec3 pos);
 
-		//void DecreaseFallCount();
 		void SetIsFalling(bool isFalling);
 		bool GetIsFalling() const;
 
@@ -32,7 +39,7 @@ namespace dae
 		void UpdatePos(float dt);
 		void UpdateDirection();
 
-		//int m_RemainingFallCount;
+		
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
 		bool m_Falling{};
@@ -41,6 +48,8 @@ namespace dae
 		bool m_CanSwitch{true};
 		glm::vec3 m_Direction{};
 		Subject* m_Subject{};
+
+		EnemyType m_Type;
 		
 	};
 

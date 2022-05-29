@@ -1,8 +1,8 @@
 #include "BasicEnemyComponent.h"
-
+#include "ValuesComponent.h"
 #include <iostream>
 
-dae::BasicEnemyComponent::BasicEnemyComponent() 
+dae::BasicEnemyComponent::BasicEnemyComponent(EnemyType enemyType) : m_Type{enemyType}
 {
 }
 
@@ -52,6 +52,23 @@ bool dae::BasicEnemyComponent::GetIsFalling() const
 void dae::BasicEnemyComponent::Kill()
 {
 	std::cout << "kill";
+	switch(m_Type)
+	{
+	case EnemyType::Hotdog:
+		m_Target->GetComponent<ValuesComponent>()->IncreaseScore(100);
+		break;
+	case EnemyType::Pickle:
+		m_Target->GetComponent<ValuesComponent>()->IncreaseScore(200);
+		break;
+	case EnemyType::Egg:
+		m_Target->GetComponent<ValuesComponent>()->IncreaseScore(300);
+		break;
+	default:
+		std::cout << "no type selected";
+		break;
+	}
+
+	m_Parent->~GameObject();
 }
 
 void dae::BasicEnemyComponent::SetSubject(Subject* subject)
