@@ -1,5 +1,9 @@
 #pragma once
+#include <iostream>
 #include <MonoBehaviour.h>
+
+#include "Scene.h"
+#include "ValuesComponent.h"
 
 namespace dae
 {
@@ -22,6 +26,8 @@ private:
 	void CheckCollisionPlatform();
 	void CheckCollisionEnemy();
 	void Bounce(float dt);
+	void InitializeValuesComp();
+	void KillStandingEnemies();
 
 	float m_CurrentBounceHeight;
 	float m_MaxBounceHeight;
@@ -38,11 +44,17 @@ private:
 	float m_lastPlatformHeight;
 	float m_PlatformSize;
 	float m_IngredientSize;
+
+
 	std::vector<GameObject*> m_FallingEnemies;
 	int m_StandingEnemies;
+	int m_TotalFallingEnemies;
 	bool m_HasMoved;
+
+	ValuesComponent* m_ValuesComp;
 };
-	
+
+
 }
 
 

@@ -19,11 +19,19 @@ dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
 ,m_CurrentBounceHeight{}
 ,m_MaxBounceHeight{10.f}
 ,m_BounceSpeed{50.f}
+,m_TotalFallingEnemies{}
+,m_ValuesComp{}
 {
+	
 }
 
 void dae::IngredientComponent::Update(float dt)
 {
+	if(m_ValuesComp == nullptr)
+	{
+		InitializeValuesComp();
+	}
+
 	if (m_inContainer == false)
 	{
 		CheckContainerOverlap();
@@ -76,6 +84,7 @@ void dae::IngredientComponent::Update(float dt)
 				}
 			}
 			m_StandingEnemies = m_FallingEnemies.size();
+			m_TotalFallingEnemies = m_FallingEnemies.size();
 			
 		}
 		m_HasMoved = true;
@@ -97,12 +106,14 @@ void dae::IngredientComponent::Update(float dt)
 			InstantLetFall();
 		} else if(m_StandingEnemies == 0 && m_FallingEnemies.size() > 0)
 		{
-			for(auto o : m_FallingEnemies)
+			/*for(auto o : m_FallingEnemies)
 			{
 				o->GetComponent<BasicEnemyComponent>()->Kill();
 			}
 			m_FallingEnemies.clear();
 			m_HasMoved = false;
+			m_TotalFallingEnemies = 0;*/
+			KillStandingEnemies();
 		}
 		
 	}
@@ -194,6 +205,8 @@ void dae::IngredientComponent::ResetFalling()
 
 	//test
 	m_isBouncing = true;
+	m_ValuesComp->IncreaseScore(50);
+	
 }
 
 void dae::IngredientComponent::CheckCollisionPlatform()
@@ -298,4 +311,51 @@ void dae::IngredientComponent::Bounce(float dt)
 		
 	}
 
+}
+
+void dae::IngredientComponent::InitializeValuesComp()
+{
+	m_ValuesComp = m_Parent->GetScene()->GetObjectsInWorldWithTag("Player").at(0)->GetComponent<ValuesComponent>();
+	if (m_ValuesComp == nullptr)
+	{
+		std::cout << "Cant find player";
+	}
+}
+
+void dae::IngredientComponent::KillStandingEnemies()
+{
+	switch (m_TotalFallingEnemies)
+	{
+	case 1: 
+		m_ValuesComp->IncreaseScore(500);
+		break;
+	case 2:
+		m_ValuesComp->IncreaseScore(1000);
+		break;
+	case 3:
+		m_ValuesComp->IncreaseScore(2000);
+		break;
+	case 4:
+		m_ValuesComp->IncreaseScore(4000);
+		break;
+	case 5:
+		m_ValuesComp->IncreaseScore(8000);
+		break;
+	case 6:
+		m_ValuesComp->IncreaseScore(16000);
+		break;
+
+	default:
+		m_ValuesComp->IncreaseScore(0);
+		break;
+	}
+
+
+	for (auto o : m_FallingEnemies)
+	{
+		o->GetComponent<BasicEnemyComponent>()->Kill();
+	}
+	m_FallingEnemies.clear();
+	m_HasMoved = false;
+	m_TotalFallingEnemies = 0;
 }
