@@ -24,27 +24,9 @@ dae::PeterPepperComponent::~PeterPepperComponent()
 void dae::PeterPepperComponent::Update(float)
 {
 
-	//if(GetParent()->IsOverlappingAnyWithTag("Ladder"))
-	//{
-	//	//std::cout << "ladder";
-	//	m_IsOnLadder = true;
-	//} else
-	//{
-	//	m_IsOnLadder = false;
-	//}
-
-	//if (GetParent()->IsOverlappingAnyWithTag("Platform"))
-	//{
-	//	//std::cout << "platform";
-	//	m_IsOnPlatform = true;
-	//} else
-	//{
-	//	m_IsOnPlatform = false;
-	//}
 
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
-		//std::cout << "ladder";
 		m_IsOnLadder = true;
 	}
 	else
@@ -54,12 +36,16 @@ void dae::PeterPepperComponent::Update(float)
 
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Platform"))
 	{
-		//std::cout << "platform";
 		m_IsOnPlatform = true;
 	}
 	else
 	{
 		m_IsOnPlatform = false;
+	}
+
+	if(m_Parent->IsOverlappingAnyWithTag("Enemy") == true)
+	{
+		Respawn();
 	}
 }
 
@@ -81,13 +67,24 @@ dae::Subject* dae::PeterPepperComponent::GetSubject()
 	return m_Subject;
 }
 
+void dae::PeterPepperComponent::Respawn()
+{
+	if(m_Lives > 0)
+	{
+		Damage();
+		m_Parent->SetPosition(m_StartPos);
+	} else
+	{
+		m_Subject->Notify(*GetParent(), Event::GameOver);
+	}
+}
+
 
 void dae::PeterPepperComponent::Damage()
 {
-	//notify dingetje
-	//GetParent()->GetSubject()->Notify(*GetParent(), Event::PlayerDied);
-	m_Subject->Notify(*GetParent(), Event::PlayerDied);
+	
 	m_Lives--;
+	m_Subject->Notify(*GetParent(), Event::PlayerDied);
 }
 
 void dae::PeterPepperComponent::IncreaseScore()

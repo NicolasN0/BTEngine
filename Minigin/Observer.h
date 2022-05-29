@@ -16,7 +16,8 @@ namespace dae
 		TripleKill,
 		QuadraKill,
 		PentaKill,
-		HexaKill
+		HexaKill,
+		GameOver
 	};
 
 	class Observer

@@ -22,11 +22,12 @@ namespace dae
 		void SetSubject(Subject* subject);
 		Subject* GetSubject();
 	private:
+		void Respawn();
 		int m_Lives{};
 		int m_Score{};
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
-
+		glm::vec3 m_StartPos{ 250 ,250,0 };
 		Subject* m_Subject{};
 	};
 	
