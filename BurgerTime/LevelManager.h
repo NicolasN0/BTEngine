@@ -6,7 +6,7 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
-		LevelManager(Scene& scene);
+		LevelManager(Scene* scene);
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
 		void MakeLevel(int levelCount);
@@ -15,7 +15,7 @@ namespace dae
 		void CheckLevelCompleted();
 		std::vector<GameObject*> m_LevelObjects{};
 		int m_Level{};
-		Scene& m_Scene;
+		Scene* m_Scene;
 		bool m_LevelMade{};
 	};
 }

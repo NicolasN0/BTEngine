@@ -198,10 +198,8 @@ void dae::IngredientComponent::CheckCollisionIngredient()
 			}
 		} else
 		{
-			if(m_isCollected == false)
-			{
-				ResetFalling();
-			}
+			
+			ResetFalling();
 		}
 	}
 }
@@ -276,7 +274,6 @@ void dae::IngredientComponent::CheckCollisionEnemy()
 	if(m_isFalling == true || m_isBouncing == true)
 	{
 		std::vector<GameObject*> overlapping = m_Parent->GetAllOverlappingWithTag("Enemy");
-		//get all of them and check if not falling and if not kill them
 		for(auto o : overlapping)
 		{
 			BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();

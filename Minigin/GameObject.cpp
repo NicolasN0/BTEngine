@@ -25,12 +25,7 @@ dae::GameObject::~GameObject()
 		delete component;
 		component = nullptr;
 	}
-	//if(m_Subject != nullptr)
-	//{
-	//	delete m_Subject;
-	//	m_Subject = nullptr;
-	//	
-	//}
+	
 };
 //LOOP OVER COMPONENTS AND UPDATE?
 void dae::GameObject::Update(float dt)
@@ -40,6 +35,8 @@ void dae::GameObject::Update(float dt)
 
 		component->Update(dt);
 	}
+
+	
 }
 
 void dae::GameObject::FixedUpdate(float timestep)
@@ -651,6 +648,16 @@ dae::Scene* dae::GameObject::GetScene() const
 void dae::GameObject::SetScene(Scene* scene)
 {
 	m_Scene = scene;
+}
+
+void dae::GameObject::Delete()
+{
+	m_SetToDelete = true;
+}
+
+bool dae::GameObject::isSetToDelete() const
+{
+	return m_SetToDelete;
 }
 
 void dae::GameObject::SetDebugDraw(bool newVal)

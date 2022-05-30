@@ -40,9 +40,6 @@
 using namespace std;
 using namespace dae;
 
-void MakeLevel(std::string levelName,Scene& scene);
-void MakeGameBackground(Scene& scene);
-void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw, std::vector<GameObject*>& players);
 
 class BurgerTime final : public dae::Minigin
 {
@@ -50,18 +47,24 @@ public:
 	 virtual void LoadGame() const override
 	{
 		
+		 auto& Highscorescene = dae::SceneManager::GetInstance().CreateScene("Highscore");
+		 auto level1Test = new GameObject;
+		 level1Test->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
+		 level1Test->SetPosition(100, 100);
+		 level1Test->SetScale(1.8f, 1.8f);
+		  Highscorescene.Add(level1Test);
+		
 		 auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-
 
 		 std::vector<GameObject*> players;
 		 MakeGameBackground(scene);
 
 		 auto manager = new GameObject;
-		 manager->AddComponent<LevelManager>(new LevelManager(scene));
+		 manager->AddComponent<LevelManager>(new LevelManager(&scene));
 		 scene.Add(manager);
 
 #pragma region level1
-		 auto go = new GameObject;
+		/* auto go = new GameObject;
 		 go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
 		 go->SetPosition(100, 100);
 		 go->SetScale(1.8f, 1.8f);
@@ -226,17 +229,18 @@ public:
 		 go->SetPosition(111, 365);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Platform");
-		 scene.Add(go);
+		 scene.Add(go);*/
 
 #pragma endregion level1
 
 
 #pragma region IngredientContainer
-		
+	/*glm::vec3 LadderSize = glm::vec3(9, 28, 1);
+	glm::vec3 PlatformSize = glm::vec3(91, 10, 1);
 
 		 float containerWidth{ 65 };
 		 float containerHeight{ 70 };
-	 	go = new GameObject;
+	 	auto go = new GameObject;
 		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
 		 go->SetPosition(125, 455);
 		 go->SetDebugDraw(true);
@@ -296,7 +300,7 @@ public:
 		 go->SetDebugDraw(true);
 		 go->SetTag("Container");
 		 go->AddComponent<ContainerComponent>(new ContainerComponent());
-		 scene.Add(go);
+		 scene.Add(go);*/
 #pragma endregion IngredientContainer
 
 #pragma region player1
@@ -321,7 +325,7 @@ public:
 
 #pragma region displays
 		 //HealthDisplayObject
-		 go = new GameObject;
+		 auto go = new GameObject;
 		 TextComponent* healthDisplayComp = new TextComponent("Lingua.otf", 20);
 		 go->AddComponent(healthDisplayComp);
 		 healthDisplayComp->SetText("Lives");
@@ -381,6 +385,46 @@ public:
 		 HotDog->SetTag("Enemy");
 		 scene.Add(HotDog);
 
+	 	HotDog = new GameObject;
+		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
+		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 HotDog->SetPosition(300, 250);
+		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
+		 HotDog->SetTag("Enemy");
+		 scene.Add(HotDog);
+
+		 HotDog = new GameObject;
+		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
+		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 HotDog->SetPosition(320, 250);
+		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
+		 HotDog->SetTag("Enemy");
+		 scene.Add(HotDog);
+
+		  HotDog = new GameObject;
+		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
+		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 HotDog->SetPosition(340, 250);
+		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
+		 HotDog->SetTag("Enemy");
+		 scene.Add(HotDog);
+
+		  HotDog = new GameObject;
+		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
+		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 HotDog->SetPosition(360, 250);
+		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
+		 HotDog->SetTag("Enemy");
+		 scene.Add(HotDog);
+
+		  HotDog = new GameObject;
+		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
+		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 HotDog->SetPosition(380, 250);
+		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
+		 HotDog->SetTag("Enemy");
+		 scene.Add(HotDog);
+
 #pragma endregion enemy
 
 
@@ -431,15 +475,222 @@ public:
 		// audioService->playSound(soundId);
 
 #pragma endregion audio
+		// SceneManager::GetInstance().SetCurrentScene("Highscore");
+		 
 	}
 
 private:
+	void MakeLevel1()
+	{
+		std::cout << "level1";
+	}
+
+	void MakeLevel(std::string levelName, Scene& scene)
+	{
+		std::ifstream file("data/" + levelName + ".json");
+
+	}
+
+	void MakeGameBackground(Scene& scene) const
+	{
+		//Background
+		auto go = new GameObject;
+		go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("backgroundBlack.png"));
+		scene.Add(go);
+
+
+		////FPS COUNTER
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,0 }));
+		go->GetComponent<TextComponent>()->SetText("FPS");
+		go->AddComponent<FPSComponent>(new FPSComponent());
+		scene.Add(go);
+
+		////SCORES
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30, SDL_Color{ 255,0,0 }));
+		go->GetComponent<TextComponent>()->SetText("1UP");
+		go->SetPosition(80, 0);
+		scene.Add(go);
+
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30, SDL_Color{ 255,0,0 }));
+		go->GetComponent<TextComponent>()->SetText("HI-SCORE");
+		go->SetPosition(180, 0);
+		scene.Add(go);
+
+
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 18, SDL_Color{ 0,255,0 }));
+		go->GetComponent<TextComponent>()->SetText("PEPPER");
+		go->SetPosition(500, 0);
+		scene.Add(go);
+
+
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		go->GetComponent<TextComponent>()->SetText("0000");
+		go->SetPosition(80, 30);
+		scene.Add(go);
+
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		go->GetComponent<TextComponent>()->SetText("0000");
+		go->SetPosition(180, 30);
+		scene.Add(go);
+
+
+		go = new GameObject;
+		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		go->GetComponent<TextComponent>()->SetText("0");
+		go->SetPosition(500, 30);
+		scene.Add(go);
+	}
+
+	void MakeIngredient(glm::vec3 pos, IngredientType ingredientType, Scene& scene, bool debugDraw, std::vector<GameObject*>& players) const
+	{
+		auto totalIngredient = new GameObject;
+		auto part1 = new GameObject;
+		auto part2 = new GameObject;
+		auto part3 = new GameObject;
+		auto part4 = new GameObject;
+
+		totalIngredient->AddChild(part1);
+		totalIngredient->AddChild(part2);
+		totalIngredient->AddChild(part3);
+		totalIngredient->AddChild(part4);
+
+		for (int i{}; i < totalIngredient->GetChildCount(); i++)
+		{
+			switch (ingredientType)
+			{
+			case IngredientType::Bun:
+				if (i == 0)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+
+				}
+				else if (i == totalIngredient->GetChildCount() - 1)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunR.png"));
+				}
+				else
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Bun.png"));
+				}
+				break;
+			case IngredientType::Cheese:
+				if (i == 0)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
+
+				}
+				else if (i == totalIngredient->GetChildCount() - 1)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseR.png"));
+				}
+				else
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Cheese.png"));
+				}
+				break;
+			case IngredientType::Lettuce:
+				if (i == 0)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
+
+				}
+				else if (i == totalIngredient->GetChildCount() - 1)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceR.png"));
+				}
+				else
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Lettuce.png"));
+				}
+				break;
+			case IngredientType::Tomato:
+				if (i == 0)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
+
+				}
+				else if (i == totalIngredient->GetChildCount() - 1)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoR.png"));
+				}
+				else
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Tomato.png"));
+				}
+				break;
+			case IngredientType::Patty:
+				if (i == 0)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
+
+				}
+				else if (i == totalIngredient->GetChildCount() - 1)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyR.png"));
+				}
+				else
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Patty.png"));
+				}
+				break;
+			case IngredientType::BunBottom:
+				if (i == 0)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));
+
+				}
+				else if (i == totalIngredient->GetChildCount() - 1)
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotR.png"));
+				}
+				else
+				{
+					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBot.png"));
+				}
+				break;
+			default:
+				std::cout << "noType";
+				break;
+			}
+
+			totalIngredient->GetChildAt(i)->AddComponent<dae::IngredientPartComponent>(new dae::IngredientPartComponent());
+
+		}
+
+
+
+		part1->SetPosition(0, 0);
+		part2->SetPosition(part1->GetSize().x, 0);
+		part3->SetPosition(part1->GetSize().x * 2, 0);
+		part4->SetPosition(part1->GetSize().x * 3, 0);
+
+
+		totalIngredient->SetDebugDraw(debugDraw);
+		part1->SetDebugDraw(debugDraw);
+		part2->SetDebugDraw(debugDraw);
+		part3->SetDebugDraw(debugDraw);
+		part4->SetDebugDraw(debugDraw);
+
+		totalIngredient->SetScale(1.8f, 1.8f);
+		totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
+		totalIngredient->SetTag("Ingredient");
+
+		totalIngredient->SetPosition(pos.x, pos.y);
+		totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
+		totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
+		scene.Add(totalIngredient);
+	}
 
 };
 
 int main(int, char* []) {
-	//dae::Minigin engine;
-	//engine.Run();
+	
 	BurgerTime game;
 	game.Run();
 	
@@ -447,202 +698,202 @@ int main(int, char* []) {
 
 }
 
-void MakeLevel(std::string levelName, Scene& scene)
-{
-	std::ifstream file("data/" + levelName + ".json");
-	 
-}
-
-void MakeGameBackground(Scene& scene)
-{
-	//Background
-	auto go = new GameObject;
-	go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("backgroundBlack.png"));
-	scene.Add(go);
-
-
-	////FPS COUNTER
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,0 }));
-	go->GetComponent<TextComponent>()->SetText("FPS");
-	go->AddComponent<FPSComponent>(new FPSComponent());
-	scene.Add(go);
-
-	////SCORES
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30, SDL_Color{ 255,0,0 }));
-	go->GetComponent<TextComponent>()->SetText("1UP");
-	go->SetPosition(80, 0);
-	scene.Add(go);
-
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30, SDL_Color{ 255,0,0 }));
-	go->GetComponent<TextComponent>()->SetText("HI-SCORE");
-	go->SetPosition(180, 0);
-	scene.Add(go);
-
-
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 18, SDL_Color{ 0,255,0 }));
-	go->GetComponent<TextComponent>()->SetText("PEPPER");
-	go->SetPosition(500, 0);
-	scene.Add(go);
-
-
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
-	go->GetComponent<TextComponent>()->SetText("0000");
-	go->SetPosition(80, 30);
-	scene.Add(go);
-
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
-	go->GetComponent<TextComponent>()->SetText("0000");
-	go->SetPosition(180, 30);
-	scene.Add(go);
-
-
-	go = new GameObject;
-	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
-	go->GetComponent<TextComponent>()->SetText("0");
-	go->SetPosition(500, 30);
-	scene.Add(go);
-}
-
-void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw,std::vector<GameObject*>& players)
-{
-	auto totalIngredient = new GameObject;
-	auto part1 = new GameObject;
-	auto part2 = new GameObject;
-	auto part3 = new GameObject;
-	auto part4 = new GameObject;
-
-	totalIngredient->AddChild(part1);
-	totalIngredient->AddChild(part2);
-	totalIngredient->AddChild(part3);
-	totalIngredient->AddChild(part4);
-
-	for(int i{}; i < totalIngredient->GetChildCount();i++)
-	{
-		switch (ingredientType)
-		{
-		case IngredientType::Bun:
-			if(i == 0)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-
-			} else if(i == totalIngredient->GetChildCount() -1)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunR.png"));
-			} else
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Bun.png"));
-			}
-			break;
-		case IngredientType::Cheese:
-			if (i == 0)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
-
-			}
-			else if (i == totalIngredient->GetChildCount() - 1)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseR.png"));
-			}
-			else
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Cheese.png"));
-			}
-			break;
-		case IngredientType::Lettuce:
-			if (i == 0)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
-
-			}
-			else if (i == totalIngredient->GetChildCount() - 1)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceR.png"));
-			}
-			else
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Lettuce.png"));
-			}
-			break;
-		case IngredientType::Tomato:
-			if (i == 0)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
-
-			}
-			else if (i == totalIngredient->GetChildCount() - 1)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoR.png"));
-			}
-			else
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Tomato.png"));
-			}
-			break;
-		case IngredientType::Patty:
-			if (i == 0)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
-
-			}
-			else if (i == totalIngredient->GetChildCount() - 1)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyR.png"));
-			}
-			else
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Patty.png"));
-			}
-			break;
-		case IngredientType::BunBottom:
-			if (i == 0)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));
-
-			}
-			else if (i == totalIngredient->GetChildCount() - 1)
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotR.png"));
-			}
-			else
-			{
-				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBot.png"));
-			}
-			break;
-		default:
-			std::cout << "noType";
-			break;
-		}
-
-		totalIngredient->GetChildAt(i)->AddComponent<dae::IngredientPartComponent>(new dae::IngredientPartComponent());
-
-	}
-
-
-
-	part1->SetPosition(0, 0);
-	part2->SetPosition(part1->GetSize().x, 0);
-	part3->SetPosition(part1->GetSize().x * 2, 0);
-	part4->SetPosition(part1->GetSize().x * 3, 0);
-
-
-	totalIngredient->SetDebugDraw(debugDraw);
-	part1->SetDebugDraw(debugDraw);
-	part2->SetDebugDraw(debugDraw);
-	part3->SetDebugDraw(debugDraw);
-	part4->SetDebugDraw(debugDraw);
-
-	totalIngredient->SetScale(1.8f, 1.8f);
-	totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
-	totalIngredient->SetTag("Ingredient");
-
-	totalIngredient->SetPosition(pos.x, pos.y);
-	totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
-	totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
-	scene.Add(totalIngredient);
-}
+//void MakeLevel(std::string levelName, Scene& scene)
+//{
+//	std::ifstream file("data/" + levelName + ".json");
+//	 
+//}
+//
+//void MakeGameBackground(Scene& scene)
+//{
+//	//Background
+//	auto go = new GameObject;
+//	go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("backgroundBlack.png"));
+//	scene.Add(go);
+//
+//
+//	////FPS COUNTER
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,0 }));
+//	go->GetComponent<TextComponent>()->SetText("FPS");
+//	go->AddComponent<FPSComponent>(new FPSComponent());
+//	scene.Add(go);
+//
+//	////SCORES
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30, SDL_Color{ 255,0,0 }));
+//	go->GetComponent<TextComponent>()->SetText("1UP");
+//	go->SetPosition(80, 0);
+//	scene.Add(go);
+//
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30, SDL_Color{ 255,0,0 }));
+//	go->GetComponent<TextComponent>()->SetText("HI-SCORE");
+//	go->SetPosition(180, 0);
+//	scene.Add(go);
+//
+//
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 18, SDL_Color{ 0,255,0 }));
+//	go->GetComponent<TextComponent>()->SetText("PEPPER");
+//	go->SetPosition(500, 0);
+//	scene.Add(go);
+//
+//
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+//	go->GetComponent<TextComponent>()->SetText("0000");
+//	go->SetPosition(80, 30);
+//	scene.Add(go);
+//
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+//	go->GetComponent<TextComponent>()->SetText("0000");
+//	go->SetPosition(180, 30);
+//	scene.Add(go);
+//
+//
+//	go = new GameObject;
+//	go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+//	go->GetComponent<TextComponent>()->SetText("0");
+//	go->SetPosition(500, 30);
+//	scene.Add(go);
+//}
+//
+//void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw,std::vector<GameObject*>& players)
+//{
+//	auto totalIngredient = new GameObject;
+//	auto part1 = new GameObject;
+//	auto part2 = new GameObject;
+//	auto part3 = new GameObject;
+//	auto part4 = new GameObject;
+//
+//	totalIngredient->AddChild(part1);
+//	totalIngredient->AddChild(part2);
+//	totalIngredient->AddChild(part3);
+//	totalIngredient->AddChild(part4);
+//
+//	for(int i{}; i < totalIngredient->GetChildCount();i++)
+//	{
+//		switch (ingredientType)
+//		{
+//		case IngredientType::Bun:
+//			if(i == 0)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+//
+//			} else if(i == totalIngredient->GetChildCount() -1)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunR.png"));
+//			} else
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Bun.png"));
+//			}
+//			break;
+//		case IngredientType::Cheese:
+//			if (i == 0)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
+//
+//			}
+//			else if (i == totalIngredient->GetChildCount() - 1)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseR.png"));
+//			}
+//			else
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Cheese.png"));
+//			}
+//			break;
+//		case IngredientType::Lettuce:
+//			if (i == 0)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
+//
+//			}
+//			else if (i == totalIngredient->GetChildCount() - 1)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceR.png"));
+//			}
+//			else
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Lettuce.png"));
+//			}
+//			break;
+//		case IngredientType::Tomato:
+//			if (i == 0)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
+//
+//			}
+//			else if (i == totalIngredient->GetChildCount() - 1)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoR.png"));
+//			}
+//			else
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Tomato.png"));
+//			}
+//			break;
+//		case IngredientType::Patty:
+//			if (i == 0)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
+//
+//			}
+//			else if (i == totalIngredient->GetChildCount() - 1)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyR.png"));
+//			}
+//			else
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Patty.png"));
+//			}
+//			break;
+//		case IngredientType::BunBottom:
+//			if (i == 0)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));
+//
+//			}
+//			else if (i == totalIngredient->GetChildCount() - 1)
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotR.png"));
+//			}
+//			else
+//			{
+//				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBot.png"));
+//			}
+//			break;
+//		default:
+//			std::cout << "noType";
+//			break;
+//		}
+//
+//		totalIngredient->GetChildAt(i)->AddComponent<dae::IngredientPartComponent>(new dae::IngredientPartComponent());
+//
+//	}
+//
+//
+//
+//	part1->SetPosition(0, 0);
+//	part2->SetPosition(part1->GetSize().x, 0);
+//	part3->SetPosition(part1->GetSize().x * 2, 0);
+//	part4->SetPosition(part1->GetSize().x * 3, 0);
+//
+//
+//	totalIngredient->SetDebugDraw(debugDraw);
+//	part1->SetDebugDraw(debugDraw);
+//	part2->SetDebugDraw(debugDraw);
+//	part3->SetDebugDraw(debugDraw);
+//	part4->SetDebugDraw(debugDraw);
+//
+//	totalIngredient->SetScale(1.8f, 1.8f);
+//	totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
+//	totalIngredient->SetTag("Ingredient");
+//
+//	totalIngredient->SetPosition(pos.x, pos.y);
+//	totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
+//	totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
+//	scene.Add(totalIngredient);
+//}

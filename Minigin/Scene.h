@@ -27,12 +27,14 @@ namespace dae
 		std::vector < GameObject*> GetObjectsInWorldWithTag(std::string tag);
 
 		bool IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec3 sizeRectangle);
+
+		std::string GetName() const;
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_Name;
 		std::vector <GameObject*> m_Objects{};
-
+		std::vector<GameObject*> m_ObjectsToDelete{};
 		static unsigned int m_IdCounter; 
 	};
 

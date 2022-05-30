@@ -10,20 +10,6 @@ namespace dae
 	
 
 
-	//class DamagePlayer : public Command
-	//{
-	//public:
-	//	DamagePlayer(PeterPepperComponent* valuesComp) : m_pComp(valuesComp)
-	//	{
-	//		
-	//	};
-	//	void Execute(float ) override
-	//	{
-	//		m_pComp->Damage();
-	//	};
-	//private:
-	//	PeterPepperComponent* m_pComp;
-	//};
 
 	class Fire : public Command
 	{

@@ -41,6 +41,11 @@ bool Scene::IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec
 
 }
 
+std::string dae::Scene::GetName() const
+{
+	return m_Name;
+}
+
 Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene()
@@ -73,8 +78,25 @@ void Scene::Update(float dt)
 	{
 			
 		object->Update(dt);
+
+		/*if(object->isSetToDelete())
+		{
+			m_ObjectsToDelete.push_back(object);
+		}*/
 		
 	}
+
+	
+	/*for(auto& object : m_ObjectsToDelete)
+	{
+		delete object;
+		object = nullptr;
+		
+	}
+
+
+	m_ObjectsToDelete.clear();*/
+
 }
 
 void Scene::FixedUpdate(float timestep)

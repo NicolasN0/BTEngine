@@ -59,8 +59,7 @@ namespace dae
 		const glm::vec3 &GetPosition() const;
 		const glm::vec3 &GetScale() const;
 
-	/*	void SetSubject(Subject* subject);
-		Subject* GetSubject();*/
+	
 		const glm::vec3& GetSize() const;
 		void SetSize(glm::vec3 size);
 
@@ -88,6 +87,8 @@ namespace dae
 		Scene* GetScene() const;
 		void SetScene(Scene* scene);
 
+		void Delete();
+		bool isSetToDelete() const;
 		//Debug
 		void SetDebugDraw(bool newVal);
 	private:
@@ -101,6 +102,7 @@ namespace dae
 		std::string m_Tag;
 		Scene* m_Scene;
 		bool m_DebugDraw;
+		bool m_SetToDelete;
 	};
 
 	template <typename T>
