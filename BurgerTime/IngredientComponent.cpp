@@ -21,6 +21,7 @@ dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
 ,m_BounceSpeed{50.f}
 ,m_TotalFallingEnemies{}
 ,m_ValuesComp{}
+,m_Players{}
 {
 	
 }
@@ -49,54 +50,20 @@ void dae::IngredientComponent::Update(float dt)
 		}
 	}
 
-	
+	CheckCollisionPlayer();
 
-
-	//Update pressed count and let fall if all
-	m_PressedCount = 0;
-	for(auto c : m_Parent->GetChilds())
+	if(m_isFalling == true)
 	{
 		
-		IngredientPartComponent* part = c->GetComponent<IngredientPartComponent>();
-		if(part != nullptr)
-		{
-			if(part->GetIsPressed() == true)
-			{
-				
-				m_PressedCount++;
-			}
-
-		}
+		CheckCollisionPlatform();
+		CheckCollisionIngredient();
 	}
-	if(m_PressedCount == m_Parent->GetChildCount())
-	{
-		//Should only happen once per enemyFill
-		if(m_HasMoved == false)
-		{
-			std::vector<GameObject*> allEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
-
-			for(auto o : allEnemies)
-			{
-				if(o->GetComponent<BasicEnemyComponent>()->GetIsFalling() == false)
-				{
-					m_FallingEnemies.push_back(o);
-					o->GetComponent<BasicEnemyComponent>()->SetIsFalling(true);
-				}
-			}
-			m_StandingEnemies = m_FallingEnemies.size();
-			m_TotalFallingEnemies = m_FallingEnemies.size();
-			
-		}
-		m_HasMoved = true;
-		m_isFalling = true;
-	}
-
-
-	CheckCollisionPlatform();
 	
-	CheckCollisionIngredient();
+	
 
 	Bounce(dt);
+
+
 
 	if(m_isFalling == false && m_isBouncing == false)
 	{
@@ -106,13 +73,7 @@ void dae::IngredientComponent::Update(float dt)
 			InstantLetFall();
 		} else if(m_StandingEnemies == 0 && m_FallingEnemies.size() > 0)
 		{
-			/*for(auto o : m_FallingEnemies)
-			{
-				o->GetComponent<BasicEnemyComponent>()->Kill();
-			}
-			m_FallingEnemies.clear();
-			m_HasMoved = false;
-			m_TotalFallingEnemies = 0;*/
+			
 			KillStandingEnemies();
 		}
 		
@@ -147,6 +108,71 @@ void dae::IngredientComponent::InstantLetFall()
 	for (auto c : m_Parent->GetChilds())
 	{
 		c->GetComponent<IngredientPartComponent>()->SetIsPressed(true);
+	}
+}
+
+void dae::IngredientComponent::CheckPressedAmount()
+{
+	m_PressedCount = 0;
+	for (auto c : m_Parent->GetChilds())
+	{
+
+		IngredientPartComponent* part = c->GetComponent<IngredientPartComponent>();
+		if (part != nullptr)
+		{
+			if (part->GetIsPressed() == true)
+			{
+
+				m_PressedCount++;
+			}
+
+		}
+	}
+
+	if (m_PressedCount == m_Parent->GetChildCount())
+	{
+		//Should only happen once per enemyFill
+		if (m_HasMoved == false)
+		{
+			std::vector<GameObject*> allEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
+
+			for (auto o : allEnemies)
+			{
+				if (o->GetComponent<BasicEnemyComponent>()->GetIsFalling() == false)
+				{
+					m_FallingEnemies.push_back(o);
+					o->GetComponent<BasicEnemyComponent>()->SetIsFalling(true);
+				}
+			}
+			m_StandingEnemies = m_FallingEnemies.size();
+			m_TotalFallingEnemies = m_FallingEnemies.size();
+
+		}
+		m_HasMoved = true;
+		m_isFalling = true;
+	}
+}
+
+void dae::IngredientComponent::SetPlayers(std::vector<GameObject*>& players)
+{
+	m_Players = players;
+}
+
+void dae::IngredientComponent::CheckCollisionPlayer()
+{
+	for(auto o: m_Players)
+	{
+		if(abs(o->GetPosition().x - m_Parent->GetPosition().x) < m_Parent->GetSize().x)
+		{
+			//Only Check if one of the players is close
+			if (m_Parent->IsOverlappingAnyWithTag("Player"))
+			{
+				for(auto c : m_Parent->GetChilds())
+				{
+					c->GetComponent<IngredientPartComponent>()->UpdatePressed();
+				}
+			}
+		}
 	}
 }
 
@@ -213,33 +239,29 @@ void dae::IngredientComponent::CheckCollisionPlatform()
 {
 	if (m_Parent->IsOverlappingAnyWithTag("Platform"))
 	{
-		//check if last platform is given value otherwise set both last and current
-		//Check for 0 because initialized on 0
+		
 		if (m_lastPlatformHeight == 0 && m_curPlatformHeight == 0)
 		{
-			//Set to parent position + size because bottom parent will be top ingredient
 			m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
 			m_lastPlatformHeight = m_curPlatformHeight;
 		}
 
-		//If not both 0 set new platformheight
+
 		m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
 
-		//If platform size is not initialized get it
+
 		if (m_PlatformSize == 0)
 		{
 			m_PlatformSize = m_Parent->GetFirstOverlappingObjectWithTag("Platform")->GetSize().y;
 		}
 
-		//IngredientSize
+
 		if (m_IngredientSize == 0)
 		{
 			m_IngredientSize = m_Parent->GetChildAt(0)->GetSize().y;
 		}
-		//before resetting start bouncing function
 
 
-		//check if current value is bigger diff then platform size then last value if true reset everything and let stand still
 		if ((m_curPlatformHeight - m_lastPlatformHeight) > (m_PlatformSize + m_IngredientSize))
 		{
 

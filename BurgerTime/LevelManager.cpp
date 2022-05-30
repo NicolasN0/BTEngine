@@ -11,14 +11,15 @@ dae::LevelManager::LevelManager(Scene& scene) : m_Level{ 1 }, m_Scene{ scene },m
 }
 void dae::LevelManager::Update(float dt)
 {
-	std::cout << "uhuuu";
+	/*std::cout << "uhuuu";
 	if(m_LevelMade == true)
 	{
 		CheckLevelCompleted();
 	} else
 	{
 		MakeLevel(m_Level);
-	}
+	}*/
+	CheckLevelCompleted();
 }
 
 void dae::LevelManager::FixedUpdate(float timestep)
@@ -220,7 +221,7 @@ void dae::LevelManager::ClearLevel()
 
 void dae::LevelManager::CheckLevelCompleted()
 {
-	/*int count{};
+	int count{};
 	std::vector<GameObject*> AllContainers;
 	AllContainers = m_Scene.GetObjectsInWorldWithTag("Container");
 	for(auto o : AllContainers)
@@ -233,5 +234,5 @@ void dae::LevelManager::CheckLevelCompleted()
 	if(count == AllContainers.size())
 	{
 		std::cout << "won";
-	}*/
+	}
 }

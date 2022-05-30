@@ -15,6 +15,7 @@ namespace dae
 		void SetIsPressed(bool isPressed);
 
 		void Reset();
+		void UpdatePressed();
 	private:
 		bool m_IsPressed;
 		float m_HeightDiff;

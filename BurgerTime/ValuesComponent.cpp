@@ -1,6 +1,12 @@
 #include "ValuesComponent.h"
 #include "Observer.h"
 
+dae::ValuesComponent::~ValuesComponent()
+{
+	delete m_Subject;
+	m_Subject = nullptr;
+}
+
 void dae::ValuesComponent::Update(float dt)
 {
 }

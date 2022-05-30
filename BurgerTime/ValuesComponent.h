@@ -7,6 +7,7 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
+		~ValuesComponent();
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
 		void Damage();

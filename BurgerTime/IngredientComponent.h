@@ -29,7 +29,11 @@ public:
 	bool GetIsFalling() const;
 	void SetIsFalling(bool isFalling);
 	void InstantLetFall();
+
+	void CheckPressedAmount();
+	void SetPlayers(std::vector<GameObject*>& players);
 private:
+	void CheckCollisionPlayer();
 	void CheckCollisionIngredient();
 	void CheckContainerOverlap();
 	void ResetFalling();
@@ -62,6 +66,8 @@ private:
 	bool m_HasMoved;
 
 	ValuesComponent* m_ValuesComp;
+
+	std::vector<GameObject*> m_Players;
 };
 
 

@@ -6,7 +6,7 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
-		ContainerComponent(int maxIngredient);
+		ContainerComponent(int maxIngredient = 4);
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
 		bool GetIsFilled() const;

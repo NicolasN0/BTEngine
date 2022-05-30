@@ -24,6 +24,7 @@
 #include "BasicEnemyComponent.h"
 #include "IngredientComponent.h"
 #include "IngredientPartComponent.h"
+#include "ContainerComponent.h"
 #include "ValuesComponent.h"
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
@@ -41,7 +42,7 @@ using namespace dae;
 
 void MakeLevel(std::string levelName,Scene& scene);
 void MakeGameBackground(Scene& scene);
-void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw);
+void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw, std::vector<GameObject*>& players);
 
 class BurgerTime final : public dae::Minigin
 {
@@ -52,13 +53,14 @@ public:
 		 auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
 
-
+		 std::vector<GameObject*> players;
 		 MakeGameBackground(scene);
 
-		/* auto manager = new GameObject;
+		 auto manager = new GameObject;
 		 manager->AddComponent<LevelManager>(new LevelManager(scene));
-		 scene.Add(manager);*/
+		 scene.Add(manager);
 
+#pragma region level1
 		 auto go = new GameObject;
 		 go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
 		 go->SetPosition(100, 100);
@@ -226,12 +228,11 @@ public:
 		 go->SetTag("Platform");
 		 scene.Add(go);
 
-
+#pragma endregion level1
 
 
 #pragma region IngredientContainer
-		/*glm::vec3 LadderSize = glm::vec3(9, 28, 1);
-		glm::vec3 PlatformSize = glm::vec3(91, 10, 1);*/
+		
 
 		 float containerWidth{ 65 };
 		 float containerHeight{ 70 };
@@ -247,6 +248,7 @@ public:
 		 go->SetPosition(125, 395);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Container");
+		 go->AddComponent<ContainerComponent>(new ContainerComponent());
 		 scene.Add(go);
 
 
@@ -262,6 +264,7 @@ public:
 		 go->SetPosition(212, 395);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Container");
+		 go->AddComponent<ContainerComponent>(new ContainerComponent());
 		 scene.Add(go);
 
 
@@ -277,6 +280,7 @@ public:
 		 go->SetPosition(298, 395);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Container");
+		 go->AddComponent<ContainerComponent>(new ContainerComponent());
 		 scene.Add(go);
 
 		 go = new GameObject;
@@ -291,6 +295,7 @@ public:
 		 go->SetPosition(384, 395);
 		 go->SetDebugDraw(true);
 		 go->SetTag("Container");
+		 go->AddComponent<ContainerComponent>(new ContainerComponent());
 		 scene.Add(go);
 #pragma endregion IngredientContainer
 
@@ -300,15 +305,16 @@ public:
 		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
 		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
-		 peterPepperP1->SetPosition(250, 250);
+		 peterPepperP1->SetPosition(190, 250);
 	 	 peterPepperP1->SetTag("Player");
 		 //commands
-		// Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonA,0 }, std::make_unique<DamagePlayer>(peterPepperP1->GetComponent<PeterPepperComponent>()));
 		
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f,80.0f,0.0f)));
+
+		 players.push_back(peterPepperP1);
 #pragma endregion player1
 
 
@@ -340,87 +346,28 @@ public:
 
 
 #pragma region ingredients
-		/* auto bun = new GameObject;
-		 auto bunP1 = new GameObject;
-		 auto bunP2 = new GameObject;
-		 auto bunP3 = new GameObject;
-		 auto bunP4 = new GameObject;
-		 bunP1->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-		 bunP2->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-		 bunP3->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-		 bunP4->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
 
-		 bunP1->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-		 bunP2->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-		 bunP3->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-		 bunP4->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-
-		 bun->AddChild(bunP1);
-		 bun->AddChild(bunP2);
-		 bun->AddChild(bunP3);
-		 bun->AddChild(bunP4);
-		 bunP1->SetPosition(0, 0);
-		 bunP2->SetPosition(bunP1->GetSize().x, 0);
-		 bunP3->SetPosition(bunP1->GetSize().x*2, 0);
-		 bunP4->SetPosition(bunP1->GetSize().x*3, 0);
-		 bun->SetDebugDraw(true);
-		 bunP1->SetDebugDraw(true);
-		 bunP2->SetDebugDraw(true);
-		 bunP3->SetDebugDraw(true);
-		 bunP4->SetDebugDraw(true);
-
-		 bun->SetScale(1.8f, 1.8f);
-		 bun->SetSize(glm::vec3(bunP1->GetSize().x * 4, bunP1->GetSize().y, 0));
-		 bun->SetTag("Ingredient");
-		
-	 	bun->SetPosition(215, 300);
-		bun->AddComponent<IngredientComponent>(new IngredientComponent);
-	 	scene.Add(bun);*/
-		MakeIngredient(glm::vec3(215, 300, 0), IngredientType::Bun, scene, true);
-		MakeIngredient(glm::vec3(215, 115, 0), IngredientType::Bun, scene, true);
-		//Bun2
+		 MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Bun, scene, false,players);
+		 MakeIngredient(glm::vec3(130, 220, 0), IngredientType::Lettuce, scene, false, players);
+		 MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Patty, scene, false, players);
+		 MakeIngredient(glm::vec3(130, 360, 0), IngredientType::BunBottom, scene, false, players);
 
 
-		//auto bun2 = new GameObject;
-		////Parts
-		//auto bun2P1 = new GameObject;
-		//auto bun2P2 = new GameObject;
-		//auto bun2P3 = new GameObject;
-		//auto bun2P4 = new GameObject;
-		//bun2P1->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-		//bun2P2->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-		//bun2P3->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-		//bun2P4->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+		MakeIngredient(glm::vec3(215, 115, 0), IngredientType::Bun, scene, false, players);
+		MakeIngredient(glm::vec3(215, 250, 0), IngredientType::Lettuce, scene, false, players);
+		MakeIngredient(glm::vec3(215, 305, 0), IngredientType::Patty, scene, false, players);
+		MakeIngredient(glm::vec3(215, 360, 0), IngredientType::BunBottom, scene, false, players);
 
-		//bun2P1->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-		//bun2P2->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-		//bun2P3->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
-		//bun2P4->AddComponent<dae::IngredientPartComponent>(new IngredientPartComponent);
+		MakeIngredient(glm::vec3(300, 115, 0), IngredientType::Bun, scene, false, players);
+		MakeIngredient(glm::vec3(300, 165, 0), IngredientType::Lettuce, scene, false, players);
+		MakeIngredient(glm::vec3(300, 250, 0), IngredientType::Patty, scene, false, players);
+		MakeIngredient(glm::vec3(300, 360, 0), IngredientType::BunBottom, scene, false, players);
 
-		//bun2->AddChild(bun2P1);
-		//bun2->AddChild(bun2P2);
-		//bun2->AddChild(bun2P3);
-		//bun2->AddChild(bun2P4);
-		//bun2P1->SetPosition(0, 0);
-		//bun2P2->SetPosition(bun2P1->GetSize().x, 0);
-		//bun2P3->SetPosition(bun2P1->GetSize().x * 2, 0);
-		//bun2P4->SetPosition(bun2P1->GetSize().x * 3, 0);
-		//bun2->SetDebugDraw(true);
-		//bun2P1->SetDebugDraw(true);
-		//bun2P2->SetDebugDraw(true);
-		//bun2P3->SetDebugDraw(true);
-		//bun2P4->SetDebugDraw(true);
+		MakeIngredient(glm::vec3(387, 115, 0), IngredientType::Bun, scene, false, players);
+		MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Lettuce, scene, false, players);
+		MakeIngredient(glm::vec3(387, 220, 0), IngredientType::Patty, scene, false, players);
+		MakeIngredient(glm::vec3(387, 280, 0), IngredientType::BunBottom, scene, false, players);
 
-
-		////IngredientSettings
-		//bun2->SetScale(1.8f, 1.8f);
-		////bun2->SetSize(glm::vec3(bunP1->GetSize().x * 4, bunP1->GetSize().y, 0));
-
-		//bun2->SetTag("Ingredient");
-
-		//bun2->SetPosition(215, 200);
-		//bun2->AddComponent<IngredientComponent>(new IngredientComponent);
-		//scene.Add(bun2);
 		
 
 #pragma endregion ingedients
@@ -562,7 +509,7 @@ void MakeGameBackground(Scene& scene)
 	scene.Add(go);
 }
 
-void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw)
+void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bool debugDraw,std::vector<GameObject*>& players)
 {
 	auto totalIngredient = new GameObject;
 	auto part1 = new GameObject;
@@ -696,5 +643,6 @@ void MakeIngredient(glm::vec3 pos, IngredientType ingredientType,Scene& scene,bo
 
 	totalIngredient->SetPosition(pos.x, pos.y);
 	totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
+	totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
 	scene.Add(totalIngredient);
 }
