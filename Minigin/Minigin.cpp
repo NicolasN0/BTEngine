@@ -222,16 +222,7 @@ void dae::Minigin::Run()
 				lag -= fixedTimeStep;
 
 			}
-			//DEBUGGING
-		/*	if (soundTime > soundStep)
-			{
-				Locator::getAudio()->playSound(0);
-				soundTime = 0.f;
-			}*/
-			/*if (time > stop)
-			{
-				StopRunning();
-			}*/
+	
 
 			renderer.Render();
 

@@ -37,6 +37,7 @@ void dae::GameObject::Update(float dt)
 {
 	for (auto component : m_pComponents) 
 	{
+
 		component->Update(dt);
 	}
 }

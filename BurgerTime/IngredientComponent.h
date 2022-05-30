@@ -5,6 +5,16 @@
 #include "Scene.h"
 #include "ValuesComponent.h"
 
+enum class IngredientType
+{
+	Bun,
+	BunBottom,
+	Patty,
+	Cheese,
+	Lettuce,
+	Tomato
+};
+
 namespace dae
 {
 class IngredientComponent :

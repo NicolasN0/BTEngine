@@ -173,9 +173,11 @@
   <ItemGroup>
     <ClCompile Include="BasicEnemyComponent.cpp" />
     <ClCompile Include="BurgerTime.cpp" />
+    <ClCompile Include="ContainerComponent.cpp" />
     <ClCompile Include="HealthObserver.cpp" />
     <ClCompile Include="IngredientComponent.cpp" />
     <ClCompile Include="IngredientPartComponent.cpp" />
+    <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="PeterPepperComponent.cpp" />
@@ -184,9 +186,11 @@
   <ItemGroup>
     <ClInclude Include="BasicEnemyComponent.h" />
     <ClInclude Include="Commands.h" />
+    <ClInclude Include="ContainerComponent.h" />
     <ClInclude Include="HealthObserver.h" />
     <ClInclude Include="IngredientComponent.h" />
     <ClInclude Include="IngredientPartComponent.h" />
+    <ClInclude Include="LevelManager.h" />
     <ClInclude Include="PlayerInputComponent.h" />
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="PeterPepperComponent.h" />
