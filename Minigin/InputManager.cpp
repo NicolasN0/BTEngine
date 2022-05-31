@@ -51,6 +51,18 @@ void dae::Input::ClearKeys()
 {
 	m_consoleCommands.clear();
 	m_KeyboardCommands.clear();
+	m_Clear = true;
+	
+}
+
+bool dae::Input::GetClear() const
+{
+	return m_Clear;
+}
+
+void dae::Input::SetClear(bool clear)
+{
+	m_Clear = clear;
 }
 
 void dae::Input::BindKey(ControllerKey key, std::unique_ptr<Command> c)
@@ -106,6 +118,7 @@ void dae::InputManager::HandleInput(float dt)
 #pragma region Controller
 	for (const auto& [controllerKey, action] : Input::GetInstance().GetConsoleCommands())
 	{
+		
 		auto [state, button, id] = controllerKey;
 
 		switch(state)
@@ -130,6 +143,12 @@ void dae::InputManager::HandleInput(float dt)
 			break;
 		}
 
+		if (Input::GetInstance().GetClear() == true)
+		{
+			Input::GetInstance().SetClear(false);
+			break;
+		}
+
 	}
 #pragma endregion Controller
 
@@ -143,6 +162,8 @@ void dae::InputManager::HandleInput(float dt)
 		}
 		for (const auto& [key, action] : Input::GetInstance().GetKeyboardCommands())
 		{
+		
+
 			auto [state, button, id] = key;
 			switch(state)
 			{
@@ -177,9 +198,18 @@ void dae::InputManager::HandleInput(float dt)
 				}
 				break;
 			}
-
+			if (Input::GetInstance().GetClear() == true)
+			{
+				Input::GetInstance().SetClear(false);
+				break;
+			}
 		}
 	}
 #pragma endregion Keyboard
+	/*if(Input::GetInstance().GetClear() == true)
+	{
+		Input::GetInstance().ClearKeys();
+		Input::GetInstance().SetClear(false);
+	}*/
 	
 }

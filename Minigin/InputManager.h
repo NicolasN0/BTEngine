@@ -39,7 +39,7 @@ namespace dae
 
 	class Input : public Singleton<Input>
 	{
-			
+	private:
 		using ControllerKey = std::tuple<ButtonStates, ControllerButton,int>;
 		using KeyboardKey = std::tuple<ButtonStates, SDL_KeyCode,int>;
 		using ControllerCommandsMap = std::map<ControllerKey, std::unique_ptr<Command>>;
@@ -48,9 +48,12 @@ namespace dae
 
 		ControllerCommandsMap m_consoleCommands{};
 		KeyboardCommandsMap m_KeyboardCommands{};
+		bool m_Clear{};
 
 	public:
 		void ClearKeys();
+		bool GetClear() const;
+		void SetClear(bool clear);
 		void BindKey(ControllerKey key, std::unique_ptr<Command> c);
 		void BindKey(KeyboardKey key, std::unique_ptr<Command> c);
 		const ControllerCommandsMap& GetConsoleCommands() 

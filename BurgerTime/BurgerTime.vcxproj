@@ -179,6 +179,7 @@
     <ClCompile Include="IngredientPartComponent.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
+    <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="PeterPepperComponent.cpp" />
     <ClCompile Include="SelectorComponent.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="IngredientPartComponent.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="PlayerInputComponent.h" />
+    <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="PeterPepperComponent.h" />
     <ClInclude Include="SelectorComponent.h" />

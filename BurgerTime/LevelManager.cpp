@@ -11,9 +11,8 @@
 
 dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players) : m_Level{ 1 }, m_Scene{ scene },m_LevelMade{},m_Players(players)
 {
-	//First time make level, clear startscreen bindings and add own gameBindings
 	MakeLevel(m_Level);
-	//Input::GetInstance().ClearKeys();
+	
 	
 }
 void dae::LevelManager::Update(float dt)
@@ -43,7 +42,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 	case 1:
 #pragma region level1
 		{
-
+	
 		auto go = new GameObject;
 		go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
 		go->SetPosition(100, 100);

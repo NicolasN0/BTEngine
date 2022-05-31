@@ -62,7 +62,7 @@ void dae::PeterPepperComponent::Respawn()
 		m_Parent->SetPosition(m_StartPos);
 	} else
 	{
-		SceneManager::GetInstance().SetCurrentScene("highscore");
+		//SceneManager::GetInstance().SetCurrentScene("highscore");
 	}
 }
 

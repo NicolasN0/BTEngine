@@ -34,6 +34,7 @@
 #include <fstream>
 
 #include "LevelManager.h"
+#include "SceneChanger.h"
 
 
 using namespace std;
@@ -45,7 +46,7 @@ class BurgerTime final : public dae::Minigin
 public:
 	 virtual void LoadGame() const override
 	{
-
+		 std::vector<GameObject*> controlObjects;
 #pragma region StartScreen
 		 auto& startScreen = dae::SceneManager::GetInstance().CreateScene("start");
 		
@@ -83,12 +84,14 @@ public:
 		 indicator->AddComponent<TextureComponent>(new TextureComponent("indicator.jpg"));
 		 indicator->AddComponent<SelectorComponent>(new SelectorComponent);
 		 indicator->SetPosition(210, 200);
+		 indicator->SetTag("Indicator");
 		 startScreen.Add(indicator);
 
+		 controlObjects.push_back(indicator);
 		
-	 	Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<Selector>(indicator->GetComponent<SelectorComponent>(), true, 3));
+	/* 	Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<Selector>(indicator->GetComponent<SelectorComponent>(), true, 3));
 	 	Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_w,1 }, std::make_unique<Selector>(indicator->GetComponent<SelectorComponent>(), false, 3));
-		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Continue>(indicator->GetComponent<SelectorComponent>()));
+		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Continue>(indicator->GetComponent<SelectorComponent>()));*/
 		
 #pragma endregion StartScreen
 
@@ -118,13 +121,13 @@ public:
 		 peterPepperP1->SetPosition(190, 250);
 		 peterPepperP1->SetTag("Player");
 
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
+		/* Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
 		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));*/
 
 		 players.push_back(peterPepperP1);
-		
+		 controlObjects.push_back(peterPepperP1);
 
 		 //HealthDisplayObject
 		 auto go = new GameObject;
@@ -571,8 +574,9 @@ public:
 
 #pragma endregion audio
 
-		
-		 SceneManager::GetInstance().SetCurrentScene("game");
+		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
+
+		 SceneChanger::GetInstance().SetCurrentScene("start");
 	}
 
 private:

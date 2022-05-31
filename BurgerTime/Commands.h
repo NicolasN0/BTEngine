@@ -6,47 +6,13 @@
 #include "SelectorComponent.h"
 #include "SceneManager.h"
 #include <memory>
+
+#include "SceneChanger.h"
+
 namespace dae
 {
 	
 
-
-
-	/*class Fire : public Command
-	{
-	public:
-		void Execute(float dt) override
-		{
-			std::cout << "Fire";
-		};
-	};
-
-	class Duck : public Command
-	{
-	public:
-		void Execute(float dt) override
-		{
-			std::cout << "Duck";
-		};
-	};
-
-	class Crouch : public Command
-	{
-	public:
-		void Execute(float dt) override
-		{
-			std::cout << "Crouch";
-		};
-	};
-
-	class Fart : public Command
-	{
-	public:
-		void Execute(float dt) override
-		{
-			std::cout << "Fart";
-		};
-	};*/
 	class Selector : public  Command
 	{
 	public:
@@ -90,7 +56,7 @@ namespace dae
 			switch(m_SelectorComponent->GetSelected())
 			{
 			case 0:
-				SceneManager::GetInstance().SetCurrentScene("game");
+				SceneChanger::GetInstance().SetCurrentScene("game");
 				break;
 
 			case 1:
@@ -103,6 +69,20 @@ namespace dae
 	private:
 		SelectorComponent* m_SelectorComponent;
 		
+	};
+
+	class Replay : public  Command
+	{
+	public:
+		Replay() {}
+		void Execute(float dt) override
+		{
+			std::cout << "Replay?";
+			SceneChanger::GetInstance().SetCurrentScene("start");
+		}
+	private:
+		
+
 	};
 
 #pragma region movement
