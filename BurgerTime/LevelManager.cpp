@@ -17,10 +17,10 @@ void dae::LevelManager::Update(float dt)
 		CheckLevelCompleted();
 	} else
 	{
+		ClearLevel();
 		MakeLevel(m_Level);
 	}
 	CheckLevelCompleted();
-	ClearLevel();
 }
 
 void dae::LevelManager::FixedUpdate(float timestep)
@@ -302,6 +302,8 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma endregion level1
 		break;
 	case 2:
+		ClearLevel();
+		std::cout << "level2";
 		break;
 	case 3:
 		break;
@@ -342,5 +344,7 @@ void dae::LevelManager::CheckLevelCompleted()
 	if(count == AllContainers.size())
 	{
 		std::cout << "won";
+		m_Level++;
+		m_LevelMade = false;
 	}
 }

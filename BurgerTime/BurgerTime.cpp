@@ -46,15 +46,65 @@ class BurgerTime final : public dae::Minigin
 public:
 	 virtual void LoadGame() const override
 	{
-		
-		 auto& Highscorescene = dae::SceneManager::GetInstance().CreateScene("Highscore");
-		 auto level1Test = new GameObject;
-		 level1Test->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
-		 level1Test->SetPosition(100, 100);
-		 level1Test->SetScale(1.8f, 1.8f);
-		  Highscorescene.Add(level1Test);
-		
-		 auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+
+#pragma region StartScreen
+		 auto& startScreen = dae::SceneManager::GetInstance().CreateScene("start");
+		/* auto titel = new GameObject;
+		 TextComponent* burgertimeTitel = new TextComponent("Lingua.otf", 38, SDL_Color{ 255,255,0 });
+		 burgertimeTitel->SetText("Burgertime");
+		 titel->AddComponent(burgertimeTitel);
+		 titel->SetPosition(210, 50);
+		 startScreen.Add(titel);*/
+
+		 auto titel = new GameObject;
+		 TextureComponent* burgertimeTitel = new TextureComponent("BurgerTimeTitel.jpg");
+		 titel->AddComponent(burgertimeTitel);
+		 titel->SetPosition(200, 50);
+		 titel->SetScale(1.5, 1.5);
+		 startScreen.Add(titel);
+
+		 auto normalMode = new GameObject;
+		 TextComponent* normalModeText = new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,255 });
+		 normalModeText->SetText("1 Player");
+		 normalMode->AddComponent(normalModeText);
+		 normalMode->SetPosition(250, 200);
+		 startScreen.Add(normalMode);
+
+
+		 auto coopMode = new GameObject;
+		 TextComponent* coopModeText = new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,255 });
+		 coopModeText->SetText("2 Player");
+		 coopMode->AddComponent(coopModeText);
+		 coopMode->SetPosition(250, 240);
+		 startScreen.Add(coopMode);
+
+		 auto pvpMode = new GameObject;
+		 TextComponent* pvpModeText = new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,255 });
+		 pvpModeText->SetText("Player vs Player");
+		 pvpMode->AddComponent(pvpModeText);
+		 pvpMode->SetPosition(250, 280);
+		 startScreen.Add(pvpMode);
+
+		 auto indicator = new GameObject;
+		 indicator->AddComponent<TextureComponent>(new TextureComponent("indicator.jpg"));
+		 indicator->SetPosition(210, 200);
+		 startScreen.Add(indicator);
+
+#pragma endregion StartScreen
+
+#pragma region HighscoreScene
+		 auto& highscoreScene = dae::SceneManager::GetInstance().CreateScene("highscore");
+		 auto highscoretitel = new GameObject;
+		 //titel->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30));
+		 TextComponent* titelText = new TextComponent("Lingua.otf", 46,SDL_Color{255,255,0});
+		 titelText->SetText("Highscores");
+		 highscoretitel->AddComponent(titelText);
+		 highscoretitel->SetPosition(210, 20);
+		 highscoreScene.Add(highscoretitel);
+#pragma endregion HighscoreScene
+
+#pragma region GameScene
+		 auto& scene = dae::SceneManager::GetInstance().CreateScene("game");
 
 		 std::vector<GameObject*> players;
 		 MakeGameBackground(scene);
@@ -63,6 +113,9 @@ public:
 		 manager->AddComponent<LevelManager>(new LevelManager(&scene));
 		 scene.Add(manager);
 
+#pragma endregion GameScene
+		
+		 SceneManager::GetInstance().SetCurrentScene("start");
 #pragma region level1
 		/* auto go = new GameObject;
 		 go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
@@ -475,7 +528,7 @@ public:
 		// audioService->playSound(soundId);
 
 #pragma endregion audio
-		// SceneManager::GetInstance().SetCurrentScene("Highscore");
+		
 		 
 	}
 
