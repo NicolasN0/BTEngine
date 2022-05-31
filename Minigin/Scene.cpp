@@ -77,12 +77,13 @@ void Scene::Update(float dt)
 	for(auto& object : m_Objects)
 	{
 			
+		if(object->isSetToDelete())
+		{
+			break;
+			//m_ObjectsToDelete.push_back(object);
+		}
 		object->Update(dt);
 
-		/*if(object->isSetToDelete())
-		{
-			m_ObjectsToDelete.push_back(object);
-		}*/
 		
 	}
 

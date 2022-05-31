@@ -22,6 +22,9 @@ namespace dae
 		Scene* m_Scene;
 		bool m_LevelMade{};
 		std::vector<GameObject*> m_Players;
+		glm::vec3 m_ContainerSize;
+		glm::vec3 m_PlatformSize;
+		glm::vec3 m_LadderSize;
 	};
 }
 

@@ -41,7 +41,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 		SceneManager::GetInstance().SetCurrentScene(name);
 	} else if(name == "highscore")
 	{
-		Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_SPACE,1 }, std::make_unique<Replay>());
+		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Replay>());
 
 		SceneManager::GetInstance().SetCurrentScene(name);
 	}

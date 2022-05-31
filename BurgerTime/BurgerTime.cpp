@@ -475,7 +475,7 @@ public:
 #pragma endregion ingedients
 
 #pragma region enemy
-		auto HotDog = new GameObject;
+	/*	auto HotDog = new GameObject;
 		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
 		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 		 HotDog->SetPosition(283, 250);
@@ -521,7 +521,7 @@ public:
 		 HotDog->SetPosition(380, 250);
 		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
 		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);
+		 scene.Add(HotDog);*/
 
 #pragma endregion enemy
 
@@ -576,7 +576,7 @@ public:
 
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 
-		 SceneChanger::GetInstance().SetCurrentScene("start");
+		 SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
 
 private:

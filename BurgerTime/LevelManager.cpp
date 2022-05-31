@@ -9,7 +9,10 @@
 #include "InputManager.h"
 #include "TextureComponent.h"
 
-dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players) : m_Level{ 1 }, m_Scene{ scene },m_LevelMade{},m_Players(players)
+dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players) : m_Level{1}, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
+,m_LadderSize(9, 40, 1)
+,m_PlatformSize(95, 10, 1)
+,m_ContainerSize(65,70,1)
 {
 	MakeLevel(m_Level);
 	
@@ -50,115 +53,122 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
-
-
-		glm::vec3 LadderSize = glm::vec3(9, 28, 1);
-		glm::vec3 PlatformSize = glm::vec3(91, 10, 1);
+#pragma region Ladder
+		float length{};
 
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 2, LadderSize.z));
-		go->SetPosition(111, 120);
+		go->SetSize(glm::vec3(m_LadderSize.x, 70 , m_LadderSize.z));
+		go->SetPosition(110, 105);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
-		go->SetPosition(111, 245);
+		go->SetSize(glm::vec3(m_LadderSize.x, 155, m_LadderSize.z));
+		go->SetPosition(110, 220);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
+		
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
-		go->SetPosition(153, 185);
+		go->SetSize(glm::vec3(m_LadderSize.x, 155, m_LadderSize.z));
+		go->SetPosition(153, 165);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
+		
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
-		go->SetPosition(196, 120);
+		go->SetSize(glm::vec3(m_LadderSize.x, 270, m_LadderSize.z));
+		go->SetPosition(196, 105);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
+		
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
-		go->SetPosition(241, 120);
-		go->SetDebugDraw(true);
-		go->SetTag("Ladder");
-		m_LevelObjects.push_back(go);
-		m_Scene->Add(go);
-
-
-		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
-		go->SetPosition(283, 120);
-		go->SetDebugDraw(true);
-		go->SetTag("Ladder");
-		m_LevelObjects.push_back(go);
-		m_Scene->Add(go);
-
-		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
-		go->SetPosition(326, 185);
-		go->SetDebugDraw(true);
-		go->SetTag("Ladder");
-		m_LevelObjects.push_back(go);
-		m_Scene->Add(go);
-
-		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
-		go->SetPosition(369, 120);
-		go->SetDebugDraw(true);
-		go->SetTag("Ladder");
-		m_LevelObjects.push_back(go);
-		m_Scene->Add(go);
-
-		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
-		go->SetPosition(412, 242);
+		go->SetSize(glm::vec3(m_LadderSize.x, 100, m_LadderSize.z));
+		go->SetPosition(241, 105);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 
+		
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 4, LadderSize.z));
-		go->SetPosition(456, 120);
+		go->SetSize(glm::vec3(m_LadderSize.x, 270, m_LadderSize.z));
+		go->SetPosition(283, 105);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
-		go->SetPosition(456, 300);
+		go->SetSize(glm::vec3(m_LadderSize.x, 95, m_LadderSize.z));
+		go->SetPosition(326, 165);
+		go->SetDebugDraw(true);
+		go->SetTag("Ladder");
+		m_LevelObjects.push_back(go);
+		m_Scene->Add(go);
+
+		
+		go = new GameObject;
+		go->SetSize(glm::vec3(m_LadderSize.x, 270, m_LadderSize.z));
+		go->SetPosition(369, 105);
+		go->SetDebugDraw(true);
+		go->SetTag("Ladder");
+		m_LevelObjects.push_back(go);
+		m_Scene->Add(go);
+
+		
+		go = new GameObject;
+		go->SetSize(glm::vec3(m_LadderSize.x, 155, m_LadderSize.z));
+		go->SetPosition(412, 220);
 		go->SetDebugDraw(true);
 		go->SetTag("Ladder");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 
-
+		
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x * 4, PlatformSize.y, PlatformSize.z));
-		go->SetPosition(111, 120);
+		go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+		go->SetPosition(456, 105);
+		go->SetDebugDraw(true);
+		go->SetTag("Ladder");
+		m_LevelObjects.push_back(go);
+		m_Scene->Add(go);
+
+		
+		go = new GameObject;
+		go->SetSize(glm::vec3(m_LadderSize.x, 95, m_LadderSize.z));
+		go->SetPosition(456, 280);
+		go->SetDebugDraw(true);
+		go->SetTag("Ladder");
+		m_LevelObjects.push_back(go);
+		m_Scene->Add(go);
+
+#pragma endregion Ladder
+
+#pragma region Platform
+		go = new GameObject;
+		go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+		go->SetPosition(110, 105);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		go->SetPosition(111, 165);
+		go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+		go->SetPosition(110, 165);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
 		m_LevelObjects.push_back(go);
@@ -166,7 +176,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x * 2, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(283, 165);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -174,7 +184,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(196, 195);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -182,15 +192,15 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		go->SetPosition(111, 220);
+		go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+		go->SetPosition(110, 220);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(369, 220);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -201,7 +211,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x * 2, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(196, 250);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -209,7 +219,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(369, 280);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -217,26 +227,27 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x * 3, PlatformSize.y, PlatformSize.z));
-		go->SetPosition(111, 310);
+		go->SetSize(glm::vec3(268, m_PlatformSize.y, m_PlatformSize.z));
+		go->SetPosition(110, 310);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(PlatformSize.x * 4, PlatformSize.y, PlatformSize.z));
-		go->SetPosition(111, 365);
+		go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+		go->SetPosition(110, 365);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
 		m_LevelObjects.push_back(go);
 		m_Scene->Add(go);
 
+#pragma endregion Platform
 
-		float containerWidth{ 65 };
-		float containerHeight{ 70 };
+#pragma region Container
+		
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(125, 455);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -244,7 +255,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 		go->SetPosition(125, 395);
 		go->SetDebugDraw(true);
 		go->SetTag("Container");
@@ -254,7 +265,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(212, 455);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -262,7 +273,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 		go->SetPosition(212, 395);
 		go->SetDebugDraw(true);
 		go->SetTag("Container");
@@ -272,7 +283,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(298, 455);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -280,7 +291,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 		go->SetPosition(298, 395);
 		go->SetDebugDraw(true);
 		go->SetTag("Container");
@@ -289,7 +300,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(384, 455);
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
@@ -297,15 +308,16 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_Scene->Add(go);
 
 		go = new GameObject;
-		go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
+		go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 		go->SetPosition(384, 395);
 		go->SetDebugDraw(true);
 		go->SetTag("Container");
 		m_LevelObjects.push_back(go);
 		go->AddComponent<ContainerComponent>(new ContainerComponent());
 		m_Scene->Add(go);
+#pragma endregion Container
 
-
+#pragma region Ingredients
 		MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Bun, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(130, 220, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Patty, m_Scene, false, m_Players);
@@ -326,14 +338,715 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(387, 220, 0), IngredientType::Patty, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(387, 280, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+#pragma endregion Ingredients
 		}
 #pragma endregion level1
 		break;
 	case 2:
-		ClearLevel();
-		std::cout << "level2";
+#pragma region level2
+		{
+			ClearLevel();
+			auto go = new GameObject;
+			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level2.png"));
+			go->SetPosition(100, 100);
+			go->SetScale(1.8f, 1.8f);
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+#pragma region ladder
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(110, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(153, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(196, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 240, m_LadderSize.z));
+			go->SetPosition(241, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 290, m_LadderSize.z));
+			go->SetPosition(283, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 240, m_LadderSize.z));
+			go->SetPosition(326, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(369, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(412, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(456, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			
+#pragma endregion ladder
+
+#pragma region platform
+			go = new GameObject;
+			go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(110, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(110, 135);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(110, 165);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(110, 220);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(196, 195);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(196, 280);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(196, 335);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(283, 165);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(283, 250);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(283, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(369, 195);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+#pragma endregion platform
+
+#pragma region container
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(126, 370);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(126, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(212, 455);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(212, 395);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(298, 455);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(298, 395);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(384, 370);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(384, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+#pragma endregion container
+
+#pragma region ingredients
+			
+			MakeIngredient(glm::vec3(130, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 135, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Cheese, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 220, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+
+			MakeIngredient(glm::vec3(215, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(215, 135, 0), IngredientType::Cheese, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(215, 190, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(215, 340, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+			MakeIngredient(glm::vec3(300, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(300, 250, 0), IngredientType::Cheese, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(300, 305, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(300, 340, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+			MakeIngredient(glm::vec3(387, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 190, 0), IngredientType::Cheese, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 220, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+#pragma endregion ingredients
+			
+		}
+#pragma endregion level2
 		break;
 	case 3:
+#pragma region level3
+		{
+			ClearLevel();
+			auto go = new GameObject;
+			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level3.png"));
+			go->SetPosition(100, 100);
+			go->SetScale(1.8f, 1.8f);
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+#pragma region ladder
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 95, m_LadderSize.z));
+			go->SetPosition(109, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 70, m_LadderSize.z));
+			go->SetPosition(109, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 70, m_LadderSize.z));
+			go->SetPosition(153, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 70, m_LadderSize.z));
+			go->SetPosition(196, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 235, m_LadderSize.z));
+			go->SetPosition(195, 195);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 40, m_LadderSize.z));
+			go->SetPosition(239, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 95, m_LadderSize.z));
+			go->SetPosition(239, 165);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 34, m_LadderSize.z));
+			go->SetPosition(239, 396);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
+			go->SetPosition(282, 135);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 34, m_LadderSize.z));
+			go->SetPosition(281, 396);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 40, m_LadderSize.z));
+			go->SetPosition(324, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 40, m_LadderSize.z));
+			go->SetPosition(324, 195);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 34, m_LadderSize.z));
+			go->SetPosition(324, 396);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 70, m_LadderSize.z));
+			go->SetPosition(369, 135);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 205, m_LadderSize.z));
+			go->SetPosition(369, 225);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 36, m_LadderSize.z));
+			go->SetPosition(411, 344);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 100, m_LadderSize.z));
+			go->SetPosition(455, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_LadderSize.x, 70, m_LadderSize.z));
+			go->SetPosition(455, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Ladder");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+#pragma endregion ladder
+
+#pragma region platform
+			go = new GameObject;
+			go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 105);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 135);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 165);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 195);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 335);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(109, 370);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(182, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(196, 250);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(183, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(195, 396);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(183, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(195, 420);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(96, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(282, 225);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(369, 165);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(369, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(369, 335);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(95, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(369, 370);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+#pragma endregion platform
+
+#pragma region container
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(124, 282);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(125, 222);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(125, 455);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(125, 395);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(212, 370);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(212, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(298, 370);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(298, 310);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(384, 455);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(384, 395);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(384, 282);
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+
+			go = new GameObject;
+			go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
+			go->SetPosition(384, 222);
+			go->SetDebugDraw(true);
+			go->SetTag("Container");
+			m_LevelObjects.push_back(go);
+			go->AddComponent<ContainerComponent>(new ContainerComponent());
+			m_Scene->Add(go);
+#pragma endregion container
+
+#pragma region ingrediens
+		
+
+			MakeIngredient(glm::vec3(130, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Patty, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 190, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+
+			MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 340, 0), IngredientType::Tomato, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(130, 360, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+			MakeIngredient(glm::vec3(215, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(215, 135, 0), IngredientType::Tomato, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(215, 190, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+			MakeIngredient(glm::vec3(300, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(300, 135, 0), IngredientType::Patty, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(300, 190, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+			MakeIngredient(glm::vec3(387, 102, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Tomato, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 190, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+			MakeIngredient(glm::vec3(387, 305, 0), IngredientType::Bun, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 340, 0), IngredientType::Patty, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(387, 360, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+#pragma endregion ingrediens
+			
+		}
+#pragma endregion level3
+
 		break;
 	case 4:
 		SceneManager::GetInstance().SetCurrentScene("highscore");
@@ -353,6 +1066,7 @@ void dae::LevelManager::ClearLevel()
 	{
 		//o->Delete();
 		o->~GameObject();
+		o->Delete();
 	}
 	m_LevelObjects.clear();
 }
