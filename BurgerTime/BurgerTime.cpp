@@ -49,12 +49,7 @@ public:
 
 #pragma region StartScreen
 		 auto& startScreen = dae::SceneManager::GetInstance().CreateScene("start");
-		/* auto titel = new GameObject;
-		 TextComponent* burgertimeTitel = new TextComponent("Lingua.otf", 38, SDL_Color{ 255,255,0 });
-		 burgertimeTitel->SetText("Burgertime");
-		 titel->AddComponent(burgertimeTitel);
-		 titel->SetPosition(210, 50);
-		 startScreen.Add(titel);*/
+		
 
 		 auto titel = new GameObject;
 		 TextureComponent* burgertimeTitel = new TextureComponent("BurgerTimeTitel.jpg");
@@ -87,9 +82,15 @@ public:
 
 		 auto indicator = new GameObject;
 		 indicator->AddComponent<TextureComponent>(new TextureComponent("indicator.jpg"));
+		 indicator->AddComponent<SelectorComponent>(new SelectorComponent);
 		 indicator->SetPosition(210, 200);
 		 startScreen.Add(indicator);
 
+		
+	 	Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<Selector>(indicator->GetComponent<SelectorComponent>(), true, 3));
+	 	Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_w,1 }, std::make_unique<Selector>(indicator->GetComponent<SelectorComponent>(), false, 3));
+		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Continue>(indicator->GetComponent<SelectorComponent>()));
+		
 #pragma endregion StartScreen
 
 #pragma region HighscoreScene
@@ -115,7 +116,7 @@ public:
 
 #pragma endregion GameScene
 		
-		 SceneManager::GetInstance().SetCurrentScene("start");
+		 
 #pragma region level1
 		/* auto go = new GameObject;
 		 go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
@@ -528,21 +529,14 @@ public:
 		// audioService->playSound(soundId);
 
 #pragma endregion audio
-		
+
+		 SceneManager::GetInstance().SetCurrentScene("start");
 		 
 	}
 
 private:
-	void MakeLevel1()
-	{
-		std::cout << "level1";
-	}
+	
 
-	void MakeLevel(std::string levelName, Scene& scene)
-	{
-		std::ifstream file("data/" + levelName + ".json");
-
-	}
 
 	void MakeGameBackground(Scene& scene) const
 	{

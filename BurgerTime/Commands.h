@@ -3,6 +3,7 @@
 
 #include "Command.h"
 #include "PeterPepperComponent.h"
+#include "SelectorComponent.h"
 #include "SceneManager.h"
 #include <memory>
 namespace dae
@@ -11,7 +12,7 @@ namespace dae
 
 
 
-	class Fire : public Command
+	/*class Fire : public Command
 	{
 	public:
 		void Execute(float dt) override
@@ -45,8 +46,64 @@ namespace dae
 		{
 			std::cout << "Fart";
 		};
+	};*/
+	class Selector : public  Command
+	{
+	public:
+		Selector(SelectorComponent* selectorComp,bool goNext,int maxModes) : m_SelectorComponent(selectorComp), m_GoNext(goNext), m_MaxModes(maxModes) {}
+		void Execute(float dt) override
+		{
+			std::cout << "verander";
+			if(m_GoNext)
+			{
+				
+				if(m_SelectorComponent->GetSelected() < m_MaxModes-1)
+				{
+					m_SelectorComponent->NextGameMode();
+					GameObject* parent = m_SelectorComponent->GetParent();
+					parent->SetPosition(parent->GetPosition().x, parent->GetPosition().y + 40);
+				}
+			} else
+			{
+				if (m_SelectorComponent->GetSelected() > 0)
+				{
+					m_SelectorComponent->PreviousGameMode();
+					GameObject* parent = m_SelectorComponent->GetParent();
+					parent->SetPosition(parent->GetPosition().x, parent->GetPosition().y - 40);
+				}
+			
+			}
+		}
+	private:
+		SelectorComponent* m_SelectorComponent;
+		int m_MaxModes;
+		bool m_GoNext;
 	};
 
+	class Continue : public  Command
+	{
+	public:
+		Continue(SelectorComponent* selectorComp) : m_SelectorComponent(selectorComp) {}
+		void Execute(float dt) override
+		{
+			std::cout << "continue?";
+			switch(m_SelectorComponent->GetSelected())
+			{
+			case 0:
+				SceneManager::GetInstance().SetCurrentScene("game");
+				break;
+
+			case 1:
+				break;
+
+			case 2:
+				break;
+			}
+		}
+	private:
+		SelectorComponent* m_SelectorComponent;
+		
+	};
 
 #pragma region movement
 	class Move : public Command
