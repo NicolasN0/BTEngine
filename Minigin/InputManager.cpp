@@ -47,6 +47,12 @@ public:
 
 };
 
+void dae::Input::ClearKeys()
+{
+	m_consoleCommands.clear();
+	m_KeyboardCommands.clear();
+}
+
 void dae::Input::BindKey(ControllerKey key, std::unique_ptr<Command> c)
 {
 	m_consoleCommands[key] = std::move(c);

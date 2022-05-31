@@ -13,12 +13,7 @@ dae::PeterPepperComponent::PeterPepperComponent()
 
 dae::PeterPepperComponent::~PeterPepperComponent()
 {
-	/*if (m_Subject != nullptr)
-	{
-		delete m_Subject;
-		m_Subject = nullptr;
 
-	}*/
 }
 
 void dae::PeterPepperComponent::Update(float)
@@ -57,15 +52,6 @@ void dae::PeterPepperComponent::Render() const
 {
 }
 
-//void dae::PeterPepperComponent::SetSubject(Subject* subject)
-//{
-//	m_Subject = subject;
-//}
-//
-//dae::Subject* dae::PeterPepperComponent::GetSubject()
-//{
-//	return m_Subject;
-//}
 
 void dae::PeterPepperComponent::Respawn()
 {
@@ -74,21 +60,9 @@ void dae::PeterPepperComponent::Respawn()
 		//Damage();
 		m_Parent->GetComponent<ValuesComponent>()->Damage();
 		m_Parent->SetPosition(m_StartPos);
-	} /*else
+	} else
 	{
-		m_Subject->Notify(*GetParent(), Event::GameOver);
-	}*/
+		SceneManager::GetInstance().SetCurrentScene("highscore");
+	}
 }
 
-
-//void dae::PeterPepperComponent::Damage()
-//{
-//	
-//	m_Lives--;
-//	m_Subject->Notify(*GetParent(), Event::PlayerDied);
-//}
-//
-//void dae::PeterPepperComponent::IncreaseScore()
-//{
-//	m_Score += 5;
-//}

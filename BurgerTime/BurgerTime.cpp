@@ -24,7 +24,6 @@
 #include "BasicEnemyComponent.h"
 #include "IngredientComponent.h"
 #include "IngredientPartComponent.h"
-#include "ContainerComponent.h"
 #include "ValuesComponent.h"
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
@@ -110,10 +109,52 @@ public:
 		 std::vector<GameObject*> players;
 		 MakeGameBackground(scene);
 
+		 //Make players for levelManager
+		//Set sames valuesComponent for every player
+		 auto peterPepperP1 = new GameObject;
+		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
+		 peterPepperP1->SetPosition(190, 250);
+		 peterPepperP1->SetTag("Player");
+
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
+		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));
+
+		 players.push_back(peterPepperP1);
+		
+
+		 //HealthDisplayObject
+		 auto go = new GameObject;
+		 TextComponent* healthDisplayComp = new TextComponent("Lingua.otf", 20);
+		 go->AddComponent(healthDisplayComp);
+		 healthDisplayComp->SetText("Lives");
+		 go->SetPosition(10, 225);
+		 scene.Add(go);
+		 //ScoreDisplayObject
+		 go = new GameObject;
+		 TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
+		 go->AddComponent(ScoreDisplayComp);
+		 ScoreDisplayComp->SetText("Scores");
+		 go->SetPosition(10, 200);
+		 scene.Add(go);
+
+		
+		 Subject* ValuesSubject = new Subject;
+		 ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
+		 ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
+		 peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
+
+
+		//Make LevelManager
 		 auto manager = new GameObject;
-		 manager->AddComponent<LevelManager>(new LevelManager(&scene));
+		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players));
 		 scene.Add(manager);
 
+		//Do after rest otherwise invis
+		 scene.Add(peterPepperP1);
 #pragma endregion GameScene
 		
 		 
@@ -358,57 +399,57 @@ public:
 #pragma endregion IngredientContainer
 
 #pragma region player1
-		 //PeterPepper Player1
-		 auto peterPepperP1 = new GameObject;
-		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
-		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
-		 peterPepperP1->SetPosition(190, 250);
-	 	 peterPepperP1->SetTag("Player");
-		 //commands
+		 ////PeterPepper Player1
+		 //auto peterPepperP1 = new GameObject;
+		 //peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		 //peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 //peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
+		 //peterPepperP1->SetPosition(190, 250);
+	 	// peterPepperP1->SetTag("Player");
+		 ////commands
 		
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f,80.0f,0.0f)));
+		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
+		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
+		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
+		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f,80.0f,0.0f)));
 
-		 players.push_back(peterPepperP1);
+		 //players.push_back(peterPepperP1);
 #pragma endregion player1
 
 
 
 #pragma region displays
 		 //HealthDisplayObject
-		 auto go = new GameObject;
-		 TextComponent* healthDisplayComp = new TextComponent("Lingua.otf", 20);
-		 go->AddComponent(healthDisplayComp);
-		 healthDisplayComp->SetText("Lives");
-		 go->SetPosition(10, 225);
-		 scene.Add(go);
-		 //ScoreDisplayObject
-		 go = new GameObject;
-		 TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
-		 go->AddComponent(ScoreDisplayComp);
-		 ScoreDisplayComp->SetText("Scores");
-		 go->SetPosition(10, 200);
-		 scene.Add(go);
+		 //auto go = new GameObject;
+		 //TextComponent* healthDisplayComp = new TextComponent("Lingua.otf", 20);
+		 //go->AddComponent(healthDisplayComp);
+		 //healthDisplayComp->SetText("Lives");
+		 //go->SetPosition(10, 225);
+		 //scene.Add(go);
+		 ////ScoreDisplayObject
+		 //go = new GameObject;
+		 //TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
+		 //go->AddComponent(ScoreDisplayComp);
+		 //ScoreDisplayComp->SetText("Scores");
+		 //go->SetPosition(10, 200);
+		 //scene.Add(go);
 
-		 Subject* ValuesSubject = new Subject;
-		 ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
-		 ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
-		 peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
+		 //Subject* ValuesSubject = new Subject;
+		 //ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
+		 //ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
+		 //peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
 
 		
-		 scene.Add(peterPepperP1);
+		 
 #pragma endregion displays
 
 
 #pragma region ingredients
 
-		 MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Bun, scene, false,players);
-		 MakeIngredient(glm::vec3(130, 220, 0), IngredientType::Lettuce, scene, false, players);
-		 MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Patty, scene, false, players);
-		 MakeIngredient(glm::vec3(130, 360, 0), IngredientType::BunBottom, scene, false, players);
+	 	/*MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Bun, scene, false,players);
+	 	MakeIngredient(glm::vec3(130, 220, 0), IngredientType::Lettuce, scene, false, players);
+	 	MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Patty, scene, false, players);
+	 	MakeIngredient(glm::vec3(130, 360, 0), IngredientType::BunBottom, scene, false, players);
 
 
 		MakeIngredient(glm::vec3(215, 115, 0), IngredientType::Bun, scene, false, players);
@@ -424,7 +465,7 @@ public:
 		MakeIngredient(glm::vec3(387, 115, 0), IngredientType::Bun, scene, false, players);
 		MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Lettuce, scene, false, players);
 		MakeIngredient(glm::vec3(387, 220, 0), IngredientType::Patty, scene, false, players);
-		MakeIngredient(glm::vec3(387, 280, 0), IngredientType::BunBottom, scene, false, players);
+		MakeIngredient(glm::vec3(387, 280, 0), IngredientType::BunBottom, scene, false, players);*/
 
 		
 
@@ -530,8 +571,8 @@ public:
 
 #pragma endregion audio
 
-		 SceneManager::GetInstance().SetCurrentScene("start");
-		 
+		
+		 SceneManager::GetInstance().SetCurrentScene("game");
 	}
 
 private:

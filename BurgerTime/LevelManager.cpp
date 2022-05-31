@@ -2,13 +2,19 @@
 
 #include <iostream>
 
+#include "Commands.h"
 #include "Scene.h"
 #include "ContainerComponent.h"
+#include "IngredientPartComponent.h"
+#include "InputManager.h"
 #include "TextureComponent.h"
 
-dae::LevelManager::LevelManager(Scene* scene) : m_Level{ 1 }, m_Scene{ scene },m_LevelMade{}
+dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players) : m_Level{ 1 }, m_Scene{ scene },m_LevelMade{},m_Players(players)
 {
+	//First time make level, clear startscreen bindings and add own gameBindings
 	MakeLevel(m_Level);
+	//Input::GetInstance().ClearKeys();
+	
 }
 void dae::LevelManager::Update(float dt)
 {
@@ -20,7 +26,8 @@ void dae::LevelManager::Update(float dt)
 		ClearLevel();
 		MakeLevel(m_Level);
 	}
-	CheckLevelCompleted();
+	
+	
 }
 
 void dae::LevelManager::FixedUpdate(float timestep)
@@ -298,6 +305,28 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		m_LevelObjects.push_back(go);
 		go->AddComponent<ContainerComponent>(new ContainerComponent());
 		m_Scene->Add(go);
+
+
+		MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(130, 220, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Patty, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(130, 360, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+
+		MakeIngredient(glm::vec3(215, 115, 0), IngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(215, 250, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(215, 305, 0), IngredientType::Patty, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(215, 360, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+		MakeIngredient(glm::vec3(300, 115, 0), IngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(300, 165, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(300, 250, 0), IngredientType::Patty, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(300, 360, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
+
+		MakeIngredient(glm::vec3(387, 115, 0), IngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Lettuce, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(387, 220, 0), IngredientType::Patty, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(387, 280, 0), IngredientType::BunBottom, m_Scene, false, m_Players);
 		}
 #pragma endregion level1
 		break;
@@ -308,7 +337,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 	case 3:
 		break;
 	case 4:
-		SceneManager::GetInstance().ClearScenes();
+		SceneManager::GetInstance().SetCurrentScene("highscore");
 		break;
 	default:
 		std::cout << "no levelcounter";
@@ -347,4 +376,144 @@ void dae::LevelManager::CheckLevelCompleted()
 		m_Level++;
 		m_LevelMade = false;
 	}
+}
+
+void dae::LevelManager::MakeIngredient(glm::vec3 pos, IngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players)
+{
+	auto totalIngredient = new GameObject;
+	auto part1 = new GameObject;
+	auto part2 = new GameObject;
+	auto part3 = new GameObject;
+	auto part4 = new GameObject;
+
+	totalIngredient->AddChild(part1);
+	totalIngredient->AddChild(part2);
+	totalIngredient->AddChild(part3);
+	totalIngredient->AddChild(part4);
+
+	for (int i{}; i < totalIngredient->GetChildCount(); i++)
+	{
+		switch (ingredientType)
+		{
+		case IngredientType::Bun:
+			if (i == 0)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
+
+			}
+			else if (i == totalIngredient->GetChildCount() - 1)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunR.png"));
+			}
+			else
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Bun.png"));
+			}
+			break;
+		case IngredientType::Cheese:
+			if (i == 0)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
+
+			}
+			else if (i == totalIngredient->GetChildCount() - 1)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseR.png"));
+			}
+			else
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Cheese.png"));
+			}
+			break;
+		case IngredientType::Lettuce:
+			if (i == 0)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
+
+			}
+			else if (i == totalIngredient->GetChildCount() - 1)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceR.png"));
+			}
+			else
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Lettuce.png"));
+			}
+			break;
+		case IngredientType::Tomato:
+			if (i == 0)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
+
+			}
+			else if (i == totalIngredient->GetChildCount() - 1)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoR.png"));
+			}
+			else
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Tomato.png"));
+			}
+			break;
+		case IngredientType::Patty:
+			if (i == 0)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
+
+			}
+			else if (i == totalIngredient->GetChildCount() - 1)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyR.png"));
+			}
+			else
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Patty.png"));
+			}
+			break;
+		case IngredientType::BunBottom:
+			if (i == 0)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));
+
+			}
+			else if (i == totalIngredient->GetChildCount() - 1)
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotR.png"));
+			}
+			else
+			{
+				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBot.png"));
+			}
+			break;
+		default:
+			std::cout << "noType";
+			break;
+		}
+
+		totalIngredient->GetChildAt(i)->AddComponent<dae::IngredientPartComponent>(new dae::IngredientPartComponent());
+
+	}
+
+
+
+	part1->SetPosition(0, 0);
+	part2->SetPosition(part1->GetSize().x, 0);
+	part3->SetPosition(part1->GetSize().x * 2, 0);
+	part4->SetPosition(part1->GetSize().x * 3, 0);
+
+
+	totalIngredient->SetDebugDraw(debugDraw);
+	part1->SetDebugDraw(debugDraw);
+	part2->SetDebugDraw(debugDraw);
+	part3->SetDebugDraw(debugDraw);
+	part4->SetDebugDraw(debugDraw);
+
+	totalIngredient->SetScale(1.8f, 1.8f);
+	totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
+	totalIngredient->SetTag("Ingredient");
+
+	totalIngredient->SetPosition(pos.x, pos.y);
+	totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
+	totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
+	m_Scene->Add(totalIngredient);
 }

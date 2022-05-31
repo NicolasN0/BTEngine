@@ -50,6 +50,7 @@ namespace dae
 		KeyboardCommandsMap m_KeyboardCommands{};
 
 	public:
+		void ClearKeys();
 		void BindKey(ControllerKey key, std::unique_ptr<Command> c);
 		void BindKey(KeyboardKey key, std::unique_ptr<Command> c);
 		const ControllerCommandsMap& GetConsoleCommands() 
