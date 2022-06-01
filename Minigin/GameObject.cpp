@@ -7,7 +7,7 @@
 #include "TextureComponent.h"
 #include "Scene.h"
 
-dae::GameObject::GameObject()
+dae::GameObject::GameObject() : m_Visible(true)
 {
 	m_Transform.SetScale(1, 1, 1);
 	m_Size = glm::vec3(1, 1, 1);
@@ -24,6 +24,13 @@ dae::GameObject::~GameObject()
 	{
 		delete component;
 		component = nullptr;
+	}
+
+	size_t sizeChild = m_Childs.size();
+	for(size_t i = 0; i<sizeChild;i++)
+	{
+		delete m_Childs.at(i);
+		m_Childs.at(i) = nullptr;
 	}
 	
 };
@@ -47,24 +54,27 @@ void dae::GameObject::FixedUpdate(float timestep)
 
 void dae::GameObject::Render() const
 {
-
-	for (auto component : m_pComponents)
+	if(m_Visible)
 	{
-		component->Render();
-
-	}
-
-	//Put in draw Rect debug code?
-	if(m_DebugDraw == true)
-	{
-		SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0,255);
-		SDL_Rect r;
-		r.x = GetPosition().x;
-		r.y = GetPosition().y;
-		r.w = m_Size.x;
-		r.h = m_Size.y;
-		SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(), &r);
 		
+		for (auto component : m_pComponents)
+		{
+			component->Render();
+
+		}
+
+		//Put in draw Rect debug code?
+		if(m_DebugDraw == true)
+		{
+			SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0,255);
+			SDL_Rect r;
+			r.x = GetPosition().x;
+			r.y = GetPosition().y;
+			r.w = m_Size.x;
+			r.h = m_Size.y;
+			SDL_RenderDrawRect(Renderer::GetInstance().GetSDLRenderer(), &r);
+			
+		}
 	}
 }
 
@@ -188,7 +198,7 @@ const glm::vec3& dae::GameObject::GetScale() const
 	return m_Transform.GetScale();
 }
 
-void dae::GameObject::RemoveComponent() {}
+//void dae::GameObject::RemoveComponent() {}
 
 void dae::GameObject::SetParent(GameObject* parent) 
 {
@@ -659,6 +669,11 @@ void dae::GameObject::Delete()
 bool dae::GameObject::isSetToDelete() const
 {
 	return m_SetToDelete;
+}
+
+void dae::GameObject::SetVisibility(bool visible)
+{
+	m_Visible = visible;
 }
 
 void dae::GameObject::SetDebugDraw(bool newVal)

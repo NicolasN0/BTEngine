@@ -60,6 +60,7 @@ namespace dae
 				break;
 
 			case 1:
+				SceneChanger::GetInstance().SetCurrentScene("coop");
 				break;
 
 			case 2:

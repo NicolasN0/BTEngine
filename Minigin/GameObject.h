@@ -36,7 +36,7 @@ namespace dae
 		template <typename T>
 		T* GetComponent() const;
 		
-		void RemoveComponent();
+		//void RemoveComponent();
 
 
 		//Parent
@@ -89,6 +89,8 @@ namespace dae
 
 		void Delete();
 		bool isSetToDelete() const;
+
+		void SetVisibility(bool visible);
 		//Debug
 		void SetDebugDraw(bool newVal);
 	private:
@@ -103,6 +105,7 @@ namespace dae
 		Scene* m_Scene;
 		bool m_DebugDraw;
 		bool m_SetToDelete;
+		bool m_Visible;
 	};
 
 	template <typename T>

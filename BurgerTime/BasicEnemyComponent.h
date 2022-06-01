@@ -14,7 +14,7 @@ namespace dae
 		public MonoBehaviour
 	{
 	public:
-		BasicEnemyComponent(EEnemyType enemyType);
+		BasicEnemyComponent(EEnemyType enemyType,bool isPlayer = false);
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
@@ -50,6 +50,8 @@ namespace dae
 		Subject* m_Subject{};
 
 		EEnemyType m_Type;
+		bool m_IsPlayer{};
+
 		
 	};
 

@@ -2,13 +2,13 @@
 #include "ValuesComponent.h"
 #include <iostream>
 
-dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType) : m_Type{enemyType}
+dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer)
 {
 }
 
 void dae::BasicEnemyComponent::Update(float dt)
 {
-	if(m_Falling == false)
+	if(m_Falling == false && m_IsPlayer == false)
 	{
 		CheckOverlaps();
 		UpdateDirection();

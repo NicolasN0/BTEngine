@@ -9,7 +9,8 @@
 #include "InputManager.h"
 #include "TextureComponent.h"
 
-dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
+dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*>& lvlBackground) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
+, m_LvlBackground(lvlBackground)
 , m_LadderSize(9, 40, 1)
 , m_PlatformSize(95, 10, 1)
 , m_ContainerSize(65, 70, 1)
@@ -19,7 +20,7 @@ dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players) 
 ,m_SpawnTimer()
 ,m_SpawnMax(6)
 {
-	MakeLevel(m_Level);
+	//MakeLevel(m_Level);
 	
 	
 }
@@ -79,13 +80,22 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma region level1
 		{
 	
-			auto go = new GameObject;
+			/*auto go = new GameObject;
 			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
 			go->SetPosition(100, 100);
 			go->SetScale(1.8f, 1.8f);
 			m_LevelObjects.push_back(go);
-			m_Scene->Add(go);
-
+			m_Scene->Add(go);*/
+		for(size_t i = 0 ; i< m_LvlBackground.size();i++)
+		{
+			if(i == levelCount-1)
+			{
+				m_LvlBackground.at(i)->SetVisibility(true);
+			} else
+			{
+				m_LvlBackground.at(i)->SetVisibility(false);
+			}
+		}
 			//Player start pos
 
 			for(auto o : m_Players)
@@ -98,10 +108,9 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 
 #pragma region Ladder
-		float length{};
 
 
-		go = new GameObject;
+		auto go = new GameObject;
 		go->SetSize(glm::vec3(m_LadderSize.x, 70 , m_LadderSize.z));
 		go->SetPosition(110, 105);
 		go->SetDebugDraw(true);
@@ -391,22 +400,32 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma region level2
 		{
 			ClearLevel();
-			auto go = new GameObject;
+		/*	auto go = new GameObject;
 			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level2.png"));
 			go->SetPosition(100, 100);
 			go->SetScale(1.8f, 1.8f);
 			m_LevelObjects.push_back(go);
-			m_Scene->Add(go);
-
+			m_Scene->Add(go);*/
+			for (size_t i = 0; i < m_LvlBackground.size(); i++)
+			{
+				if (i == levelCount -1)
+				{
+					m_LvlBackground.at(i)->SetVisibility(true);
+				}
+				else
+				{
+					m_LvlBackground.at(i)->SetVisibility(false);
+				}
+			}
 			//Player Start Pos
 			for (auto o : m_Players)
 			{
-				o->SetPosition(glm::vec3(103, 100, 1));
+				o->SetPosition(glm::vec3(103, 100, 2));
 
 			}
 
 #pragma region ladder
-			go = new GameObject;
+			auto go = new GameObject;
 			go->SetSize(glm::vec3(m_LadderSize.x, 125, m_LadderSize.z));
 			go->SetPosition(110, 105);
 			go->SetDebugDraw(true);
@@ -678,13 +697,23 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma region level3
 		{
 			ClearLevel();
-			auto go = new GameObject;
+			/*auto go = new GameObject;
 			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level3.png"));
 			go->SetPosition(100, 100);
 			go->SetScale(1.8f, 1.8f);
 			m_LevelObjects.push_back(go);
-			m_Scene->Add(go);
-
+			m_Scene->Add(go);*/
+			for (size_t i = 0; i < m_LvlBackground.size(); i++)
+			{
+				if (i == levelCount - 1)
+				{
+					m_LvlBackground.at(i)->SetVisibility(true);
+				}
+				else
+				{
+					m_LvlBackground.at(i)->SetVisibility(false);
+				}
+			}
 			//Player Start Pos
 			for (auto o : m_Players)
 			{
@@ -693,7 +722,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			}
 
 #pragma region ladder
-			go = new GameObject;
+			auto go = new GameObject;
 			go->SetSize(glm::vec3(m_LadderSize.x, 95, m_LadderSize.z));
 			go->SetPosition(109, 105);
 			go->SetDebugDraw(true);
@@ -1107,7 +1136,8 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 		break;
 	case 4:
-		SceneManager::GetInstance().SetCurrentScene("highscore");
+		m_Level = 0;
+		SceneChanger::GetInstance().SetCurrentScene("highscore");
 		break;
 	default:
 		std::cout << "no levelcounter";
@@ -1124,7 +1154,7 @@ void dae::LevelManager::ClearLevel()
 	{
 		//o->Delete();
 		//o->~GameObject();
-		//o->Delete();
+		o->Delete();
 		//o->~GameObject();
 	}
 	m_LevelObjects.clear();
@@ -1299,6 +1329,11 @@ void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredient
 	totalIngredient->SetPosition(pos.x, pos.y);
 	totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
 	totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
+	m_LevelObjects.push_back(part1);
+	m_LevelObjects.push_back(part2);
+	m_LevelObjects.push_back(part3);
+	m_LevelObjects.push_back(part4);
+	m_LevelObjects.push_back(totalIngredient);
 	m_Scene->Add(totalIngredient);
 }
 
@@ -1311,5 +1346,6 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 	HotDog->SetPosition(pos);
 	HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(m_Players.at(0));
 	HotDog->SetTag("Enemy");
+	m_LevelObjects.push_back(HotDog);
 	m_Scene->Add(HotDog);
 }
