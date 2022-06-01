@@ -143,7 +143,7 @@ namespace dae
 		MoveHotdog(BasicEnemyComponent* object, glm::vec3 moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {};
 		void Execute(float dt) override
 		{
-			std::cout << "moveeeee";
+			//std::cout << "moveeeee";
 			if (m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
 			{
 				if (m_pObject->GetIsOnLadder() == true)

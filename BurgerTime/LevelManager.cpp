@@ -18,6 +18,8 @@ dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, 
 , m_MaxEnemies{ 5,7,9 }
 , m_CurrentEnemies()
 , m_EnemyPosLevel1({ glm::vec3(250, 100,1),glm::vec3(447, 160,1),glm::vec3(365, 250,1),glm::vec3(250, 100,1),glm::vec3(280, 363,1) })
+, m_EnemyPosLevel2({ glm::vec3(450, 213,1),glm::vec3(279, 369,1),glm::vec3(365, 250,1),glm::vec3(206, 276,1),glm::vec3(107, 213,1) })
+, m_EnemyPosLevel3({ glm::vec3(279, 391,1),glm::vec3(278, 248,1),glm::vec3(365, 250,1),glm::vec3(449, 104,1),glm::vec3(107, 190,1) })
 ,m_SpawnTimer()
 ,m_SpawnMax(6)
 {
@@ -49,15 +51,32 @@ void dae::LevelManager::Update(float dt)
 				std::cout << randIndex;
 				MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
 				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemies").size();
-				//m_CurrentEnemies++;
 				m_SpawnTimer = 0;
 			}
 			break;
 
 		case 2:
+			if (m_CurrentEnemies < m_MaxEnemies.at(m_Level))
+			{
+				//std::cout << "spawns";
+				int randIndex = rand() % m_EnemyPosLevel2.size();
+				std::cout << randIndex;
+				MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
+				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemies").size();
+				m_SpawnTimer = 0;
+			}
 			break;
 
 		case 3:
+			if (m_CurrentEnemies < m_MaxEnemies.at(m_Level))
+			{
+				//std::cout << "spawns";
+				int randIndex = rand() % m_EnemyPosLevel3.size();
+				std::cout << randIndex;
+				MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
+				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemies").size();
+				m_SpawnTimer = 0;
+			}
 			break;
 		}
 		
@@ -81,12 +100,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma region level1
 		{
 	
-			/*auto go = new GameObject;
-			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
-			go->SetPosition(100, 100);
-			go->SetScale(1.8f, 1.8f);
-			m_LevelObjects.push_back(go);
-			m_Scene->Add(go);*/
+		
 		for(size_t i = 0 ; i< m_LvlBackground.size();i++)
 		{
 			if(i == levelCount-1)
@@ -407,12 +421,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma region level2
 		{
 			ClearLevel();
-		/*	auto go = new GameObject;
-			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level2.png"));
-			go->SetPosition(100, 100);
-			go->SetScale(1.8f, 1.8f);
-			m_LevelObjects.push_back(go);
-			m_Scene->Add(go);*/
+		
 			for (size_t i = 0; i < m_LvlBackground.size(); i++)
 			{
 				if (i == levelCount -1)
@@ -428,6 +437,12 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			for (auto o : m_Players)
 			{
 				o->SetPosition(glm::vec3(103, 100, 2));
+
+			}
+
+			for (auto o : m_EnemyPlayers)
+			{
+				o->SetPosition(m_EnemyPosLevel2.at(0));
 
 			}
 
@@ -704,12 +719,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma region level3
 		{
 			ClearLevel();
-			/*auto go = new GameObject;
-			go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level3.png"));
-			go->SetPosition(100, 100);
-			go->SetScale(1.8f, 1.8f);
-			m_LevelObjects.push_back(go);
-			m_Scene->Add(go);*/
+			
 			for (size_t i = 0; i < m_LvlBackground.size(); i++)
 			{
 				if (i == levelCount - 1)
@@ -725,6 +735,12 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			for (auto o : m_Players)
 			{
 				o->SetPosition(glm::vec3(103, 100, 1));
+
+			}
+
+			for (auto o : m_EnemyPlayers)
+			{
+				o->SetPosition(m_EnemyPosLevel3.at(0));
 
 			}
 
