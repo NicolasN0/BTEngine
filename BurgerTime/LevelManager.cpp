@@ -15,7 +15,7 @@ dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, 
 , m_LadderSize(9, 40, 1)
 , m_PlatformSize(95, 10, 1)
 , m_ContainerSize(65, 70, 1)
-, m_MaxEnemies{ 5,7,9 }
+, m_MaxEnemies{ 1,7,9 }
 , m_CurrentEnemies()
 , m_EnemyPosLevel1({ glm::vec3(250, 100,1),glm::vec3(447, 160,1),glm::vec3(365, 250,1),glm::vec3(250, 100,1),glm::vec3(280, 363,1) })
 , m_EnemyPosLevel2({ glm::vec3(450, 213,1),glm::vec3(279, 369,1),glm::vec3(365, 250,1),glm::vec3(206, 276,1),glm::vec3(107, 213,1) })
@@ -44,37 +44,37 @@ void dae::LevelManager::Update(float dt)
 		switch(m_Level)
 		{
 		case 1:
-			if(m_CurrentEnemies < m_MaxEnemies.at(m_Level))
+			if(m_CurrentEnemies < m_MaxEnemies.at(m_Level-1))
 			{
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel1.size();
 				std::cout << randIndex;
 				MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
-				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemies").size();
+				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 				m_SpawnTimer = 0;
 			}
 			break;
 
 		case 2:
-			if (m_CurrentEnemies < m_MaxEnemies.at(m_Level))
+			if (m_CurrentEnemies < m_MaxEnemies.at(m_Level-1))
 			{
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel2.size();
 				std::cout << randIndex;
 				MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
-				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemies").size();
+				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 				m_SpawnTimer = 0;
 			}
 			break;
 
 		case 3:
-			if (m_CurrentEnemies < m_MaxEnemies.at(m_Level))
+			if (m_CurrentEnemies < m_MaxEnemies.at(m_Level-1))
 			{
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel3.size();
 				std::cout << randIndex;
 				MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
-				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemies").size();
+				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 				m_SpawnTimer = 0;
 			}
 			break;
