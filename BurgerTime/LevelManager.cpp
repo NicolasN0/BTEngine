@@ -9,7 +9,8 @@
 #include "InputManager.h"
 #include "TextureComponent.h"
 
-dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*>& lvlBackground) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
+dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers, std::vector<GameObject*>& lvlBackground) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
+, m_EnemyPlayers(enemeyPlayers)
 , m_LvlBackground(lvlBackground)
 , m_LadderSize(9, 40, 1)
 , m_PlatformSize(95, 10, 1)
@@ -102,6 +103,12 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			{
 				o->SetPosition(glm::vec3(110, 100,1));
 				
+			}
+
+			for (auto o : m_EnemyPlayers)
+			{
+				o->SetPosition(m_EnemyPosLevel1.at(0));
+
 			}
 
 

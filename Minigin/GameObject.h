@@ -100,7 +100,7 @@ namespace dae
 		Transform m_Transform;
 		std::vector<MonoBehaviour*> m_pComponents{};
 		GameObject* m_Parent{};
-		std::vector<GameObject*> m_Childs;
+		std::vector<GameObject*> m_Childs{};
 		std::string m_Tag;
 		Scene* m_Scene;
 		bool m_DebugDraw;

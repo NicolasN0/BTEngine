@@ -8,11 +8,16 @@ dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlaye
 
 void dae::BasicEnemyComponent::Update(float dt)
 {
-	if(m_Falling == false && m_IsPlayer == false)
+	if(m_Falling == false)
 	{
 		CheckOverlaps();
-		UpdateDirection();
-		UpdatePos(dt);
+		if(m_IsPlayer == false)
+		{
+
+			UpdateDirection();
+			UpdatePos(dt);
+		}
+
 		
 	}
 

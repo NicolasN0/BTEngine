@@ -8,6 +8,9 @@
 #include "Scene.h"
 
 dae::GameObject::GameObject() : m_Visible(true)
+,m_DebugDraw()
+,m_Scene()
+,m_SetToDelete()
 {
 	m_Transform.SetScale(1, 1, 1);
 	m_Size = glm::vec3(1, 1, 1);

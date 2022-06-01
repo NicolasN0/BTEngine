@@ -10,7 +10,7 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
-		LevelManager(Scene* scene, std::vector<GameObject*> players,std::vector<GameObject*>& lvlBackground);
+		LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers,std::vector<GameObject*>& lvlBackground);
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
 		void MakeLevel(int levelCount);
@@ -24,6 +24,7 @@ namespace dae
 		Scene* m_Scene;
 		bool m_LevelMade{};
 		std::vector<GameObject*> m_Players;
+		std::vector<GameObject*> m_EnemyPlayers;
 		std::vector<GameObject*> m_LvlBackground;
 		glm::vec3 m_ContainerSize;
 		glm::vec3 m_PlatformSize;

@@ -5,6 +5,7 @@
 
 #include "Observer.h"
 #include "Scene.h"
+#include "SceneChanger.h"
 #include "ValuesComponent.h"
 dae::PeterPepperComponent::PeterPepperComponent() 
 {
@@ -61,7 +62,7 @@ void dae::PeterPepperComponent::Respawn()
 		m_Parent->SetPosition(m_StartPos);
 	} else
 	{
-		SceneManager::GetInstance().SetCurrentScene("highscore");
+		SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
 }
 

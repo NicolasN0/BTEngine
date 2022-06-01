@@ -111,6 +111,7 @@ public:
 
 		 std::vector<GameObject*> players;
 		 std::vector<GameObject*> levelBackgrounds;
+		 std::vector<GameObject*> playerEnemyPvp;
 		 MakeGameBackground(scene);
 
 		 //Add all the levelbackgrounds
@@ -174,7 +175,7 @@ public:
 
 		//Make LevelManager
 		 auto manager = new GameObject;
-		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players,levelBackgrounds));
+		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players, playerEnemyPvp, levelBackgrounds));
 		 scene.Add(manager);
 
 		//Do after rest otherwise invis
@@ -188,6 +189,9 @@ public:
 		 std::vector<GameObject*> playersCoop;
 		 MakeGameBackground(coopScene);
 
+		 coopScene.Add(lvl1);
+		 coopScene.Add(lvl2);
+		 coopScene.Add(lvl3);
 		 //Make players for levelManager
 		//Set sames valuesComponent for every player
 		 ValuesComponent* valuesComp = new ValuesComponent();
@@ -235,7 +239,7 @@ public:
 
 		 //Make LevelManager
 		 auto managerCoop = new GameObject;
-		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, levelBackgrounds));
+		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, playerEnemyPvp, levelBackgrounds));
 		 coopScene.Add(managerCoop);
 
 		 //Do after rest otherwise invis
@@ -245,62 +249,66 @@ public:
 
 
 #pragma region PvpScene
-		// auto& pvpScene = dae::SceneManager::GetInstance().CreateScene("pvp");
+		 auto& pvpScene = dae::SceneManager::GetInstance().CreateScene("pvp");
 
-		// std::vector<GameObject*> playersPvp;
-		// MakeGameBackground(pvpScene);
+		 std::vector<GameObject*> playersPvp;
+		/* std::vector<GameObject*> playerEnemyPvp;*/
+		 MakeGameBackground(pvpScene);
+		 pvpScene.Add(lvl1);
+		 pvpScene.Add(lvl2);
+		 pvpScene.Add(lvl3);
+		 //Make players for levelManager
+		//Set sames valuesComponent for every player
+		 ValuesComponent* valuesCompPvp = new ValuesComponent();
+		 auto peterPepperPvp = new GameObject;
+		 peterPepperPvp->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		 peterPepperPvp->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperPvp->AddComponent(valuesComp);
+		 //peterPepperP1->SetPosition(190, 250);
+		 peterPepperPvp->SetTag("Player");
 
-		// //Make players for levelManager
-		////Set sames valuesComponent for every player
-		// ValuesComponent* valuesCompPvp = new ValuesComponent();
-		// auto peterPepperPvp = new GameObject;
-		// peterPepperPvp->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		// peterPepperPvp->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
-		// peterPepperPvp->AddComponent(valuesComp);
-		// //peterPepperP1->SetPosition(190, 250);
-		// peterPepperPvp->SetTag("Player");
+		 auto hotdogPvp = new GameObject;
+		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog,true));
+		 hotdogPvp->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 //peterPepperP1->SetPosition(190, 250);
+		 hotdogPvp->SetTag("Enemy");
 
-		// auto hotdogPvp = new GameObject;
-		// hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog,true));
-		// hotdogPvp->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		// //peterPepperP1->SetPosition(190, 250);
-		// hotdogPvp->SetTag("Enemy");
+		 playersPvp.push_back(peterPepperPvp);
+		 controlObjects.push_back(peterPepperPvp);
 
-		// playersPvp.push_back(peterPepperPvp);
-		// controlObjects.push_back(peterPepperPvp);
+		 //playersPvp.push_back(hotdogPvp);
+		 playerEnemyPvp.push_back(hotdogPvp);
+		 controlObjects.push_back(hotdogPvp);
 
-		// playersPvp.push_back(hotdogPvp);
-		// controlObjects.push_back(hotdogPvp);
-
-		// //HealthDisplayObject
-		// auto healthPvp = new GameObject;
-		// TextComponent* healthPvpComp = new TextComponent("Lingua.otf", 20);
-		// healthPvp->AddComponent(healthPvpComp);
-		// healthPvpComp->SetText("Lives");
-		// healthPvp->SetPosition(10, 225);
-		// pvpScene.Add(healthPvp);
-		// //ScoreDisplayObject
-		// auto scorePvp = new GameObject;
-		// TextComponent* scorePvpComp = new TextComponent("Lingua.otf", 20);
-		// scorePvp->AddComponent(scorePvpComp);
-		// scorePvpComp->SetText("Scores");
-		// scorePvp->SetPosition(10, 200);
-		// pvpScene.Add(scorePvp);
+		 //HealthDisplayObject
+		 auto healthPvp = new GameObject;
+		 TextComponent* healthPvpComp = new TextComponent("Lingua.otf", 20);
+		 healthPvp->AddComponent(healthPvpComp);
+		 healthPvpComp->SetText("Lives");
+		 healthPvp->SetPosition(10, 225);
+		 pvpScene.Add(healthPvp);
+		 //ScoreDisplayObject
+		 auto scorePvp = new GameObject;
+		 TextComponent* scorePvpComp = new TextComponent("Lingua.otf", 20);
+		 scorePvp->AddComponent(scorePvpComp);
+		 scorePvpComp->SetText("Scores");
+		 scorePvp->SetPosition(10, 200);
+		 pvpScene.Add(scorePvp);
 
 
-		// Subject* ValuesSubjectPvp = new Subject;
-		// ValuesSubjectPvp->AddObserver(new HealthObserver(healthDisplayCompCoop));
-		// ValuesSubjectPvp->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
-		// peterPepperPvp->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
+		 Subject* ValuesSubjectPvp = new Subject;
+		 ValuesSubjectPvp->AddObserver(new HealthObserver(healthDisplayCompCoop));
+		 ValuesSubjectPvp->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
+		 peterPepperPvp->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
 
-		// //Make LevelManager
-		// auto managerPvp = new GameObject;
-		// managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp));
-		// pvpScene.Add(managerPvp);
+		 //Make LevelManager
+		 auto managerPvp = new GameObject;
+		 managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp, playerEnemyPvp,levelBackgrounds));
+		 pvpScene.Add(managerPvp);
 
-		// //Do after rest otherwise invis
-		// pvpScene.Add(peterPepperPvp);
-		// pvpScene.Add(hotdogPvp);
+		 //Do after rest otherwise invis
+		 pvpScene.Add(peterPepperPvp);
+		 pvpScene.Add(hotdogPvp);
 #pragma endregion PvpScene
 
 
@@ -361,7 +369,7 @@ public:
 
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 
-		 SceneChanger::GetInstance().SetCurrentScene("game");
+		 SceneChanger::GetInstance().SetCurrentScene("start");
 	}
 
 private:
