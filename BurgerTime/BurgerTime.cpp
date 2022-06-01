@@ -118,7 +118,7 @@ public:
 		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
 		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
-		 peterPepperP1->SetPosition(190, 250);
+		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperP1->SetTag("Player");
 
 		/* Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
@@ -576,7 +576,7 @@ public:
 
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 
-		 SceneChanger::GetInstance().SetCurrentScene("highscore");
+		 SceneChanger::GetInstance().SetCurrentScene("start");
 	}
 
 private:
@@ -639,7 +639,7 @@ private:
 		scene.Add(go);
 	}
 
-	void MakeIngredient(glm::vec3 pos, IngredientType ingredientType, Scene& scene, bool debugDraw, std::vector<GameObject*>& players) const
+	void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene& scene, bool debugDraw, std::vector<GameObject*>& players) const
 	{
 		auto totalIngredient = new GameObject;
 		auto part1 = new GameObject;
@@ -656,7 +656,7 @@ private:
 		{
 			switch (ingredientType)
 			{
-			case IngredientType::Bun:
+			case EIngredientType::Bun:
 				if (i == 0)
 				{
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
@@ -671,7 +671,7 @@ private:
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Bun.png"));
 				}
 				break;
-			case IngredientType::Cheese:
+			case EIngredientType::Cheese:
 				if (i == 0)
 				{
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
@@ -686,7 +686,7 @@ private:
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Cheese.png"));
 				}
 				break;
-			case IngredientType::Lettuce:
+			case EIngredientType::Lettuce:
 				if (i == 0)
 				{
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
@@ -701,7 +701,7 @@ private:
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Lettuce.png"));
 				}
 				break;
-			case IngredientType::Tomato:
+			case EIngredientType::Tomato:
 				if (i == 0)
 				{
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
@@ -716,7 +716,7 @@ private:
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Tomato.png"));
 				}
 				break;
-			case IngredientType::Patty:
+			case EIngredientType::Patty:
 				if (i == 0)
 				{
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
@@ -731,7 +731,7 @@ private:
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Patty.png"));
 				}
 				break;
-			case IngredientType::BunBottom:
+			case EIngredientType::BunBottom:
 				if (i == 0)
 				{
 					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));

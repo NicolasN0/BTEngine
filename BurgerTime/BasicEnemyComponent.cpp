@@ -2,7 +2,7 @@
 #include "ValuesComponent.h"
 #include <iostream>
 
-dae::BasicEnemyComponent::BasicEnemyComponent(EnemyType enemyType) : m_Type{enemyType}
+dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType) : m_Type{enemyType}
 {
 }
 
@@ -54,13 +54,13 @@ void dae::BasicEnemyComponent::Kill()
 	std::cout << "kill";
 	switch(m_Type)
 	{
-	case EnemyType::Hotdog:
+	case EEnemyType::Hotdog:
 		m_Target->GetComponent<ValuesComponent>()->IncreaseScore(100);
 		break;
-	case EnemyType::Pickle:
+	case EEnemyType::Pickle:
 		m_Target->GetComponent<ValuesComponent>()->IncreaseScore(200);
 		break;
-	case EnemyType::Egg:
+	case EEnemyType::Egg:
 		m_Target->GetComponent<ValuesComponent>()->IncreaseScore(300);
 		break;
 	default:

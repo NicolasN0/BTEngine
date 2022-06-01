@@ -5,7 +5,7 @@
 #include "Scene.h"
 #include "ValuesComponent.h"
 
-enum class IngredientType
+enum class EIngredientType
 {
 	Bun,
 	BunBottom,

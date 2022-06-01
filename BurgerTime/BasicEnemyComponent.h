@@ -2,7 +2,7 @@
 #include "MonoBehaviour.h"
 namespace dae
 {
-	enum class EnemyType
+	enum class EEnemyType
 	{
 		Hotdog,
 		Egg,
@@ -14,7 +14,7 @@ namespace dae
 		public MonoBehaviour
 	{
 	public:
-		BasicEnemyComponent(EnemyType enemyType);
+		BasicEnemyComponent(EEnemyType enemyType);
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
@@ -49,7 +49,7 @@ namespace dae
 		glm::vec3 m_Direction{};
 		Subject* m_Subject{};
 
-		EnemyType m_Type;
+		EEnemyType m_Type;
 		
 	};
 

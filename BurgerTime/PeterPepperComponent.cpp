@@ -13,13 +13,13 @@ dae::PeterPepperComponent::PeterPepperComponent()
 
 dae::PeterPepperComponent::~PeterPepperComponent()
 {
-
+	
 }
 
 void dae::PeterPepperComponent::Update(float)
 {
-
-
+	//std::cout << "test";
+	//std::cout << std::to_string(m_Parent->GetPosition().x) + ' ' + std::to_string(m_Parent->GetPosition().y) << std::endl;
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
 		m_IsOnLadder = true;

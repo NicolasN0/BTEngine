@@ -134,6 +134,21 @@ namespace dae
 		glm::vec3 m_MoveSpeed;
 	};
 
+
+	class NextLevel : public Command
+	{
+	public:
+		NextLevel(PeterPepperComponent* object) : m_pObject(object){};
+		void Execute(float dt) override
+		{
+
+			m_pObject->SetNextLevel(true);
+
+		};
+
+		PeterPepperComponent* m_pObject;
+		
+	};
 	
 #pragma endregion movement end
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <MonoBehaviour.h>
 
+#include "BasicEnemyComponent.h"
 #include "IngredientComponent.h"
 
 namespace dae
@@ -16,7 +17,8 @@ namespace dae
 		void ClearLevel();
 	private:
 		void CheckLevelCompleted();
-		void MakeIngredient(glm::vec3 pos, IngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players);
+		void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players);
+		void MakeEnemey(glm::vec3 pos, EEnemyType type);
 		std::vector<GameObject*> m_LevelObjects{};
 		int m_Level{};
 		Scene* m_Scene;
@@ -25,6 +27,14 @@ namespace dae
 		glm::vec3 m_ContainerSize;
 		glm::vec3 m_PlatformSize;
 		glm::vec3 m_LadderSize;
+
+		float m_SpawnTimer;
+		float m_SpawnMax;
+		int m_CurrentEnemies;
+		std::vector<int> m_MaxEnemies;
+		std::vector<glm::vec3> m_EnemyPosLevel1;
+		std::vector<glm::vec3> m_EnemyPosLevel2;
+		std::vector<glm::vec3> m_EnemyPosLevel3;
 	};
 }
 

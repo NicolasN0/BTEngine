@@ -16,12 +16,17 @@ namespace dae
 		bool GetIsOnLadder() const { return m_IsOnLadder; }
 		bool GetIsOnPlatform() const { return m_IsOnPlatform; }
 
+		bool GetNextLevel() const { return m_NextLevelTest; }
+		void SetNextLevel(bool nextLevel) { m_NextLevelTest = nextLevel; }
+
 	private:
 		void Respawn();
 	
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
 		glm::vec3 m_StartPos{ 250 ,250,0 };
+
+		bool m_NextLevelTest{};
 	
 	};
 	

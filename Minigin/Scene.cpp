@@ -74,30 +74,33 @@ void Scene::Add(GameObject* object)
 
 void Scene::Update(float dt)
 {
-	for(auto& object : m_Objects)
+	for (auto& object : m_Objects)
 	{
-			
-		if(object->isSetToDelete())
-		{
-			break;
-			//m_ObjectsToDelete.push_back(object);
-		}
+
 		object->Update(dt);
 
-		
-	}
 
-	
-	/*for(auto& object : m_ObjectsToDelete)
+	/*	if (object->isSetToDelete())
+		{
+			m_ObjectsToDelete.push_back(object);
+
+		}*/
+
+
+	}
+	auto end = std::remove_if(m_Objects.begin(), m_Objects.end(), [](auto* object) { return object->isSetToDelete(); });
+	m_Objects.erase(end, m_Objects.end());
+	//m_Objects.erase(std::remove_if(m_Objects.begin(), m_Objects.end(), [](auto* object) { return object->isSetToDelete(); }));
+
+
+	/*for (auto& object : m_ObjectsToDelete)
 	{
 		delete object;
 		object = nullptr;
-		
+
 	}
 
-
 	m_ObjectsToDelete.clear();*/
-
 }
 
 void Scene::FixedUpdate(float timestep)
