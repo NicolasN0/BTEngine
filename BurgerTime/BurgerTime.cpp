@@ -121,10 +121,7 @@ public:
 		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperP1->SetTag("Player");
 
-		/* Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
-		 Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));*/
+		
 
 		 players.push_back(peterPepperP1);
 		 controlObjects.push_back(peterPepperP1);
@@ -160,370 +157,79 @@ public:
 		 scene.Add(peterPepperP1);
 #pragma endregion GameScene
 		
-		 
-#pragma region level1
-		/* auto go = new GameObject;
-		 go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
-		 go->SetPosition(100, 100);
-		 go->SetScale(1.8f, 1.8f);
-		 scene.Add(go);
 
+#pragma region CoopScene
+		 auto& coopScene = dae::SceneManager::GetInstance().CreateScene("coop");
 
+		 std::vector<GameObject*> playersCoop;
+		 MakeGameBackground(coopScene);
 
-		 glm::vec3 LadderSize = glm::vec3(9, 28, 1);
-		 glm::vec3 PlatformSize = glm::vec3(91, 10, 1);
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 2, LadderSize.z));
-		 go->SetPosition(111, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
-		 go->SetPosition(111, 245);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
-		 go->SetPosition(153, 185);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x,LadderSize.y * 10,LadderSize.z));
-		 go->SetPosition(196, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
-		 go->SetPosition(241, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
-		 go->SetPosition(283, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
-		 go->SetPosition(326, 185);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 10, LadderSize.z));
-		 go->SetPosition(369, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 5, LadderSize.z));
-		 go->SetPosition(412, 242);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 4, LadderSize.z));
-		 go->SetPosition(456, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(LadderSize.x, LadderSize.y * 3, LadderSize.z));
-		 go->SetPosition(456, 300);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Ladder");
-		 scene.Add(go);
-
-
-
-	 	go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x *4, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(111, 120);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(111, 165);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x *2, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(283, 165);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(196, 195);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(111, 220);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(369, 220);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x * 2, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(196, 250);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(369, 280);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x * 3, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(111, 310);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(PlatformSize.x * 4, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(111, 365);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);*/
-
-#pragma endregion level1
-
-
-#pragma region IngredientContainer
-	/*glm::vec3 LadderSize = glm::vec3(9, 28, 1);
-	glm::vec3 PlatformSize = glm::vec3(91, 10, 1);
-
-		 float containerWidth{ 65 };
-		 float containerHeight{ 70 };
-	 	auto go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(125, 455);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
-		 go->SetPosition(125, 395);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Container");
-		 go->AddComponent<ContainerComponent>(new ContainerComponent());
-		 scene.Add(go);
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(212, 455);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
-		 go->SetPosition(212, 395);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Container");
-		 go->AddComponent<ContainerComponent>(new ContainerComponent());
-		 scene.Add(go);
-
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(298, 455);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
-		 go->SetPosition(298, 395);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Container");
-		 go->AddComponent<ContainerComponent>(new ContainerComponent());
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, PlatformSize.y, PlatformSize.z));
-		 go->SetPosition(384, 455);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Platform");
-		 scene.Add(go);
-
-		 go = new GameObject;
-		 go->SetSize(glm::vec3(containerWidth, containerHeight, PlatformSize.z));
-		 go->SetPosition(384, 395);
-		 go->SetDebugDraw(true);
-		 go->SetTag("Container");
-		 go->AddComponent<ContainerComponent>(new ContainerComponent());
-		 scene.Add(go);*/
-#pragma endregion IngredientContainer
-
-#pragma region player1
-		 ////PeterPepper Player1
-		 //auto peterPepperP1 = new GameObject;
-		 //peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 //peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
-		 //peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
+		 //Make players for levelManager
+		//Set sames valuesComponent for every player
+		 ValuesComponent* valuesComp = new ValuesComponent();
+		 auto peterPepperPlayer1 = new GameObject;
+		 peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		 peterPepperPlayer1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperPlayer1->AddComponent(valuesComp);
 		 //peterPepperP1->SetPosition(190, 250);
-	 	// peterPepperP1->SetTag("Player");
-		 ////commands
-		
-		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_a,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(-80.0f, 0.0f, 0.0f)));
-		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_d,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(80.0f, 0.0f, 0.0f)));
-		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
-		 //Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(peterPepperP1->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f,80.0f,0.0f)));
+		 peterPepperPlayer1->SetTag("Player");
 
-		 //players.push_back(peterPepperP1);
-#pragma endregion player1
+		 auto peterPepperPlayer2 = new GameObject;
+		 peterPepperPlayer2->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		 peterPepperPlayer2->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperPlayer2->AddComponent(valuesComp);
+		 //peterPepperP1->SetPosition(190, 250);
+		 peterPepperPlayer2->SetTag("Player");
 
+		 playersCoop.push_back(peterPepperPlayer1);
+		 controlObjects.push_back(peterPepperPlayer1);
 
+		 playersCoop.push_back(peterPepperPlayer2);
+		 controlObjects.push_back(peterPepperPlayer2);
 
-#pragma region displays
 		 //HealthDisplayObject
-		 //auto go = new GameObject;
-		 //TextComponent* healthDisplayComp = new TextComponent("Lingua.otf", 20);
-		 //go->AddComponent(healthDisplayComp);
-		 //healthDisplayComp->SetText("Lives");
-		 //go->SetPosition(10, 225);
-		 //scene.Add(go);
-		 ////ScoreDisplayObject
-		 //go = new GameObject;
-		 //TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
-		 //go->AddComponent(ScoreDisplayComp);
-		 //ScoreDisplayComp->SetText("Scores");
-		 //go->SetPosition(10, 200);
-		 //scene.Add(go);
-
-		 //Subject* ValuesSubject = new Subject;
-		 //ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
-		 //ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
-		 //peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
-
-		
-		 
-#pragma endregion displays
+		 auto healthCoop = new GameObject;
+		 TextComponent* healthDisplayCompCoop = new TextComponent("Lingua.otf", 20);
+		 healthCoop->AddComponent(healthDisplayCompCoop);
+		 healthDisplayCompCoop->SetText("Lives");
+		 healthCoop->SetPosition(10, 225);
+		 coopScene.Add(healthCoop);
+		 //ScoreDisplayObject
+		 auto scoreCoop = new GameObject;
+		 TextComponent* ScoreDisplayCompCoop = new TextComponent("Lingua.otf", 20);
+		 scoreCoop->AddComponent(ScoreDisplayCompCoop);
+		 ScoreDisplayCompCoop->SetText("Scores");
+		 scoreCoop->SetPosition(10, 200);
+		 coopScene.Add(scoreCoop);
 
 
-#pragma region ingredients
+		 Subject* ValuesSubjectCoop = new Subject;
+		 ValuesSubjectCoop->AddObserver(new HealthObserver(healthDisplayCompCoop));
+		 ValuesSubjectCoop->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
+		 peterPepperPlayer1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
+		 peterPepperPlayer2->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
 
-	 	/*MakeIngredient(glm::vec3(130, 165, 0), IngredientType::Bun, scene, false,players);
-	 	MakeIngredient(glm::vec3(130, 220, 0), IngredientType::Lettuce, scene, false, players);
-	 	MakeIngredient(glm::vec3(130, 305, 0), IngredientType::Patty, scene, false, players);
-	 	MakeIngredient(glm::vec3(130, 360, 0), IngredientType::BunBottom, scene, false, players);
+		 //Make LevelManager
+		 auto managerCoop = new GameObject;
+		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop));
+		 coopScene.Add(managerCoop);
+
+		 //Do after rest otherwise invis
+		 coopScene.Add(peterPepperPlayer1);
+		 coopScene.Add(peterPepperPlayer2);
+#pragma endregion CoopScene
 
 
-		MakeIngredient(glm::vec3(215, 115, 0), IngredientType::Bun, scene, false, players);
-		MakeIngredient(glm::vec3(215, 250, 0), IngredientType::Lettuce, scene, false, players);
-		MakeIngredient(glm::vec3(215, 305, 0), IngredientType::Patty, scene, false, players);
-		MakeIngredient(glm::vec3(215, 360, 0), IngredientType::BunBottom, scene, false, players);
+#pragma region PvpScene
 
-		MakeIngredient(glm::vec3(300, 115, 0), IngredientType::Bun, scene, false, players);
-		MakeIngredient(glm::vec3(300, 165, 0), IngredientType::Lettuce, scene, false, players);
-		MakeIngredient(glm::vec3(300, 250, 0), IngredientType::Patty, scene, false, players);
-		MakeIngredient(glm::vec3(300, 360, 0), IngredientType::BunBottom, scene, false, players);
+#pragma endregion PvpScene
 
-		MakeIngredient(glm::vec3(387, 115, 0), IngredientType::Bun, scene, false, players);
-		MakeIngredient(glm::vec3(387, 165, 0), IngredientType::Lettuce, scene, false, players);
-		MakeIngredient(glm::vec3(387, 220, 0), IngredientType::Patty, scene, false, players);
-		MakeIngredient(glm::vec3(387, 280, 0), IngredientType::BunBottom, scene, false, players);*/
 
-		
 
-#pragma endregion ingedients
 
-#pragma region enemy
-	/*	auto HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
-		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(283, 250);
-		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
-		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);
 
-	 	HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
-		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(300, 250);
-		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
-		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);
 
-		 HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
-		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(320, 250);
-		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
-		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);
 
-		  HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
-		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(340, 250);
-		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
-		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);
-
-		  HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
-		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(360, 250);
-		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
-		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);
-
-		  HotDog = new GameObject;
-		 HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EnemyType::Hotdog));
-		 HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 HotDog->SetPosition(380, 250);
-		 HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperP1);
-		 HotDog->SetTag("Enemy");
-		 scene.Add(HotDog);*/
-
-#pragma endregion enemy
 
 
 #pragma region player2
@@ -576,7 +282,7 @@ public:
 
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 
-		 SceneChanger::GetInstance().SetCurrentScene("start");
+		 SceneChanger::GetInstance().SetCurrentScene("coop");
 	}
 
 private:

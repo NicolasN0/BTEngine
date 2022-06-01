@@ -18,8 +18,7 @@ dae::PeterPepperComponent::~PeterPepperComponent()
 
 void dae::PeterPepperComponent::Update(float)
 {
-	//std::cout << "test";
-	//std::cout << std::to_string(m_Parent->GetPosition().x) + ' ' + std::to_string(m_Parent->GetPosition().y) << std::endl;
+
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
 		m_IsOnLadder = true;
@@ -62,7 +61,7 @@ void dae::PeterPepperComponent::Respawn()
 		m_Parent->SetPosition(m_StartPos);
 	} else
 	{
-		//SceneManager::GetInstance().SetCurrentScene("highscore");
+		SceneManager::GetInstance().SetCurrentScene("highscore");
 	}
 }
 
