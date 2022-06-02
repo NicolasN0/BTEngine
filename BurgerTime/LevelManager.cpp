@@ -1332,11 +1332,18 @@ void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredient
 	}
 
 
-
+	float totalSize{};
 	part1->SetPosition(0, 0);
-	part2->SetPosition(part1->GetSize().x, 0);
-	part3->SetPosition(part1->GetSize().x * 2, 0);
-	part4->SetPosition(part1->GetSize().x * 3, 0);
+	totalSize += part1->GetSize().x;
+	//part2->SetPosition(part1->GetSize().x, 0);
+	part2->SetPosition(totalSize, 0);
+	totalSize += part2->GetSize().x;
+	//part3->SetPosition(part1->GetSize().x * 2, 0);
+	part3->SetPosition(totalSize, 0);
+	totalSize += part3->GetSize().x;
+	//part4->SetPosition(part1->GetSize().x * 3, 0);
+	part4->SetPosition(totalSize, 0);
+	totalSize += part4->GetSize().x;
 
 
 	totalIngredient->SetDebugDraw(debugDraw);
@@ -1345,8 +1352,10 @@ void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredient
 	part3->SetDebugDraw(debugDraw);
 	part4->SetDebugDraw(debugDraw);
 
+
 	totalIngredient->SetScale(1.8f, 1.8f);
-	totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
+	//totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
+	totalIngredient->SetSize(glm::vec3(totalSize, part1->GetSize().y, 0));
 	totalIngredient->SetTag("Ingredient");
 
 	totalIngredient->SetPosition(pos.x, pos.y);
