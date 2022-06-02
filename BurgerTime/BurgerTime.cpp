@@ -216,22 +216,12 @@ public:
 		 levelBackgroundsCoop.push_back(lvl3coop);
 		 coopScene.Add(lvl3coop);
 
-		/* coopScene.Add(lvl1coop);
-		 coopScene.Add(lvl2coop);
-		 coopScene.Add(lvl3coop);*/
-		 //Make players for levelManager
-		//Set sames valuesComponent for every player
-		 //ValuesComponent* valuesComp = new ValuesComponent();
-		/* auto peterPepperPlayer1 = new GameObject;
-		 peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 peterPepperPlayer1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));*/
+		
 		auto peterPepperPlayer1 = new GameObject;
 		peterPepperPlayer1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		peterPepperPlayer1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer1->GetComponent<SpriteComponent>());
-		//peterPepperPlayer1->AddComponent(valuesComp);
 		 peterPepperPlayer1->AddComponent<ValuesComponent>(new ValuesComponent);
-		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperPlayer1->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer1->SetTag("Player");
 

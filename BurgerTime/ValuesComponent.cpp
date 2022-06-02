@@ -49,3 +49,9 @@ int dae::ValuesComponent::GetScores() const
 {
 	return m_Score;
 }
+
+void dae::ValuesComponent::Reset()
+{
+	m_Lives = 3;
+	m_Score = 0;
+}

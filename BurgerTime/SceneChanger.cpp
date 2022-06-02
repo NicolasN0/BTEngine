@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "Locator.h"
 #include "PeterPepperComponent.h"
+#include "ValuesComponent.h"
 
 namespace dae
 {
@@ -44,6 +45,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "game")
 	{
+		ValuesComponent::Reset();
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
@@ -78,6 +80,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "coop")
 	{
+		ValuesComponent::Reset();
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
@@ -123,6 +126,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "pvp")
 	{
+		ValuesComponent::Reset();
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();

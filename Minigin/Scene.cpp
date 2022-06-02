@@ -92,7 +92,17 @@ void Scene::Update(float dt)
 	{
 		m_Objects.at(i)->Update(dt);
 	}
-	auto end = std::remove_if(m_Objects.begin(), m_Objects.end(), [](auto* object) { return object->isSetToDelete(); });
+	auto end = std::remove_if(m_Objects.begin(), m_Objects.end(), [](auto* object)
+	{
+		if(object->isSetToDelete())
+		{
+			delete object;
+			object = nullptr;
+			return true;
+		}
+		return false;
+		//return object->isSetToDelete();
+	});
 	m_Objects.erase(end, m_Objects.end());
 	
 }

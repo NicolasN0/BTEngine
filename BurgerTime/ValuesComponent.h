@@ -18,6 +18,8 @@ namespace dae
 		int GetLives() const;
 		void SetLives(int lives);
 		int GetScores() const;
+
+		static void Reset();
 	private:
 		static int m_Lives;
 		static int m_Score;

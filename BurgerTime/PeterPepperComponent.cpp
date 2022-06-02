@@ -203,7 +203,8 @@ void dae::PeterPepperComponent::Respawn()
 		m_Parent->SetPosition(m_StartPos);
 	} else
 	{
-		m_Parent->GetComponent<ValuesComponent>()->SetLives(3);
+		//m_Parent->GetComponent<ValuesComponent>()->SetLives(3);
+
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
 }
