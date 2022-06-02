@@ -221,7 +221,7 @@ void dae::BasicEnemyComponent::UpdateDirection()
 				m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
 			}
 
-			//Return so it doesnt constantly checks
+			
 			m_CanSwitch = false;
 			//return;
 			

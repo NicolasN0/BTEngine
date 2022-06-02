@@ -95,7 +95,7 @@ namespace dae
 		Move(PeterPepperComponent* object, glm::vec3 moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {};
 		void Execute(float dt) override
 		{
-			if(m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
+			/*if(m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
 			{
 				if(m_pObject->GetIsOnLadder() == true)
 				{
@@ -128,13 +128,27 @@ namespace dae
 					}
 
 				}
-			}
-
+			}*/
+			m_pObject->SetMoveSpeed(m_MoveSpeed);
 
 		};
 
 		PeterPepperComponent* m_pObject;
 		glm::vec3 m_MoveSpeed;
+	};
+
+	class StopMove : public Command
+	{
+	public:
+		StopMove(PeterPepperComponent* object) : m_pObject(object){};
+		void Execute(float dt) override
+		{
+			
+			m_pObject->SetMoveSpeed(glm::vec3(0,0,0));
+
+		};
+
+		PeterPepperComponent* m_pObject;
 	};
 
 	class MoveHotdog : public Command
@@ -143,7 +157,7 @@ namespace dae
 		MoveHotdog(BasicEnemyComponent* object, glm::vec3 moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {};
 		void Execute(float dt) override
 		{
-			//std::cout << "moveeeee";
+			
 			if (m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
 			{
 				if (m_pObject->GetIsOnLadder() == true)
