@@ -15,6 +15,7 @@ namespace dae
 		void SetSubject(Subject* subject);
 
 		int GetLives() const;
+		void SetLives(int lives);
 		int GetScores() const;
 	private:
 		int m_Lives{3};

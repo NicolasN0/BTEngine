@@ -85,7 +85,7 @@ void dae::BasicEnemyComponent::CheckOverlaps()
 {
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
-		std::cout << "ladder" << std::endl;
+		//std::cout << "ladder" << std::endl;
 		m_IsOnLadder = true;
 	}
 	else
@@ -95,7 +95,7 @@ void dae::BasicEnemyComponent::CheckOverlaps()
 
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Platform"))
 	{
-		std::cout << "platform" << std::endl;
+		//std::cout << "platform" << std::endl;
 		m_IsOnPlatform = true;
 	}
 	else

@@ -90,35 +90,21 @@ void dae::GameObject::SetPosition(float x, float y)
 
 		for(auto c : m_Childs)
 		{
-			//c->SetPosition(GetPosition() + c->GetPosition());
-			//c->SetPosition(c->GetPosition());
+
 			c->UpdatePos();
 		}
 	} else
 	{
 		SetLocalPosition(x, y);
 
-		//m_Transform.SetPosition(x + m_Parent->GetPosition().x, y + m_Parent->GetPosition().y, 0.0f);
+
 
 		m_Transform.SetPosition(GetLocalPosition().x + GetParent()->GetPosition().x, GetLocalPosition().y + GetParent()->GetPosition().y, 0);
 
 
-		//Change size
-	
-
-		/*if (componentSize.x > m_Size.x)
-		{
-			m_Size = (glm::vec3(componentSize.x, m_Size.y, m_Size.z));
-		}
-		if (componentSize.y > m_Size.y)
-		{
-			m_Size = (glm::vec3(m_Size.x, componentSize.y, m_Size.z));
-		}*/
-
 		for (auto c : m_Childs)
 		{
-			//c->SetPosition(GetPosition() + c->GetPosition());
-			//c->SetPosition(c->GetPosition());
+
 			c->UpdatePos();
 
 		}
@@ -133,27 +119,21 @@ void dae::GameObject::SetPosition(glm::vec3 pos)
 
 		for (auto c : m_Childs)
 		{
-			//c->SetPosition(GetPosition() + c->GetPosition());
 
-			//c->SetPosition(c->GetPosition());
 			c->UpdatePos();
 		}
 	}
 	else
 	{
-		//m_Transform.SetPosition(m_Parent->GetPosition() + pos);
 
 		SetLocalPosition(pos.x, pos.y);
 
-		//m_Transform.SetPosition(x + m_Parent->GetPosition().x, y + m_Parent->GetPosition().y, 0.0f);
 
 		m_Transform.SetPosition(GetLocalPosition().x + GetParent()->GetPosition().x, GetLocalPosition().y + GetParent()->GetPosition().y, 0);
 
 		for (auto c : m_Childs)
 		{
-			//c->SetPosition(GetPosition() + c->GetPosition());
 
-			//c->SetPosition(c->GetPosition());
 			c->UpdatePos();
 		}
 	}

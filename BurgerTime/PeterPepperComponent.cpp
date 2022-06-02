@@ -7,7 +7,7 @@
 #include "Scene.h"
 #include "SceneChanger.h"
 #include "ValuesComponent.h"
-dae::PeterPepperComponent::PeterPepperComponent() 
+dae::PeterPepperComponent::PeterPepperComponent() : m_SpriteComp()
 {
 	
 }
@@ -19,7 +19,7 @@ dae::PeterPepperComponent::~PeterPepperComponent()
 
 void dae::PeterPepperComponent::Update(float dt)
 {
-	//std::cout << std::to_string(GetParent()->GetPosition().x) + ' ' + std::to_string(GetParent()->GetPosition().y) << std::endl;
+	
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
 		m_IsOnLadder = true;
@@ -44,6 +44,7 @@ void dae::PeterPepperComponent::Update(float dt)
 	}
 
 	UpdatePos(dt);
+	UpdateSprite(dt);
 }
 
 void dae::PeterPepperComponent::FixedUpdate(float)
@@ -91,13 +92,65 @@ void dae::PeterPepperComponent::UpdatePos(float dt)
 
 		}
 	}
-	//m_Movespeed = glm::vec3(0, 0, 0);
+	
 
 }
 
 void dae::PeterPepperComponent::SetMoveSpeed(glm::vec3 movespeed)
 {
 	m_Movespeed = movespeed;
+}
+
+void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* comp)
+{
+	m_SpriteComp = comp;
+	InitializeSprite();
+}
+
+void dae::PeterPepperComponent::UpdateSprite(float dt)
+{
+	if(m_Movespeed.y == 0 && m_Movespeed.x == 0)
+	{
+		m_SpriteComp->SetPaused(true);
+	} else
+	{
+		m_SpriteComp->SetPaused(false);
+	}
+
+	if(m_Movespeed.y > 0)
+	{
+		//set framerow
+		m_SpriteComp->SetFrameRow(0);
+		m_SpriteComp->SetNumberOfFrames(3);
+		m_SpriteComp->SetStartFrame(0);
+		//m_SpriteComp->SetFlip(false);
+
+	} else if(m_Movespeed.y < 0)
+	{
+		m_SpriteComp->SetFrameRow(0);
+		m_SpriteComp->SetNumberOfFrames(3);
+		m_SpriteComp->SetStartFrame(6);
+		//m_SpriteComp->SetFlip(false);
+	} else if(m_Movespeed.x > 0)
+	{
+		m_SpriteComp->SetFrameRow(0);
+		m_SpriteComp->SetNumberOfFrames(3);
+		m_SpriteComp->SetStartFrame(9);
+		//m_SpriteComp->SetFlip(true);
+		//if(!m_IsFlipped)
+		//{
+		//	m_SpriteComp->SetFlip(true);
+		//	//m_IsFlipped = true;
+		//} 
+	
+	}
+	else if (m_Movespeed.x < 0)
+	{
+		m_SpriteComp->SetFrameRow(0);
+		m_SpriteComp->SetNumberOfFrames(3);
+		m_SpriteComp->SetStartFrame(3);
+		//m_SpriteComp->SetFlip(false);
+	}
 }
 
 void dae::PeterPepperComponent::Respawn()
@@ -109,7 +162,14 @@ void dae::PeterPepperComponent::Respawn()
 		m_Parent->SetPosition(m_StartPos);
 	} else
 	{
+		m_Parent->GetComponent<ValuesComponent>()->SetLives(3);
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
+}
+
+void dae::PeterPepperComponent::InitializeSprite()
+{
+	std::vector<int> framesPerRow{ 9,9,6,6,6,6,6,6,3,6,9 };
+	m_SpriteComp->SetFramesPerRow(framesPerRow);
 }
 

@@ -1,5 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
+#include "SpriteComponent.h"
+
 namespace dae
 {
 	class PeterPepperComponent :
@@ -21,15 +23,23 @@ namespace dae
 
 		void UpdatePos(float dt);
 		void SetMoveSpeed(glm::vec3 movespeed);
+
+		void SetSpriteComp(SpriteComponent* comp);
 	private:
+		void UpdateSprite(float dt);
 		void Respawn();
+		void InitializeSprite();
 
 		glm::vec3 m_Movespeed;
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
-		glm::vec3 m_StartPos{ 250 ,250,0 };
+		glm::vec3 m_StartPos{ 250 ,253,0 };
 
 		bool m_NextLevelTest{};
+
+		SpriteComponent* m_SpriteComp;
+
+		bool m_IsFlipped{};
 	
 	};
 	

@@ -185,6 +185,7 @@
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="PeterPepperComponent.cpp" />
     <ClCompile Include="SelectorComponent.cpp" />
+    <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="ValuesComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +203,7 @@
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="PeterPepperComponent.h" />
     <ClInclude Include="SelectorComponent.h" />
+    <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="ValuesComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

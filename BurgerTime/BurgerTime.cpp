@@ -140,9 +140,13 @@ public:
 		 //Make players for levelManager
 		//Set sames valuesComponent for every player
 		 auto peterPepperP1 = new GameObject;
+
+		 peterPepperP1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png",15,11));
 		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperP1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperP1->GetComponent<SpriteComponent>());
+		 //peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
 		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
+		 peterPepperP1->SetScale(1.5f, 1.5f);
 		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperP1->SetTag("Player");
 
@@ -313,42 +317,6 @@ public:
 
 
 
-
-
-
-
-
-
-#pragma region player2
-		 ////PETERPEPPERPLAYER2
-
-		 //auto peterPepperP2 = std::make_shared<GameObject>();
-		 //peterPepperP2->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 //peterPepperP2->SetPosition(10, 400);
-		 ////commands
-		 //Input::GetInstance().BindKey({ ButtonStates::buttonDown,SDLK_k,1 }, std::make_unique<DamagePlayer>(peterPepperP2->GetComponent<PeterPepperComponent>()));
-
-		 ////HealthDisplayObject
-		 //go = std::make_shared<GameObject>();
-		 //TextComponent* healthDisplayCompP2 = new TextComponent("Lingua.otf", 20);
-		 //go->AddComponent(healthDisplayCompP2);
-		 //healthDisplayCompP2->SetText("Lives");
-		 //go->SetPosition(10, 375);
-		 //scene.Add(go);
-		 ////ScoreDisplayObject
-		 //go = std::make_shared<GameObject>();
-		 //TextComponent* ScoreDisplayCompP2 = new TextComponent("Lingua.otf", 20);
-		 //go->AddComponent(ScoreDisplayCompP2);
-		 //ScoreDisplayCompP2->SetText("Scores");
-		 //go->SetPosition(10, 350);
-		 //scene.Add(go);
-
-		 //Subject* peterPepperSubjectP2 = new Subject;
-		 //peterPepperSubjectP2->AddObserver(new HealthObserver(healthDisplayCompP2));
-		 //peterPepperSubjectP2->AddObserver(new ScoreObserver(ScoreDisplayCompP2));
-		 //peterPepperP2->SetSubject(peterPepperSubjectP2);
-		 //scene.Add(peterPepperP2);
-#pragma endregion player2
 
 
 #pragma region audio

@@ -37,6 +37,11 @@ int dae::ValuesComponent::GetLives() const
 	return m_Lives;
 }
 
+void dae::ValuesComponent::SetLives(int lives)
+{
+	m_Lives = lives;
+}
+
 int dae::ValuesComponent::GetScores() const
 {
 	return m_Score;
