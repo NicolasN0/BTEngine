@@ -25,8 +25,12 @@ dae::GameObject::~GameObject()
 {
 	for (auto component : m_pComponents) 
 	{
-		delete component;
-		component = nullptr;
+		if(component)
+		{
+			
+			delete component;
+			component = nullptr;
+		}
 	}
 
 	size_t sizeChild = m_Childs.size();
@@ -47,6 +51,12 @@ void dae::GameObject::Update(float dt)
 		component->Update(dt);
 	}
 
+	size_t size = m_Childs.size();
+	for(size_t i = 0; i < size;i++)
+	{
+		m_Childs.at(i)->Update(dt);
+	}
+
 	
 }
 
@@ -64,6 +74,12 @@ void dae::GameObject::Render() const
 		{
 			component->Render();
 
+		}
+
+		size_t size = m_Childs.size();
+		for (size_t i = 0; i < size; i++)
+		{
+			m_Childs.at(i)->Render();
 		}
 
 		//Put in draw Rect debug code?

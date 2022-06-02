@@ -2,6 +2,8 @@
 #include "MonoBehaviour.h"
 #include "SpriteComponent.h"
 
+class Audio;
+
 namespace dae
 {
 	class PeterPepperComponent :
@@ -44,7 +46,8 @@ namespace dae
 		bool m_IsFlipped{};
 
 		bool m_IsFacingRight{};
-	
+
+		Audio* m_AudioService;
 	};
 	
 }

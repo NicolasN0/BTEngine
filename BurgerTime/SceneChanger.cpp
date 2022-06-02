@@ -2,6 +2,7 @@
 
 #include "Commands.h"
 #include "InputManager.h"
+#include "Locator.h"
 #include "PeterPepperComponent.h"
 
 namespace dae
@@ -9,10 +10,25 @@ namespace dae
 	
 void SceneChanger::SetCurrentScene(std::string name)
 {
+	Audio* audioService = Locator::getAudio();
+	//Music
+	/*audioService->LoadMusic("../Data/Sounds/Start.mp3");
+	audioService->SetMusicVolume(5);
+	audioService->PlayMusic();*/
+
+
+	/*audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
+	audioService->SetMusicVolume(5);
+	audioService->PlayMusic();*/
+	
+
 	dae::Input::GetInstance().ClearKeys();
 	//dae::Input::GetInstance().SetClear(true);
 	if(name == "start")
 	{
+		audioService->LoadMusic("../Data/Sounds/Start.mp3");
+		audioService->SetMusicVolume(5);
+		audioService->PlayMusic();
 		for (auto o : m_ControlObjects)
 		{
 			if (o->GetTag() == "Indicator")
@@ -28,6 +44,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "game")
 	{
+		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
+		audioService->SetMusicVolume(5);
+		audioService->PlayMusic();
 		for(auto o : m_ControlObjects)
 		{
 			if(o->GetTag() == "Player")
@@ -59,6 +78,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "coop")
 	{
+		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
+		audioService->SetMusicVolume(5);
+		audioService->PlayMusic();
 		int count{};
 		for (auto o : m_ControlObjects)
 		{
@@ -101,6 +123,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "pvp")
 	{
+		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
+		audioService->SetMusicVolume(5);
+		audioService->PlayMusic();
 		int count{};
 		for (auto o : m_ControlObjects)
 		{

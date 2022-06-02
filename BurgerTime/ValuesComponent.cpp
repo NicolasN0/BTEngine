@@ -1,6 +1,9 @@
 #include "ValuesComponent.h"
 #include "Observer.h"
 
+int dae::ValuesComponent::m_Lives{ 3 };
+int dae::ValuesComponent::m_Score{};
+
 dae::ValuesComponent::~ValuesComponent()
 {
 	delete m_Subject;

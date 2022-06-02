@@ -4,6 +4,7 @@
 
 dae::Subject::~Subject()
 {
+
 	for(auto observer : m_Observers)
 	{
 		delete observer;

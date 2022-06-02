@@ -1,5 +1,7 @@
 #pragma once
 #include <MonoBehaviour.h>
+class Audio;
+
 namespace dae
 {
 	class IngredientPartComponent :
@@ -19,6 +21,8 @@ namespace dae
 	private:
 		bool m_IsPressed;
 		float m_HeightDiff;
+
+		Audio* m_AudioService;
 	};
 	
 }

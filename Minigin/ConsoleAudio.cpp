@@ -6,6 +6,7 @@ ConsoleAudio::ConsoleAudio()
 	: m_Running( true )
 {
 	Initialize();
+
 }
 
 void ConsoleAudio::Update()
@@ -81,6 +82,7 @@ void ConsoleAudio::ResumeMusic()
 
 int ConsoleAudio::LoadSound(const char* file)
 {
+
 	m_Sounds.push_back(Mix_LoadWAV(file));
 	return int(m_Sounds.size()) - 1;
 

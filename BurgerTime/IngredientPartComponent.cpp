@@ -4,9 +4,11 @@
 #include <iostream>
 
 #include "IngredientComponent.h"
+#include "Locator.h"
 
 dae::IngredientPartComponent::IngredientPartComponent() : m_IsPressed(), m_HeightDiff(5.f)
 {
+	m_AudioService = Locator::getAudio();
 }
 
 void dae::IngredientPartComponent::Update(float dt)
@@ -37,6 +39,11 @@ bool dae::IngredientPartComponent::GetIsPressed() const
 
 void dae::IngredientPartComponent::SetIsPressed(bool isPressed)
 {
+	m_AudioService->SetEffectVolume(10);
+	int soundId;
+	soundId = m_AudioService->LoadSound("../Data/Sounds/Press.wav");
+	m_AudioService->playSound(soundId);
+
 	m_IsPressed = isPressed;
 	GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y + m_HeightDiff);
 	//Only now check for totalcount in ingredient self

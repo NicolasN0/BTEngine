@@ -4,14 +4,15 @@
 #include <iostream>
 
 #include "BasicEnemyComponent.h"
+#include "Locator.h"
 #include "Observer.h"
 #include "SaltComponent.h"
 #include "Scene.h"
 #include "SceneChanger.h"
 #include "ValuesComponent.h"
-dae::PeterPepperComponent::PeterPepperComponent() : m_SpriteComp()
+dae::PeterPepperComponent::PeterPepperComponent() : m_SpriteComp(), m_AudioService()
 {
-	
+	m_AudioService = Locator::getAudio();
 }
 
 dae::PeterPepperComponent::~PeterPepperComponent()
@@ -124,6 +125,14 @@ void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* comp)
 
 void dae::PeterPepperComponent::ThrowSalt()
 {
+
+
+	m_AudioService->SetEffectVolume(10);
+	int soundId;
+	soundId = m_AudioService->LoadSound("../Data/Sounds/Salt.wav");
+	m_AudioService->playSound(soundId);
+
+
 	GameObject* salt = new GameObject;
 	salt->AddComponent<SaltComponent>(new SaltComponent());
 	salt->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));

@@ -398,17 +398,17 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		MakeIngredient(glm::vec3(130, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
 
 
-		MakeIngredient(glm::vec3(215, 115, 0), EIngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(215, 110, 0), EIngredientType::Bun, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(215, 250, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(215, 305, 0), EIngredientType::Patty, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(215, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
 
-		MakeIngredient(glm::vec3(300, 115, 0), EIngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(300, 110, 0), EIngredientType::Bun, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(300, 165, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(300, 250, 0), EIngredientType::Patty, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(300, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
 
-		MakeIngredient(glm::vec3(387, 115, 0), EIngredientType::Bun, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(387, 110, 0), EIngredientType::Bun, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(387, 220, 0), EIngredientType::Patty, m_Scene, false, m_Players);
 		MakeIngredient(glm::vec3(387, 280, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);

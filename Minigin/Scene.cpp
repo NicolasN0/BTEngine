@@ -72,7 +72,7 @@ void Scene::Add(GameObject* object)
 	//Add all child objects
 	for(auto c : object->GetChilds())
 	{
-		m_Objects.push_back(c);
+		//m_Objects.push_back(c);
 		c->SetScene(this);
 	}
 	

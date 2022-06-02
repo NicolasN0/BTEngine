@@ -111,7 +111,7 @@ public:
 
 		 std::vector<GameObject*> players;
 		 std::vector<GameObject*> levelBackgrounds;
-		 std::vector<GameObject*> playerEnemyPvp;
+		 std::vector<GameObject*> playerEnemy;
 		 MakeGameBackground(scene);
 
 		 //Add all the levelbackgrounds
@@ -179,7 +179,7 @@ public:
 
 		//Make LevelManager
 		 auto manager = new GameObject;
-		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players, playerEnemyPvp, levelBackgrounds));
+		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players, playerEnemy, levelBackgrounds));
 		 scene.Add(manager);
 
 		//Do after rest otherwise invis
@@ -190,15 +190,38 @@ public:
 #pragma region CoopScene
 		 auto& coopScene = dae::SceneManager::GetInstance().CreateScene("coop");
 
+		 std::vector<GameObject*> playerEnemyCoop;
 		 std::vector<GameObject*> playersCoop;
 		 MakeGameBackground(coopScene);
 
-		 coopScene.Add(lvl1);
-		 coopScene.Add(lvl2);
-		 coopScene.Add(lvl3);
+		 std::vector<GameObject*> levelBackgroundsCoop;
+		 auto lvl1coop = new GameObject;
+		 lvl1coop->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
+		 lvl1coop->SetPosition(100, 100);
+		 lvl1coop->SetScale(1.8f, 1.8f);
+		 levelBackgroundsCoop.push_back(lvl1coop);
+		 coopScene.Add(lvl1coop);
+
+		 auto lvl2coop = new GameObject;
+		 lvl2coop->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level2.png"));
+		 lvl2coop->SetPosition(100, 100);
+		 lvl2coop->SetScale(1.8f, 1.8f);
+		 levelBackgroundsCoop.push_back(lvl2coop);
+		 coopScene.Add(lvl2coop);
+
+		 auto lvl3coop = new GameObject;
+		 lvl3coop->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level3.png"));
+		 lvl3coop->SetPosition(100, 100);
+		 lvl3coop->SetScale(1.8f, 1.8f);
+		 levelBackgroundsCoop.push_back(lvl3coop);
+		 coopScene.Add(lvl3coop);
+
+		/* coopScene.Add(lvl1coop);
+		 coopScene.Add(lvl2coop);
+		 coopScene.Add(lvl3coop);*/
 		 //Make players for levelManager
 		//Set sames valuesComponent for every player
-		 ValuesComponent* valuesComp = new ValuesComponent();
+		 //ValuesComponent* valuesComp = new ValuesComponent();
 		/* auto peterPepperPlayer1 = new GameObject;
 		 peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperPlayer1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));*/
@@ -206,7 +229,8 @@ public:
 		peterPepperPlayer1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		peterPepperPlayer1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer1->GetComponent<SpriteComponent>());
-		 peterPepperPlayer1->AddComponent(valuesComp);
+		//peterPepperPlayer1->AddComponent(valuesComp);
+		 peterPepperPlayer1->AddComponent<ValuesComponent>(new ValuesComponent);
 		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperPlayer1->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer1->SetTag("Player");
@@ -215,7 +239,8 @@ public:
 		 peterPepperPlayer2->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 peterPepperPlayer2->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperPlayer2->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer2->GetComponent<SpriteComponent>());
-		 peterPepperPlayer2->AddComponent(valuesComp);
+		 peterPepperPlayer2->AddComponent<ValuesComponent>(new ValuesComponent);
+		 //peterPepperPlayer2->AddComponent(valuesComp);
 		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperPlayer2->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer2->SetTag("Player");
@@ -242,15 +267,18 @@ public:
 		 coopScene.Add(scoreCoop);
 
 
-		 Subject* ValuesSubjectCoop = new Subject;
-		 ValuesSubjectCoop->AddObserver(new HealthObserver(healthDisplayCompCoop));
-		 ValuesSubjectCoop->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
-		 peterPepperPlayer1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
-		 peterPepperPlayer2->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
+		 Subject* ValuesSubjectCoopP1 = new Subject;
+		 Subject* ValuesSubjectCoopP2 = new Subject;
+		 ValuesSubjectCoopP1->AddObserver(new HealthObserver(healthDisplayCompCoop));
+		 ValuesSubjectCoopP1->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
+		 ValuesSubjectCoopP2->AddObserver(new HealthObserver(healthDisplayCompCoop));
+		 ValuesSubjectCoopP2->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
+		 peterPepperPlayer1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoopP1);
+		 peterPepperPlayer2->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoopP2);
 
 		 //Make LevelManager
 		 auto managerCoop = new GameObject;
-		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, playerEnemyPvp, levelBackgrounds));
+		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, playerEnemyCoop, levelBackgroundsCoop));
 		 coopScene.Add(managerCoop);
 
 		 //Do after rest otherwise invis
@@ -262,12 +290,39 @@ public:
 #pragma region PvpScene
 		 auto& pvpScene = dae::SceneManager::GetInstance().CreateScene("pvp");
 
+		 std::vector<GameObject*> playerEnemyPvp;
 		 std::vector<GameObject*> playersPvp;
 		/* std::vector<GameObject*> playerEnemyPvp;*/
 		 MakeGameBackground(pvpScene);
-		 pvpScene.Add(lvl1);
+
+		 std::vector<GameObject*> levelBackgroundsPvp;
+		 auto lvl1Pvp = new GameObject;
+		 lvl1Pvp->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
+		 lvl1Pvp->SetPosition(100, 100);
+		 lvl1Pvp->SetScale(1.8f, 1.8f);
+		 levelBackgroundsPvp.push_back(lvl1Pvp);
+		 pvpScene.Add(lvl1Pvp);
+
+		 auto lvl2Pvp = new GameObject;
+		 lvl2Pvp->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level2.png"));
+		 lvl2Pvp->SetPosition(100, 100);
+		 lvl2Pvp->SetScale(1.8f, 1.8f);
+		 levelBackgroundsPvp.push_back(lvl2Pvp);
+		 pvpScene.Add(lvl2Pvp);
+
+		 auto lvl3Pvp = new GameObject;
+		 lvl3Pvp->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level3.png"));
+		 lvl3Pvp->SetPosition(100, 100);
+		 lvl3Pvp->SetScale(1.8f, 1.8f);
+		 levelBackgroundsPvp.push_back(lvl3Pvp);
+		 pvpScene.Add(lvl3Pvp);
+
+		 /*pvpScene.Add(lvl1coop);
+		 pvpScene.Add(lvl2coop);
+		 pvpScene.Add(lvl3coop);*/
+		/* pvpScene.Add(lvl1);
 		 pvpScene.Add(lvl2);
-		 pvpScene.Add(lvl3);
+		 pvpScene.Add(lvl3);*/
 		 //Make players for levelManager
 		//Set sames valuesComponent for every player
 		 ValuesComponent* valuesCompPvp = new ValuesComponent();
@@ -275,7 +330,7 @@ public:
 		 peterPepperPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 peterPepperPvp->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperPvp->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPvp->GetComponent<SpriteComponent>());
-		 peterPepperPvp->AddComponent(valuesComp);
+		 peterPepperPvp->AddComponent(valuesCompPvp);
 		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperPvp->SetScale(1.5f, 1.5f);
 		 peterPepperPvp->SetTag("Player");
@@ -311,13 +366,13 @@ public:
 
 
 		 Subject* ValuesSubjectPvp = new Subject;
-		 ValuesSubjectPvp->AddObserver(new HealthObserver(healthDisplayCompCoop));
-		 ValuesSubjectPvp->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
-		 peterPepperPvp->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoop);
+		 ValuesSubjectPvp->AddObserver(new HealthObserver(healthPvpComp));
+		 ValuesSubjectPvp->AddObserver(new ScoreObserver(scorePvpComp));
+		 peterPepperPvp->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectPvp);
 
 		 //Make LevelManager
 		 auto managerPvp = new GameObject;
-		 managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp, playerEnemyPvp,levelBackgrounds));
+		 managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp, playerEnemyPvp, levelBackgroundsPvp));
 		 pvpScene.Add(managerPvp);
 
 		 //Do after rest otherwise invis
