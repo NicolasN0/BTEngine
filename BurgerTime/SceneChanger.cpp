@@ -43,6 +43,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_w,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 
+				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_f,1 }, std::make_unique<Throw>(o->GetComponent<PeterPepperComponent>()));
 				//Next Level Test
 				Input::GetInstance().BindKey({ButtonStates::buttonUp,SDLK_k,1 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 				break;

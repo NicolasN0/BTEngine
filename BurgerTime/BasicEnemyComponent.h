@@ -39,13 +39,19 @@ namespace dae
 		void SetSpriteComp(SpriteComponent* comp);
 
 		void SetDirection(glm::vec3 movespeed);
-		
+
+		void SetStunned(bool stunned);
+		bool GetStunned() const;
 	private:
 		void CheckOverlaps();
 		void UpdatePos(float dt);
 		void UpdateDirection();
 		
 		void UpdateSprite();
+
+		bool m_Stunned;
+		float m_StunTimer;
+		float m_MaxStunTime;
 
 		glm::vec3 m_PlayerDir;
 		bool m_IsOnLadder{};

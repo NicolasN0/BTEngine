@@ -2,7 +2,7 @@
 #include "ValuesComponent.h"
 #include <iostream>
 
-dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp()
+dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp(),m_Stunned(),m_StunTimer(),m_MaxStunTime(2)
 {
 }
 
@@ -10,15 +10,29 @@ void dae::BasicEnemyComponent::Update(float dt)
 {
 	if(m_Falling == false)
 	{
-		CheckOverlaps();
-		if(m_IsPlayer == false)
+		if(!m_Stunned)
 		{
+			
+			CheckOverlaps();
+			if(m_IsPlayer == false)
+			{
 
-			UpdateDirection();
+				UpdateDirection();
+			}
+			UpdatePos(dt);
 		}
-		UpdatePos(dt);
 		UpdateSprite();
 		
+	}
+
+	if(m_Stunned)
+	{
+		m_StunTimer += dt;
+		if(m_StunTimer > m_MaxStunTime)
+		{
+			m_Stunned = false;
+			m_StunTimer = 0;
+		}
 	}
 	
 
@@ -96,6 +110,17 @@ void dae::BasicEnemyComponent::SetDirection(glm::vec3 movespeed)
 	std::cout << "applies";
 	//m_PlayerDir = movespeed;
 	m_Direction = movespeed;
+}
+
+void dae::BasicEnemyComponent::SetStunned(bool stunned)
+{
+	m_Stunned = stunned;
+	m_Direction = glm::vec3(0, 0, 0);
+}
+
+bool dae::BasicEnemyComponent::GetStunned() const
+{
+	return m_Stunned;
 }
 
 void dae::BasicEnemyComponent::CheckOverlaps()
@@ -248,7 +273,14 @@ void dae::BasicEnemyComponent::UpdateDirection()
 
 void dae::BasicEnemyComponent::UpdateSprite()
 {
-	if (m_Direction.y == 0 && m_Direction.x == 0)
+	if(m_Stunned)
+	{
+		m_SpriteComp->SetFrameRow(3);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(4);
+	}
+
+	if (m_Direction.y == 0 && m_Direction.x == 0 && m_Stunned == false)
 	{
 		m_SpriteComp->SetPaused(true);
 	}

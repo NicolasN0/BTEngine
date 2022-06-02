@@ -3,7 +3,9 @@
 
 #include <iostream>
 
+#include "BasicEnemyComponent.h"
 #include "Observer.h"
+#include "SaltComponent.h"
 #include "Scene.h"
 #include "SceneChanger.h"
 #include "ValuesComponent.h"
@@ -40,7 +42,11 @@ void dae::PeterPepperComponent::Update(float dt)
 
 	if(m_Parent->IsOverlappingAnyWithTag("Enemy") == true)
 	{
-		Respawn();
+		if(m_Parent->GetFirstOverlappingObjectWithTag("Enemy")->GetComponent<BasicEnemyComponent>()->GetStunned() == false)
+		{
+			
+			Respawn();
+		}
 	}
 
 	UpdatePos(dt);
@@ -99,12 +105,38 @@ void dae::PeterPepperComponent::UpdatePos(float dt)
 void dae::PeterPepperComponent::SetMoveSpeed(glm::vec3 movespeed)
 {
 	m_Movespeed = movespeed;
+	if(m_Movespeed.x < 0)
+	{
+		m_IsFacingRight = false;
+	}
+
+	if( m_Movespeed.x > 0)
+	{
+		m_IsFacingRight = true;
+	}
 }
 
 void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* comp)
 {
 	m_SpriteComp = comp;
 	InitializeSprite();
+}
+
+void dae::PeterPepperComponent::ThrowSalt()
+{
+	GameObject* salt = new GameObject;
+	salt->AddComponent<SaltComponent>(new SaltComponent());
+	salt->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
+	salt->GetComponent<SaltComponent>()->SetSpriteComp(salt->GetComponent<SpriteComponent>());
+	if(m_IsFacingRight)
+	{
+		salt->SetPosition(GetParent()->GetPosition().x + 10, GetParent()->GetPosition().y);
+	}else
+	{
+		salt->SetPosition(GetParent()->GetPosition().x - 10, GetParent()->GetPosition().y);
+	}
+	salt->SetScale(1.5f, 1.5f);
+	GetParent()->GetScene()->Add(salt);
 }
 
 void dae::PeterPepperComponent::UpdateSprite(float dt)

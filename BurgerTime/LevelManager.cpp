@@ -1379,6 +1379,7 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 	//HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 	//HotDog->SetPosition(300, 250);
 	HotDog->SetPosition(pos);
+	HotDog->SetScale(1.5f, 1.5f);
 	HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(m_Players.at(0));
 	HotDog->SetTag("Enemy");
 	m_LevelObjects.push_back(HotDog);

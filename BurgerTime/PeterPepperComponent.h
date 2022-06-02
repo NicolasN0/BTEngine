@@ -25,6 +25,8 @@ namespace dae
 		void SetMoveSpeed(glm::vec3 movespeed);
 
 		void SetSpriteComp(SpriteComponent* comp);
+
+		void ThrowSalt();
 	private:
 		void UpdateSprite(float dt);
 		void Respawn();
@@ -40,6 +42,8 @@ namespace dae
 		SpriteComponent* m_SpriteComp;
 
 		bool m_IsFlipped{};
+
+		bool m_IsFacingRight{};
 	
 	};
 	

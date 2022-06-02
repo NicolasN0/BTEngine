@@ -88,6 +88,21 @@ namespace dae
 
 	};
 
+	class Throw : public Command
+	{
+	public:
+		Throw(PeterPepperComponent* object) : m_pObject(object){};
+		void Execute(float dt) override
+		{
+			//Throw salt
+			m_pObject->ThrowSalt();
+
+		};
+
+		PeterPepperComponent* m_pObject;
+		
+	};
+
 #pragma region movement
 	class Move : public Command
 	{

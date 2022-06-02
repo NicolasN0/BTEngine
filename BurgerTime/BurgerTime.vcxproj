@@ -181,6 +181,7 @@
     <ClCompile Include="MovingState.cpp" />
     <ClCompile Include="PeterPepperState.cpp" />
     <ClCompile Include="PlayerInputComponent.cpp" />
+    <ClCompile Include="SaltComponent.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
     <ClCompile Include="PeterPepperComponent.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="MovingState.h" />
     <ClInclude Include="PeterPepperState.h" />
     <ClInclude Include="PlayerInputComponent.h" />
+    <ClInclude Include="SaltComponent.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="ScoreObserver.h" />
     <ClInclude Include="PeterPepperComponent.h" />
