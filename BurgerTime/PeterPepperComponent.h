@@ -33,7 +33,7 @@ namespace dae
 		glm::vec3 m_Movespeed;
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
-		glm::vec3 m_StartPos{ 250 ,253,0 };
+		glm::vec3 m_StartPos{ 110 ,100,0 };
 
 		bool m_NextLevelTest{};
 

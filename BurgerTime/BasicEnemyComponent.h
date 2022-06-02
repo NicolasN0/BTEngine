@@ -1,5 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
+#include "SpriteComponent.h"
+
 namespace dae
 {
 	enum class EEnemyType
@@ -33,13 +35,19 @@ namespace dae
 		void Kill();
 
 		void SetSubject(Subject* subject);
+
+		void SetSpriteComp(SpriteComponent* comp);
+
+		void SetDirection(glm::vec3 movespeed);
 		
 	private:
 		void CheckOverlaps();
 		void UpdatePos(float dt);
 		void UpdateDirection();
-
 		
+		void UpdateSprite();
+
+		glm::vec3 m_PlayerDir;
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
 		bool m_Falling{};
@@ -51,6 +59,8 @@ namespace dae
 
 		EEnemyType m_Type;
 		bool m_IsPlayer{};
+
+		SpriteComponent* m_SpriteComp;
 
 		
 	};

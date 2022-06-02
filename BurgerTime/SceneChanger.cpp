@@ -25,7 +25,8 @@ void SceneChanger::SetCurrentScene(std::string name)
 		}
 		SceneManager::GetInstance().SetCurrentScene(name);
 		
-	} else if(name == "game")
+	}
+	else if(name == "game")
 	{
 		for(auto o : m_ControlObjects)
 		{
@@ -69,6 +70,10 @@ void SceneChanger::SetCurrentScene(std::string name)
 					Input::GetInstance().BindKey({ ButtonStates::buttonPressed,ControllerButton::DpadUp,0 }, std::make_unique<Move>(o->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
 					Input::GetInstance().BindKey({ ButtonStates::buttonPressed,ControllerButton::DpadDown,0 }, std::make_unique<Move>(o->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));
 
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadLeft,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadRight,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadUp,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadDown,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonX,0 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 					
@@ -80,6 +85,10 @@ void SceneChanger::SetCurrentScene(std::string name)
 					Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<Move>(o->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
 					Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<Move>(o->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));
 
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_a,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_d,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_w,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_k,1 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 				}
@@ -103,6 +112,10 @@ void SceneChanger::SetCurrentScene(std::string name)
 					Input::GetInstance().BindKey({ ButtonStates::buttonPressed,ControllerButton::DpadUp,0 }, std::make_unique<Move>(o->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
 					Input::GetInstance().BindKey({ ButtonStates::buttonPressed,ControllerButton::DpadDown,0 }, std::make_unique<Move>(o->GetComponent<PeterPepperComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));
 
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadLeft,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadRight,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadUp,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadDown,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonX,0 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 
@@ -119,6 +132,10 @@ void SceneChanger::SetCurrentScene(std::string name)
 				Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_w,1 }, std::make_unique<MoveHotdog>(o->GetComponent<BasicEnemyComponent>(), glm::vec3(0.0f, -80.0f, 0.0f)));
 				Input::GetInstance().BindKey({ ButtonStates::buttonPressed,SDLK_s,1 }, std::make_unique<MoveHotdog>(o->GetComponent<BasicEnemyComponent>(), glm::vec3(0.0f, 80.0f, 0.0f)));
 
+				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_a,1 }, std::make_unique<StopMoveHotdog>(o->GetComponent<BasicEnemyComponent>()));
+				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_d,1 }, std::make_unique<StopMoveHotdog>(o->GetComponent<BasicEnemyComponent>()));
+				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_w,1 }, std::make_unique<StopMoveHotdog>(o->GetComponent<BasicEnemyComponent>()));
+				Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<StopMoveHotdog>(o->GetComponent<BasicEnemyComponent>()));
 				//Next Level Test
 			}
 		}

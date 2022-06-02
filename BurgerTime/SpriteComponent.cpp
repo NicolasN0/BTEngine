@@ -109,7 +109,7 @@ void dae::SpriteComponent::SetFrameRow(int row)
 {
 
 	m_Framerow = row;
-	m_NrOfFrames = m_FramesPerRow.at(row);
+	//m_NrOfFrames = m_FramesPerRow.at(row);
 }
 
 void dae::SpriteComponent::SetFramesPerRow(std::vector<int> framesPerRow)

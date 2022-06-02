@@ -158,7 +158,7 @@ namespace dae
 		void Execute(float dt) override
 		{
 			
-			if (m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
+			/*if (m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
 			{
 				if (m_pObject->GetIsOnLadder() == true)
 				{
@@ -191,13 +191,29 @@ namespace dae
 					}
 
 				}
-			}
-
-
+			}*/
+			m_pObject->SetDirection(m_MoveSpeed);
+			
 		};
 
 		BasicEnemyComponent* m_pObject;
 		glm::vec3 m_MoveSpeed;
+	};
+
+	class StopMoveHotdog : public Command
+	{
+	public:
+		StopMoveHotdog(BasicEnemyComponent* object) : m_pObject(object){};
+		void Execute(float dt) override
+		{
+
+			
+			m_pObject->SetDirection(glm::vec3(0,0,0));
+
+		};
+
+		BasicEnemyComponent* m_pObject;
+		
 	};
 
 	class NextLevel : public Command

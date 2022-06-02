@@ -199,18 +199,25 @@ public:
 		 //Make players for levelManager
 		//Set sames valuesComponent for every player
 		 ValuesComponent* valuesComp = new ValuesComponent();
-		 auto peterPepperPlayer1 = new GameObject;
+		/* auto peterPepperPlayer1 = new GameObject;
 		 peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 peterPepperPlayer1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperPlayer1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));*/
+		auto peterPepperPlayer1 = new GameObject;
+		peterPepperPlayer1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
+		peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		peterPepperPlayer1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer1->GetComponent<SpriteComponent>());
 		 peterPepperPlayer1->AddComponent(valuesComp);
 		 //peterPepperP1->SetPosition(190, 250);
+		 peterPepperPlayer1->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer1->SetTag("Player");
 
 		 auto peterPepperPlayer2 = new GameObject;
+		 peterPepperPlayer2->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 peterPepperPlayer2->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 peterPepperPlayer2->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperPlayer2->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer2->GetComponent<SpriteComponent>());
 		 peterPepperPlayer2->AddComponent(valuesComp);
 		 //peterPepperP1->SetPosition(190, 250);
+		 peterPepperPlayer2->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer2->SetTag("Player");
 
 		 playersCoop.push_back(peterPepperPlayer1);
@@ -265,16 +272,19 @@ public:
 		//Set sames valuesComponent for every player
 		 ValuesComponent* valuesCompPvp = new ValuesComponent();
 		 auto peterPepperPvp = new GameObject;
+		 peterPepperPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 peterPepperPvp->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		 peterPepperPvp->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
+		 peterPepperPvp->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPvp->GetComponent<SpriteComponent>());
 		 peterPepperPvp->AddComponent(valuesComp);
 		 //peterPepperP1->SetPosition(190, 250);
+		 peterPepperPvp->SetScale(1.5f, 1.5f);
 		 peterPepperPvp->SetTag("Player");
 
 		 auto hotdogPvp = new GameObject;
+		 hotdogPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog,true));
-		 hotdogPvp->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
-		 //peterPepperP1->SetPosition(190, 250);
+		 //hotdogPvp->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
+		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetSpriteComp(hotdogPvp->GetComponent<SpriteComponent>());
 		 hotdogPvp->SetTag("Enemy");
 
 		 playersPvp.push_back(peterPepperPvp);

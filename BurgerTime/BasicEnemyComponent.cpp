@@ -2,7 +2,7 @@
 #include "ValuesComponent.h"
 #include <iostream>
 
-dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer)
+dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp()
 {
 }
 
@@ -15,11 +15,12 @@ void dae::BasicEnemyComponent::Update(float dt)
 		{
 
 			UpdateDirection();
-			UpdatePos(dt);
 		}
-
+		UpdatePos(dt);
+		UpdateSprite();
 		
 	}
+	
 
 
 }
@@ -79,6 +80,22 @@ void dae::BasicEnemyComponent::Kill()
 void dae::BasicEnemyComponent::SetSubject(Subject* subject)
 {
 	m_Subject = subject;
+}
+
+void dae::BasicEnemyComponent::SetSpriteComp(SpriteComponent* comp)
+{
+	m_SpriteComp = comp;
+	//Give starting frame
+	m_SpriteComp->SetFrameRow(2);
+	m_SpriteComp->SetNumberOfFrames(2);
+	m_SpriteComp->SetStartFrame(0);
+}
+
+void dae::BasicEnemyComponent::SetDirection(glm::vec3 movespeed)
+{
+	std::cout << "applies";
+	//m_PlayerDir = movespeed;
+	m_Direction = movespeed;
 }
 
 void dae::BasicEnemyComponent::CheckOverlaps()
@@ -226,5 +243,48 @@ void dae::BasicEnemyComponent::UpdateDirection()
 			//return;
 			
 		}
+	}
+}
+
+void dae::BasicEnemyComponent::UpdateSprite()
+{
+	if (m_Direction.y == 0 && m_Direction.x == 0)
+	{
+		m_SpriteComp->SetPaused(true);
+	}
+	else
+	{
+		m_SpriteComp->SetPaused(false);
+	}
+
+	if (m_Direction.y > 0)
+	{
+	
+		m_SpriteComp->SetFrameRow(2);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(0);
+		
+
+	}
+	else if (m_Direction.y < 0)
+	{
+		m_SpriteComp->SetFrameRow(2);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(4);
+	}
+	else if (m_Direction.x > 0)
+	{
+		m_SpriteComp->SetFrameRow(2);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(2);
+		
+
+	}
+	else if (m_Direction.x < 0)
+	{
+		m_SpriteComp->SetFrameRow(2);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(2);
+		
 	}
 }
