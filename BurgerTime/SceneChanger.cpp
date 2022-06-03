@@ -209,7 +209,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonX,0 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 
-					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::ButtonA,1 }, std::make_unique<Throw>(o->GetComponent<PeterPepperComponent>()));
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::ButtonA,0 }, std::make_unique<Throw>(o->GetComponent<PeterPepperComponent>()));
 
 
 				}

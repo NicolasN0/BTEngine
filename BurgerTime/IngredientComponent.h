@@ -7,12 +7,12 @@
 
 enum class EIngredientType
 {
-	Bun,
-	BunBottom,
-	Patty,
-	Cheese,
-	Lettuce,
-	Tomato
+	Bun = 0,
+	BunBottom = 1,
+	Patty = 2,
+	Cheese = 3,
+	Lettuce = 4,
+	Tomato = 5
 };
 
 namespace dae
