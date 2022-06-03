@@ -63,103 +63,7 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
-	//auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
-	////Background
-	//auto go = std::make_shared<dae::GameObject>();
-	//go->AddComponent<dae::TextureComponent>(new dae::TextureComponent("background.jpg"));
-	//scene.Add(go);
-
-	////Header
-	//go = std::make_shared<dae::GameObject>();
-	//go->AddComponent<TextureComponent>(new TextureComponent("logo.png"));
-	//go->SetPosition(216, 180);
-	//scene.Add(go);
-
-	////FPS COUNTER
-	//go = std::make_shared<GameObject>();
-	//go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 20, SDL_Color{ 255,255,0 }));
-	//go->GetComponent<TextComponent>()->SetText("FPS");
-	//go->AddComponent<FPSComponent>(new FPSComponent());
-	//scene.Add(go);
-
-
-	//go = std::make_shared<GameObject>();
-	//go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 36));
-	//go->GetComponent<TextComponent>()->SetText("Programming 4 Assignment");
-	//go->SetPosition(80, 20);
-
-	//scene.Add(go);
-
-	////PeterPepper Player1
-	//auto peterPepperP1 = std::make_shared<GameObject>();
-	//peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-	//peterPepperP1->SetPosition(10, 400);
-	////commands
-	//Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonA,0 }, std::make_unique<DamagePlayer>(peterPepperP1->GetComponent<PeterPepperComponent>()));
-
-	////HealthDisplayObject
-	//go = std::make_shared<GameObject>();
-	//TextComponent* healthDisplayComp = new TextComponent("Lingua.otf", 20);
-	//go->AddComponent(healthDisplayComp);
-	//healthDisplayComp->SetText("Lives");
-	//go->SetPosition(10, 225);
-	//scene.Add(go);
-	////ScoreDisplayObject
-	//go = std::make_shared<GameObject>();
-	//TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
-	//go->AddComponent(ScoreDisplayComp);
-	//ScoreDisplayComp->SetText("Scores");
-	//go->SetPosition(10, 200);
-	//scene.Add(go);
-
-	//Subject* peterPepperSubject = new Subject;
-	//peterPepperSubject->AddObserver(new HealthObserver(healthDisplayComp));
-	//peterPepperSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
-	//peterPepperP1->SetSubject(peterPepperSubject);
-	//scene.Add(peterPepperP1);
-
-	////PETERPEPPERPLAYER2
-
-	//auto peterPepperP2 = std::make_shared<GameObject>();
-	//peterPepperP2->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-	//peterPepperP2->SetPosition(10, 400);
-	////commands
-	//Input::GetInstance().BindKey({ ButtonStates::buttonDown,SDLK_k,1 }, std::make_unique<DamagePlayer>(peterPepperP2->GetComponent<PeterPepperComponent>()));
-
-	////HealthDisplayObject
-	//go = std::make_shared<GameObject>();
-	//TextComponent* healthDisplayCompP2 = new TextComponent("Lingua.otf", 20);
-	//go->AddComponent(healthDisplayCompP2);
-	//healthDisplayCompP2->SetText("Lives");
-	//go->SetPosition(10, 375);
-	//scene.Add(go);
-	////ScoreDisplayObject
-	//go = std::make_shared<GameObject>();
-	//TextComponent* ScoreDisplayCompP2 = new TextComponent("Lingua.otf", 20);
-	//go->AddComponent(ScoreDisplayCompP2);
-	//ScoreDisplayCompP2->SetText("Scores");
-	//go->SetPosition(10, 350);
-	//scene.Add(go);
-
-	//Subject* peterPepperSubjectP2 = new Subject;
-	//peterPepperSubjectP2->AddObserver(new HealthObserver(healthDisplayCompP2));
-	//peterPepperSubjectP2->AddObserver(new ScoreObserver(ScoreDisplayCompP2));
-	//peterPepperP2->SetSubject(peterPepperSubjectP2);
-	//scene.Add(peterPepperP2);
-
-	//Audio* audioService = Locator::getAudio();
-	////Music
-	//audioService->LoadMusic("../Data/Sounds/Electric_Light_Orchestra_-_Mr_Blue_Sky.mp3");
-	//audioService->SetMusicVolume(5);
-	//audioService->PlayMusic();
-	////Sound
-	//audioService->SetEffectVolume(10);
-	//int soundId;
-	//soundId = audioService->LoadSound("../Data/Sounds/power_up1.wav");
-	//audioService->playSound(soundId);
-	//soundId = audioService->LoadSound("../Data/Sounds/book_page_turn.wav");
-	//audioService->playSound(soundId);
 }
 
 void dae::Minigin::Cleanup()
@@ -180,7 +84,6 @@ void dae::Minigin::Run()
 	Locator::provide(audioService);
 
 	ResourceManager::GetInstance().Init("../Data/");
-
 	std::thread audioThread(&Audio::Update, audioService);
 	LoadGame();
 

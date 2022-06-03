@@ -1,6 +1,7 @@
 #include "SceneChanger.h"
 
 #include "Commands.h"
+#include "HighscoreManager.h"
 #include "InputManager.h"
 #include "Locator.h"
 #include "PeterPepperComponent.h"
@@ -12,16 +13,7 @@ namespace dae
 void SceneChanger::SetCurrentScene(std::string name)
 {
 	Audio* audioService = Locator::getAudio();
-	//Music
-	/*audioService->LoadMusic("../Data/Sounds/Start.mp3");
-	audioService->SetMusicVolume(5);
-	audioService->PlayMusic();*/
 
-
-	/*audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
-	audioService->SetMusicVolume(5);
-	audioService->PlayMusic();*/
-	
 
 	dae::Input::GetInstance().ClearKeys();
 	//dae::Input::GetInstance().SetClear(true);
@@ -75,6 +67,15 @@ void SceneChanger::SetCurrentScene(std::string name)
 	else if(name == "highscore")
 	{
 		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Replay>());
+
+		//Update Highscore screen
+
+		std::vector<TextComponent*> compVec = HighscoreManager::GetInstance().GetTextComponents();
+		std::vector<int> highscores = HighscoreManager::GetInstance().GetHighscores(static_cast<int>(compVec.size()));
+		for(int i{}; i < compVec.size() && i < highscores.size();i++)
+		{
+			compVec.at(i)->SetText(std::to_string(highscores.at(i)));
+		}
 
 		SceneManager::GetInstance().SetCurrentScene(name);
 	}

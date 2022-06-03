@@ -19,10 +19,14 @@ namespace dae
 		void SetLives(int lives);
 		int GetScores() const;
 
+		int GetPeppers() const;
+		void DecreasePeppers();
+
 		static void Reset();
 	private:
 		static int m_Lives;
 		static int m_Score;
+		static int m_Peppers;
 		//int m_Lives{3};
 		//int m_Score{};
 		Subject* m_Subject{};

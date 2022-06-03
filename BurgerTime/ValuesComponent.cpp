@@ -3,6 +3,7 @@
 
 int dae::ValuesComponent::m_Lives{ 3 };
 int dae::ValuesComponent::m_Score{};
+int dae::ValuesComponent::m_Peppers{ 5 };
 
 dae::ValuesComponent::~ValuesComponent()
 {
@@ -50,8 +51,19 @@ int dae::ValuesComponent::GetScores() const
 	return m_Score;
 }
 
+int dae::ValuesComponent::GetPeppers() const
+{
+	return m_Peppers;
+}
+
+void dae::ValuesComponent::DecreasePeppers()
+{
+	m_Peppers--;
+}
+
 void dae::ValuesComponent::Reset()
 {
 	m_Lives = 3;
 	m_Score = 0;
+	m_Peppers = 5;
 }

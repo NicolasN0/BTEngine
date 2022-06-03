@@ -134,7 +134,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\rapidjson;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\rapidjson;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -175,6 +175,7 @@
     <ClCompile Include="BurgerTime.cpp" />
     <ClCompile Include="ContainerComponent.cpp" />
     <ClCompile Include="HealthObserver.cpp" />
+    <ClCompile Include="HighscoreManager.cpp" />
     <ClCompile Include="IngredientComponent.cpp" />
     <ClCompile Include="IngredientPartComponent.cpp" />
     <ClCompile Include="LevelManager.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Commands.h" />
     <ClInclude Include="ContainerComponent.h" />
     <ClInclude Include="HealthObserver.h" />
+    <ClInclude Include="HighscoreManager.h" />
     <ClInclude Include="IngredientComponent.h" />
     <ClInclude Include="IngredientPartComponent.h" />
     <ClInclude Include="LevelManager.h" />

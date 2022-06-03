@@ -3,6 +3,7 @@
 
 #include "BasicEnemyComponent.h"
 #include "IngredientComponent.h"
+#include "document.h"
 
 namespace dae
 {
@@ -10,7 +11,7 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
-		LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers,std::vector<GameObject*>& lvlBackground);
+		LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers,std::vector<GameObject*>& lvlBackground, const std::wstring& levelFile);
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
 		void MakeLevel(int levelCount);
@@ -19,6 +20,8 @@ namespace dae
 		void CheckLevelCompleted();
 		void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players);
 		void MakeEnemey(glm::vec3 pos, EEnemyType type);
+		void ReadInLevel(const std::wstring& filename);
+
 		std::vector<GameObject*> m_LevelObjects{};
 		int m_Level{};
 		Scene* m_Scene;
@@ -37,6 +40,8 @@ namespace dae
 		std::vector<glm::vec3> m_EnemyPosLevel1;
 		std::vector<glm::vec3> m_EnemyPosLevel2;
 		std::vector<glm::vec3> m_EnemyPosLevel3;
+
+		rapidjson::Document m_Doc;
 
 	};
 }

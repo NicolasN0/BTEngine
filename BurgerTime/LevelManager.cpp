@@ -1,15 +1,19 @@
 #include "LevelManager.h"
 
 #include <iostream>
+#include "document.h"
+#include "filereadstream.h"
+#include "rapidjson.h"
 
 #include "Commands.h"
 #include "Scene.h"
 #include "ContainerComponent.h"
+#include "HighscoreManager.h"
 #include "IngredientPartComponent.h"
 #include "InputManager.h"
 #include "TextureComponent.h"
 
-dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers, std::vector<GameObject*>& lvlBackground) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
+dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers, std::vector<GameObject*>& lvlBackground,const std::wstring& levelFile) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
 , m_EnemyPlayers(enemeyPlayers)
 , m_LvlBackground(lvlBackground)
 , m_LadderSize(9, 40, 1)
@@ -22,7 +26,9 @@ dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, 
 , m_EnemyPosLevel3({ glm::vec3(279, 391,1),glm::vec3(278, 248,1),glm::vec3(365, 250,1),glm::vec3(449, 104,1),glm::vec3(107, 190,1) })
 ,m_SpawnTimer()
 ,m_SpawnMax(6)
+
 {
+	ReadInLevel(levelFile);
 	//MakeLevel(m_Level);
 	
 	
@@ -113,9 +119,12 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		}
 			//Player start pos
 
+			assert(m_Doc.HasMember("level1"));
+			const rapidjson::Value& level = m_Doc["level1"];
 			for(auto o : m_Players)
 			{
-				o->SetPosition(glm::vec3(110, 100,1));
+				//o->SetPosition(glm::vec3(110, 100,1));
+				o->SetPosition(level["playerStart"]["x"].GetFloat(), level["playerStart"]["y"].GetFloat()) ;
 				
 			}
 
@@ -231,8 +240,38 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 #pragma endregion Ladder
 
+		//const rapidjson::Value& platforms = level["platforms"];
+		
+
+		/*for (auto& v : platforms.GetArray())
+		{
+			go = new GameObject;
+			go->SetSize(glm::vec3(v["size"].GetFloat(), m_PlatformSize.y, m_PlatformSize.z));
+			go->SetPosition(v["x"].GetFloat(), v["y"].GetFloat());
+			go->SetDebugDraw(true);
+			go->SetTag("Platform");
+			m_LevelObjects.push_back(go);
+			m_Scene->Add(go);
+		}*/
+		
+
+			const rapidjson::Value& platforms = level["platforms"];
+			for(rapidjson::Value::ConstValueIterator it = platforms.Begin();it != platforms.End();it++)
+			{
+				const rapidjson::Value& platform = *it;
+				
+
+				go = new GameObject;
+				go->SetSize(glm::vec3(platform["size"].GetFloat(), m_PlatformSize.y, m_PlatformSize.z));
+				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
+				go->SetDebugDraw(true);
+				go->SetTag("Platform");
+				m_LevelObjects.push_back(go);
+				m_Scene->Add(go);
+
+			}
 #pragma region Platform
-		go = new GameObject;
+		/*go = new GameObject;
 		go->SetSize(glm::vec3(355, m_PlatformSize.y, m_PlatformSize.z));
 		go->SetPosition(110, 105);
 		go->SetDebugDraw(true);
@@ -246,7 +285,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		go->SetDebugDraw(true);
 		go->SetTag("Platform");
 		m_LevelObjects.push_back(go);
-		m_Scene->Add(go);
+		m_Scene->Add(go);*/
 
 
 		go = new GameObject;
@@ -1159,6 +1198,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 		break;
 	case 4:
+		HighscoreManager::GetInstance().AddHighscore(m_Players.at(0)->GetComponent<ValuesComponent>()->GetScores());
 		m_Level = 0;
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 		break;
@@ -1384,5 +1424,32 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 	HotDog->SetTag("Enemy");
 	m_LevelObjects.push_back(HotDog);
 	m_Scene->Add(HotDog);
+
+}
+
+void dae::LevelManager::ReadInLevel(const std::wstring& filename)
+{
+	using rapidjson::Document;
+	FILE* file = nullptr;
+	_wfopen_s(&file, filename.c_str(), L"r");
+	if(!file)
+	{
+		return;
+	}
+	fseek(file, 0, SEEK_END);
+	size_t size = static_cast<size_t>(ftell(file));
+
+	fseek(file, 0, SEEK_SET);
+
+	char* buffer = new char[size];
+
+	rapidjson::FileReadStream stream (file, buffer, sizeof(buffer));
+
+	//Document doc;
+	//doc.ParseStream(stream);
+	m_Doc.ParseStream(stream);
+	delete[] buffer;
+	fclose(file);
+
 
 }

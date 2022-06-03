@@ -7,6 +7,8 @@
 
 #include <SDL_pixels.h>
 //#include "MiniginPCH.h"
+#include <filereadstream.h>
+
 #include "GameObject.h"
 #include "Minigin.h"
 #include "SceneManager.h"
@@ -33,8 +35,11 @@
 #include "Locator.h"
 #include <fstream>
 
+#include "HighscoreManager.h"
 #include "LevelManager.h"
 #include "SceneChanger.h"
+#include <filewritestream.h>
+#include <writer.h>
 
 
 using namespace std;
@@ -47,6 +52,7 @@ public:
 	 virtual void LoadGame() const override
 	{
 		 std::vector<GameObject*> controlObjects;
+		 ReadHighscores();
 #pragma region StartScreen
 		 auto& startScreen = dae::SceneManager::GetInstance().CreateScene("start");
 		
@@ -96,14 +102,31 @@ public:
 #pragma endregion StartScreen
 
 #pragma region HighscoreScene
+		 std::vector<TextComponent*> textComponentsVec;
+
 		 auto& highscoreScene = dae::SceneManager::GetInstance().CreateScene("highscore");
 		 auto highscoretitel = new GameObject;
-		 //titel->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 30));
 		 TextComponent* titelText = new TextComponent("Lingua.otf", 46,SDL_Color{255,255,0});
 		 titelText->SetText("Highscores");
 		 highscoretitel->AddComponent(titelText);
 		 highscoretitel->SetPosition(210, 20);
 		 highscoreScene.Add(highscoretitel);
+
+		// 5 highscores
+		 int startHeight {100};
+		 for(int i{} ;i < 5;i++)
+		 {
+			 auto highscoreText = new GameObject;
+			 TextComponent* highscoreTextComp = new TextComponent("Lingua.otf", 36, SDL_Color{ 255,0,0 });
+			 highscoreTextComp->SetText("0000 0000");
+			 highscoreText->AddComponent(highscoreTextComp);
+			 highscoreText->SetPosition(225, startHeight);
+			 highscoreScene.Add(highscoreText);
+
+			 textComponentsVec.push_back(highscoreTextComp);
+
+			 startHeight += 75;
+		 }
 #pragma endregion HighscoreScene
 
 #pragma region GameScene
@@ -144,10 +167,8 @@ public:
 		 peterPepperP1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png",15,11));
 		 peterPepperP1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperP1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperP1->GetComponent<SpriteComponent>());
-		 //peterPepperP1->AddComponent<TextureComponent>(new TextureComponent("PeterPepperCrop.png"));
 		 peterPepperP1->AddComponent<ValuesComponent>(new ValuesComponent());
 		 peterPepperP1->SetScale(1.5f, 1.5f);
-		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperP1->SetTag("Player");
 
 		
@@ -163,23 +184,45 @@ public:
 		 go->SetPosition(10, 225);
 		 scene.Add(go);
 		 //ScoreDisplayObject
-		 go = new GameObject;
+		/* go = new GameObject;
 		 TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
 		 go->AddComponent(ScoreDisplayComp);
 		 ScoreDisplayComp->SetText("Scores");
 		 go->SetPosition(10, 200);
-		 scene.Add(go);
+		 scene.Add(go);*/
+		 auto up = new GameObject;
+		 up->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 up->GetComponent<TextComponent>()->SetText("0000");
+		 up->SetPosition(80, 30);
+		 scene.Add(up);
+
+		 auto hiscore = new GameObject;
+		 hiscore->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 hiscore->GetComponent<TextComponent>()->SetText("0000");
+		 hiscore->SetPosition(180, 30);
+		 scene.Add(hiscore);
+
+
+		 auto pepper = new GameObject;
+		 pepper->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 pepper->GetComponent<TextComponent>()->SetText("0");
+		 pepper->SetPosition(500, 30);
+		 scene.Add(pepper);
 
 		
 		 Subject* ValuesSubject = new Subject;
 		 ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
-		 ValuesSubject->AddObserver(new ScoreObserver(ScoreDisplayComp));
+		 ValuesSubject->AddObserver(new ScoreObserver(up->GetComponent<TextComponent>()));
 		 peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
 
+		//Set HI-Score
+		
+		 hiscore->GetComponent<TextComponent>()->SetText(std::to_string(HighscoreManager::GetInstance().GetHighscores(1).at(0)));
 
 		//Make LevelManager
+		
 		 auto manager = new GameObject;
-		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players, playerEnemy, levelBackgrounds));
+		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players, playerEnemy, levelBackgrounds,L"../Data/Level/Levels.json"));
 		 scene.Add(manager);
 
 		//Do after rest otherwise invis
@@ -268,7 +311,7 @@ public:
 
 		 //Make LevelManager
 		 auto managerCoop = new GameObject;
-		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, playerEnemyCoop, levelBackgroundsCoop));
+		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, playerEnemyCoop, levelBackgroundsCoop, L"../Data/Level/Levels.json"));
 		 coopScene.Add(managerCoop);
 
 		 //Do after rest otherwise invis
@@ -362,7 +405,7 @@ public:
 
 		 //Make LevelManager
 		 auto managerPvp = new GameObject;
-		 managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp, playerEnemyPvp, levelBackgroundsPvp));
+		 managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp, playerEnemyPvp, levelBackgroundsPvp, L"../Data/Level/Levels.json"));
 		 pvpScene.Add(managerPvp);
 
 		 //Do after rest otherwise invis
@@ -372,7 +415,7 @@ public:
 
 
 
-
+		 
 
 #pragma region audio
 		// Audio* audioService = Locator::getAudio();
@@ -390,14 +433,64 @@ public:
 
 #pragma endregion audio
 
+		 HighscoreManager::GetInstance().SetTextComponents(textComponentsVec);
+
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 
-		 SceneChanger::GetInstance().SetCurrentScene("start");
+		 SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
 
 private:
 	
+	void ReadHighscores() const
+	{
+		//Read
+		using rapidjson::Document;
+		FILE* file = nullptr;
+		const std::wstring& filename{ L"../Data/Highscores.json" };
+		_wfopen_s(&file, filename.c_str(), L"r");
+		if (!file)
+		{
+			return;
+		}
+		fseek(file, 0, SEEK_END);
+		size_t size = static_cast<size_t>(ftell(file));
 
+		fseek(file, 0, SEEK_SET);
+
+		char* buffer = new char[size];
+
+		rapidjson::FileReadStream stream(file, buffer, sizeof(buffer));
+
+		Document doc;
+		doc.ParseStream(stream);
+		delete[] buffer;
+		fclose(file);
+
+		rapidjson::Value& highscores = doc["highscores"];
+		std::vector<int> scores;
+		for (auto& v : highscores.GetArray())
+		{
+			scores.push_back(v.GetInt());
+		}
+		HighscoreManager::GetInstance().SetHighscores(scores);
+
+
+		//Change
+		Document::AllocatorType& allocator = doc.GetAllocator();
+		highscores.PushBack(100, allocator);
+		//Write
+		FILE* fp = nullptr;
+		fopen_s(&fp,"../Data/Highscores.json", "w"); // non-Windows use "w"
+
+		char writeBuffer[65536];
+		rapidjson::FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+
+		rapidjson::Writer<rapidjson::FileWriteStream> writer(os);
+		doc.Accept(writer);
+
+		fclose(fp);
+	}
 
 	void MakeGameBackground(Scene& scene) const
 	{
@@ -435,27 +528,27 @@ private:
 		scene.Add(go);
 
 
-		go = new GameObject;
-		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
-		go->GetComponent<TextComponent>()->SetText("0000");
-		go->SetPosition(80, 30);
-		scene.Add(go);
+		/*auto up = new GameObject;
+		up->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		up->GetComponent<TextComponent>()->SetText("0000");
+		up->SetPosition(80, 30);
+		scene.Add(up);
 
-		go = new GameObject;
-		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
-		go->GetComponent<TextComponent>()->SetText("0000");
-		go->SetPosition(180, 30);
-		scene.Add(go);
+		auto hiscore = new GameObject;
+		hiscore->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		hiscore->GetComponent<TextComponent>()->SetText("0000");
+		hiscore->SetPosition(180, 30);
+		scene.Add(hiscore);
 
 
-		go = new GameObject;
-		go->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
-		go->GetComponent<TextComponent>()->SetText("0");
-		go->SetPosition(500, 30);
-		scene.Add(go);
+		auto pepper = new GameObject;
+		pepper->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		pepper->GetComponent<TextComponent>()->SetText("0");
+		pepper->SetPosition(500, 30);
+		scene.Add(pepper);*/
 	}
 
-	void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene& scene, bool debugDraw, std::vector<GameObject*>& players) const
+	/*void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene& scene, bool debugDraw, std::vector<GameObject*>& players) const
 	{
 		auto totalIngredient = new GameObject;
 		auto part1 = new GameObject;
@@ -593,7 +686,7 @@ private:
 		totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
 		totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
 		scene.Add(totalIngredient);
-	}
+	}*/
 
 };
 
