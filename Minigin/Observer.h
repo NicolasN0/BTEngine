@@ -8,7 +8,8 @@ namespace dae
 		PlayerDied,
 		PlayerPickup,
 		ScoreIncreased,
-		GameOver
+		GameOver,
+		Reset
 	};
 
 	class Observer

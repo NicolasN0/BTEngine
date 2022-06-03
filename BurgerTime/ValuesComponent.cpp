@@ -1,4 +1,7 @@
 #include "ValuesComponent.h"
+
+#include <iostream>
+
 #include "Observer.h"
 
 int dae::ValuesComponent::m_Lives{ 3 };
@@ -21,6 +24,7 @@ void dae::ValuesComponent::FixedUpdate(float timestep)
 
 void dae::ValuesComponent::Damage()
 {
+	std::cout << "dam" << std::endl;
 	m_Lives--;
 	m_Subject->Notify(*GetParent(), Event::PlayerDied);
 }
@@ -61,8 +65,14 @@ void dae::ValuesComponent::DecreasePeppers()
 	m_Peppers--;
 }
 
+void dae::ValuesComponent::ResetObserver()
+{
+	m_Subject->Notify(*GetParent(), Event::Reset);
+}
+
 void dae::ValuesComponent::Reset()
 {
+	
 	m_Lives = 3;
 	m_Score = 0;
 	m_Peppers = 5;

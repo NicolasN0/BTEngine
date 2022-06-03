@@ -13,6 +13,7 @@ namespace dae
 		std::vector<int> GetHighscores(int number);
 		void SetHighscores(const std::vector<int>& highscores);
 		void SetTextComponents(std::vector<TextComponent*>& textComponents);
+		//void WriteHighscores();
 		std::vector<TextComponent*>& GetTextComponents();
 	private:
 		friend class Singleton<HighscoreManager>;

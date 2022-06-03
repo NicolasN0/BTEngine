@@ -20,7 +20,7 @@ namespace dae
 		Selector(SelectorComponent* selectorComp,bool goNext,int maxModes) : m_SelectorComponent(selectorComp), m_GoNext(goNext), m_MaxModes(maxModes) {}
 		void Execute(float dt) override
 		{
-			std::cout << "verander";
+		
 			if(m_GoNext)
 			{
 				
@@ -53,7 +53,7 @@ namespace dae
 		Continue(SelectorComponent* selectorComp) : m_SelectorComponent(selectorComp) {}
 		void Execute(float dt) override
 		{
-			std::cout << "continue?";
+		
 			switch(m_SelectorComponent->GetSelected())
 			{
 			case 0:
@@ -80,7 +80,7 @@ namespace dae
 		Replay() {}
 		void Execute(float dt) override
 		{
-			std::cout << "Replay?";
+		
 			SceneChanger::GetInstance().SetCurrentScene("start");
 		}
 	private:

@@ -185,6 +185,7 @@ void dae::GameObject::SetScale(float x, float y)
 			c->UpdateScale();
 		}
 	}
+
 }
 
 const glm::vec3& dae::GameObject::GetPosition() const

@@ -13,6 +13,9 @@ void dae::HealthObserver::Notify(const GameObject& go, Event event)
 	case Event::PlayerDied:
 		m_pTextComponent->SetText(std::to_string(go.GetComponent<ValuesComponent>()->GetLives()));
 		break;
+	case Event::Reset:
+		m_pTextComponent->SetText(std::to_string(go.GetComponent<ValuesComponent>()->GetLives()));
+		break;
 	}
 }
 

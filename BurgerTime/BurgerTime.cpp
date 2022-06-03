@@ -52,6 +52,7 @@ public:
 	 virtual void LoadGame() const override
 	{
 		 std::vector<GameObject*> controlObjects;
+		 std::vector<GameObject*> levelManagers;
 		 ReadHighscores();
 #pragma region StartScreen
 		 auto& startScreen = dae::SceneManager::GetInstance().CreateScene("start");
@@ -171,7 +172,7 @@ public:
 		 peterPepperP1->SetScale(1.5f, 1.5f);
 		 peterPepperP1->SetTag("Player");
 
-		
+		 peterPepperP1->SetDebugDraw(true);
 
 		 players.push_back(peterPepperP1);
 		 controlObjects.push_back(peterPepperP1);
@@ -184,12 +185,7 @@ public:
 		 go->SetPosition(10, 225);
 		 scene.Add(go);
 		 //ScoreDisplayObject
-		/* go = new GameObject;
-		 TextComponent* ScoreDisplayComp = new TextComponent("Lingua.otf", 20);
-		 go->AddComponent(ScoreDisplayComp);
-		 ScoreDisplayComp->SetText("Scores");
-		 go->SetPosition(10, 200);
-		 scene.Add(go);*/
+	
 		 auto up = new GameObject;
 		 up->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
 		 up->GetComponent<TextComponent>()->SetText("0000");
@@ -225,6 +221,7 @@ public:
 		 manager->AddComponent<LevelManager>(new LevelManager(&scene,players, playerEnemy, levelBackgrounds,L"../Data/Level/Levels.json"));
 		 scene.Add(manager);
 
+		 levelManagers.push_back(manager);
 		//Do after rest otherwise invis
 		 scene.Add(peterPepperP1);
 #pragma endregion GameScene
@@ -237,6 +234,7 @@ public:
 		 std::vector<GameObject*> playersCoop;
 		 MakeGameBackground(coopScene);
 
+		//Make level backgrounds
 		 std::vector<GameObject*> levelBackgroundsCoop;
 		 auto lvl1coop = new GameObject;
 		 lvl1coop->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
@@ -259,7 +257,7 @@ public:
 		 levelBackgroundsCoop.push_back(lvl3coop);
 		 coopScene.Add(lvl3coop);
 
-		
+		//Make players
 		auto peterPepperPlayer1 = new GameObject;
 		peterPepperPlayer1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
@@ -273,8 +271,6 @@ public:
 		 peterPepperPlayer2->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperPlayer2->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer2->GetComponent<SpriteComponent>());
 		 peterPepperPlayer2->AddComponent<ValuesComponent>(new ValuesComponent);
-		 //peterPepperPlayer2->AddComponent(valuesComp);
-		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperPlayer2->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer2->SetTag("Player");
 
@@ -291,29 +287,46 @@ public:
 		 healthDisplayCompCoop->SetText("Lives");
 		 healthCoop->SetPosition(10, 225);
 		 coopScene.Add(healthCoop);
-		 //ScoreDisplayObject
-		 auto scoreCoop = new GameObject;
-		 TextComponent* ScoreDisplayCompCoop = new TextComponent("Lingua.otf", 20);
-		 scoreCoop->AddComponent(ScoreDisplayCompCoop);
-		 ScoreDisplayCompCoop->SetText("Scores");
-		 scoreCoop->SetPosition(10, 200);
-		 coopScene.Add(scoreCoop);
+
+		//ScoreDisplay
+		 auto upCoop = new GameObject;
+		 upCoop->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 upCoop->GetComponent<TextComponent>()->SetText("0000");
+		 upCoop->SetPosition(80, 30);
+		 coopScene.Add(upCoop);
+
+		 auto hiscoreCoop = new GameObject;
+		 hiscoreCoop->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 hiscoreCoop->GetComponent<TextComponent>()->SetText("0000");
+		 hiscoreCoop->SetPosition(180, 30);
+		 coopScene.Add(hiscoreCoop);
 
 
+		 auto pepperCoop = new GameObject;
+		 pepperCoop->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 pepperCoop->GetComponent<TextComponent>()->SetText("0");
+		 pepperCoop->SetPosition(500, 30);
+		 coopScene.Add(pepperCoop);
+
+		 //Set Subjects
 		 Subject* ValuesSubjectCoopP1 = new Subject;
 		 Subject* ValuesSubjectCoopP2 = new Subject;
 		 ValuesSubjectCoopP1->AddObserver(new HealthObserver(healthDisplayCompCoop));
-		 ValuesSubjectCoopP1->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
+		 ValuesSubjectCoopP1->AddObserver(new ScoreObserver(upCoop->GetComponent<TextComponent>()));
 		 ValuesSubjectCoopP2->AddObserver(new HealthObserver(healthDisplayCompCoop));
-		 ValuesSubjectCoopP2->AddObserver(new ScoreObserver(ScoreDisplayCompCoop));
+		 ValuesSubjectCoopP2->AddObserver(new ScoreObserver(upCoop->GetComponent<TextComponent>()));
 		 peterPepperPlayer1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoopP1);
 		 peterPepperPlayer2->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoopP2);
+
+		 //Set highscore
+		 hiscoreCoop->GetComponent<TextComponent>()->SetText(std::to_string(HighscoreManager::GetInstance().GetHighscores(1).at(0)));
 
 		 //Make LevelManager
 		 auto managerCoop = new GameObject;
 		 managerCoop->AddComponent<LevelManager>(new LevelManager(&coopScene, playersCoop, playerEnemyCoop, levelBackgroundsCoop, L"../Data/Level/Levels.json"));
 		 coopScene.Add(managerCoop);
 
+		 levelManagers.push_back(managerCoop);
 		 //Do after rest otherwise invis
 		 coopScene.Add(peterPepperPlayer1);
 		 coopScene.Add(peterPepperPlayer2);
@@ -350,13 +363,7 @@ public:
 		 levelBackgroundsPvp.push_back(lvl3Pvp);
 		 pvpScene.Add(lvl3Pvp);
 
-		 /*pvpScene.Add(lvl1coop);
-		 pvpScene.Add(lvl2coop);
-		 pvpScene.Add(lvl3coop);*/
-		/* pvpScene.Add(lvl1);
-		 pvpScene.Add(lvl2);
-		 pvpScene.Add(lvl3);*/
-		 //Make players for levelManager
+		
 		//Set sames valuesComponent for every player
 		 ValuesComponent* valuesCompPvp = new ValuesComponent();
 		 auto peterPepperPvp = new GameObject;
@@ -364,14 +371,12 @@ public:
 		 peterPepperPvp->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
 		 peterPepperPvp->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPvp->GetComponent<SpriteComponent>());
 		 peterPepperPvp->AddComponent(valuesCompPvp);
-		 //peterPepperP1->SetPosition(190, 250);
 		 peterPepperPvp->SetScale(1.5f, 1.5f);
 		 peterPepperPvp->SetTag("Player");
 
 		 auto hotdogPvp = new GameObject;
 		 hotdogPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog,true));
-		 //hotdogPvp->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetSpriteComp(hotdogPvp->GetComponent<SpriteComponent>());
 		 hotdogPvp->SetTag("Enemy");
 
@@ -390,24 +395,40 @@ public:
 		 healthPvp->SetPosition(10, 225);
 		 pvpScene.Add(healthPvp);
 		 //ScoreDisplayObject
-		 auto scorePvp = new GameObject;
-		 TextComponent* scorePvpComp = new TextComponent("Lingua.otf", 20);
-		 scorePvp->AddComponent(scorePvpComp);
-		 scorePvpComp->SetText("Scores");
-		 scorePvp->SetPosition(10, 200);
-		 pvpScene.Add(scorePvp);
+	
+		 auto upPvp = new GameObject;
+		 upPvp->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 upPvp->GetComponent<TextComponent>()->SetText("0000");
+		 upPvp->SetPosition(80, 30);
+		 pvpScene.Add(upPvp);
+
+		 auto hiscorePvp = new GameObject;
+		 hiscorePvp->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 hiscorePvp->GetComponent<TextComponent>()->SetText("0000");
+		 hiscorePvp->SetPosition(180, 30);
+		 pvpScene.Add(hiscorePvp);
+
+
+		 auto pepperPvp = new GameObject;
+		 pepperPvp->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
+		 pepperPvp->GetComponent<TextComponent>()->SetText("0");
+		 pepperPvp->SetPosition(500, 30);
+		 pvpScene.Add(pepperPvp);
 
 
 		 Subject* ValuesSubjectPvp = new Subject;
 		 ValuesSubjectPvp->AddObserver(new HealthObserver(healthPvpComp));
-		 ValuesSubjectPvp->AddObserver(new ScoreObserver(scorePvpComp));
+		 ValuesSubjectPvp->AddObserver(new ScoreObserver(upPvp->GetComponent<TextComponent>()));
 		 peterPepperPvp->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectPvp);
 
+
+		 hiscorePvp->GetComponent<TextComponent>()->SetText(std::to_string(HighscoreManager::GetInstance().GetHighscores(1).at(0)));
 		 //Make LevelManager
 		 auto managerPvp = new GameObject;
 		 managerPvp->AddComponent<LevelManager>(new LevelManager(&pvpScene, playersPvp, playerEnemyPvp, levelBackgroundsPvp, L"../Data/Level/Levels.json"));
 		 pvpScene.Add(managerPvp);
 
+		 levelManagers.push_back(managerPvp);
 		 //Do after rest otherwise invis
 		 pvpScene.Add(peterPepperPvp);
 		 pvpScene.Add(hotdogPvp);
@@ -434,6 +455,8 @@ public:
 #pragma endregion audio
 
 		 HighscoreManager::GetInstance().SetTextComponents(textComponentsVec);
+
+		 SceneChanger::GetInstance().SetLevelManagers(levelManagers);
 
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 

@@ -16,6 +16,7 @@ namespace dae
 		virtual void FixedUpdate(float timestep);
 		void MakeLevel(int levelCount);
 		void ClearLevel();
+		int GetCurLevel() const;
 	private:
 		void CheckLevelCompleted();
 		void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players);

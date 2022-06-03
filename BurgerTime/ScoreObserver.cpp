@@ -17,6 +17,10 @@ void dae::ScoreObserver::Notify(const GameObject& go, Event event)
 	case Event::ScoreIncreased:
 		m_pTextComponent->SetText(std::to_string(go.GetComponent<ValuesComponent>()->GetScores()));
 		break;
+	case Event::Reset:
+ 		m_pTextComponent->SetText(std::to_string(go.GetComponent<ValuesComponent>()->GetScores()));
+		break;
+	
 	}
 }
 

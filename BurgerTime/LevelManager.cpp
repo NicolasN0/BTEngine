@@ -19,7 +19,7 @@ dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, 
 , m_LadderSize(9, 40, 1)
 , m_PlatformSize(95, 10, 1)
 , m_ContainerSize(65, 70, 1)
-, m_MaxEnemies{ 1,7,9 }
+, m_MaxEnemies{ 5,7,9 }
 , m_CurrentEnemies()
 , m_EnemyPosLevel1({ glm::vec3(250, 100,1),glm::vec3(447, 160,1),glm::vec3(365, 250,1),glm::vec3(250, 100,1),glm::vec3(280, 363,1) })
 , m_EnemyPosLevel2({ glm::vec3(450, 213,1),glm::vec3(279, 369,1),glm::vec3(365, 250,1),glm::vec3(206, 276,1),glm::vec3(107, 213,1) })
@@ -431,26 +431,26 @@ void dae::LevelManager::MakeLevel(int levelCount)
 #pragma endregion Container
 
 #pragma region Ingredients
-		MakeIngredient(glm::vec3(130, 165, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(130, 220, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(130, 305, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(130, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(130, 165, 0), EIngredientType::Bun, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(130, 220, 0), EIngredientType::Lettuce, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(130, 305, 0), EIngredientType::Patty, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(130, 360, 0), EIngredientType::BunBottom, m_Scene, true, m_Players);
 
 
-		MakeIngredient(glm::vec3(215, 110, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(215, 250, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(215, 305, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(215, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(215, 110, 0), EIngredientType::Bun, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(215, 250, 0), EIngredientType::Lettuce, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(215, 305, 0), EIngredientType::Patty, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(215, 360, 0), EIngredientType::BunBottom, m_Scene, true, m_Players);
 
-		MakeIngredient(glm::vec3(300, 110, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(300, 165, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(300, 250, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(300, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(300, 110, 0), EIngredientType::Bun, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(300, 165, 0), EIngredientType::Lettuce, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(300, 250, 0), EIngredientType::Patty, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(300, 360, 0), EIngredientType::BunBottom, m_Scene, true, m_Players);
 
-		MakeIngredient(glm::vec3(387, 110, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(387, 220, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-		MakeIngredient(glm::vec3(387, 280, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+		MakeIngredient(glm::vec3(387, 110, 0), EIngredientType::Bun, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Lettuce, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(387, 220, 0), EIngredientType::Patty, m_Scene, true, m_Players);
+		MakeIngredient(glm::vec3(387, 280, 0), EIngredientType::BunBottom, m_Scene, true, m_Players);
 
 #pragma endregion Ingredients
 		}
@@ -1213,14 +1213,18 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 void dae::LevelManager::ClearLevel()
 {
+	m_CurrentEnemies = 0;
+	
 	for(auto o: m_LevelObjects)
 	{
-		//o->Delete();
-		//o->~GameObject();
 		o->Delete();
-		//o->~GameObject();
 	}
 	m_LevelObjects.clear();
+}
+
+int dae::LevelManager::GetCurLevel() const
+{
+	return m_Level;
 }
 
 void dae::LevelManager::CheckLevelCompleted()
@@ -1393,9 +1397,9 @@ void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredient
 	part4->SetDebugDraw(debugDraw);
 
 
+	totalIngredient->SetSize(glm::vec3(totalSize, part1->GetSize().y, 0));
 	totalIngredient->SetScale(1.8f, 1.8f);
 	//totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
-	totalIngredient->SetSize(glm::vec3(totalSize, part1->GetSize().y, 0));
 	totalIngredient->SetTag("Ingredient");
 
 	totalIngredient->SetPosition(pos.x, pos.y);
@@ -1418,6 +1422,7 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 
 	//HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 	//HotDog->SetPosition(300, 250);
+	HotDog->SetDebugDraw(true);
 	HotDog->SetPosition(pos);
 	HotDog->SetScale(1.5f, 1.5f);
 	HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(m_Players.at(0));

@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "BasicEnemyComponent.h"
+#include "HighscoreManager.h"
 #include "Locator.h"
 #include "Observer.h"
 #include "SaltComponent.h"
@@ -203,8 +204,8 @@ void dae::PeterPepperComponent::Respawn()
 		m_Parent->SetPosition(m_StartPos);
 	} else
 	{
-		//m_Parent->GetComponent<ValuesComponent>()->SetLives(3);
-
+		//PushBack score
+		HighscoreManager::GetInstance().AddHighscore(m_Parent->GetComponent<ValuesComponent>()->GetScores());
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
 }

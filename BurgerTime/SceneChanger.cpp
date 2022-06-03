@@ -3,6 +3,7 @@
 #include "Commands.h"
 #include "HighscoreManager.h"
 #include "InputManager.h"
+#include "LevelManager.h"
 #include "Locator.h"
 #include "PeterPepperComponent.h"
 #include "ValuesComponent.h"
@@ -14,9 +15,11 @@ void SceneChanger::SetCurrentScene(std::string name)
 {
 	Audio* audioService = Locator::getAudio();
 
+	size_t size = m_ControlObjects.size();
+	
 
 	dae::Input::GetInstance().ClearKeys();
-	//dae::Input::GetInstance().SetClear(true);
+
 	if(name == "start")
 	{
 		audioService->LoadMusic("../Data/Sounds/Start.mp3");
@@ -37,7 +40,23 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "game")
 	{
+
+		//Reset scores and text components
 		ValuesComponent::Reset();
+		for (int i{}; i < size; i++)
+		{
+			if (m_ControlObjects.at(i)->GetTag() == "Player")
+			{
+				m_ControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
+			}
+		}
+
+		//Reset level
+		LevelManager* manager = m_LevelManagers.at(0)->GetComponent<LevelManager>();
+		manager->ClearLevel();
+		manager->MakeLevel(1);
+
+		//Set music
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
@@ -66,6 +85,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "highscore")
 	{
+
 		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Replay>());
 
 		//Update Highscore screen
@@ -81,7 +101,23 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "coop")
 	{
+		//Reset values and text comp
 		ValuesComponent::Reset();
+		for (int i{}; i < size; i++)
+		{
+			if (m_ControlObjects.at(i)->GetTag() == "Player")
+			{
+				m_ControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
+			}
+		}
+
+		
+		//Reset level
+		LevelManager* manager = m_LevelManagers.at(1)->GetComponent<LevelManager>();
+		manager->ClearLevel();
+		manager->MakeLevel(1);
+
+		//Sound
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
@@ -101,6 +137,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadRight,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadUp,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadDown,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::ButtonA,1 }, std::make_unique<Throw>(o->GetComponent<PeterPepperComponent>()));
+
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonX,0 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 					
@@ -116,6 +155,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_d,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_w,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_s,1 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
+
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_f,1 }, std::make_unique<Throw>(o->GetComponent<PeterPepperComponent>()));
+
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_k,1 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
 				}
@@ -127,7 +169,24 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "pvp")
 	{
+
+		//Reset values and text
 		ValuesComponent::Reset();
+		for (int i{}; i < size; i++)
+		{
+			if (m_ControlObjects.at(i)->GetTag() == "Player")
+			{
+				m_ControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
+			}
+		}
+
+		//Reset level
+		LevelManager* manager = m_LevelManagers.at(2)->GetComponent<LevelManager>();
+		manager->ClearLevel();
+		manager->MakeLevel(1);
+
+
+		//Sound
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
@@ -149,6 +208,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::DpadDown,0 }, std::make_unique<StopMove>(o->GetComponent<PeterPepperComponent>()));
 					//Next Level Test
 					Input::GetInstance().BindKey({ ButtonStates::buttonDown,ControllerButton::ButtonX,0 }, std::make_unique<NextLevel>(o->GetComponent<PeterPepperComponent>()));
+
+					Input::GetInstance().BindKey({ ButtonStates::buttonUp,ControllerButton::ButtonA,1 }, std::make_unique<Throw>(o->GetComponent<PeterPepperComponent>()));
+
 
 				}
 				
@@ -178,5 +240,9 @@ void SceneChanger::SetCurrentScene(std::string name)
 void SceneChanger::SetControlObjects(std::vector<dae::GameObject*> controlObjects)
 {
 	m_ControlObjects = controlObjects;
+}
+void SceneChanger::SetLevelManagers(std::vector<dae::GameObject*>& levelManagers)
+{
+	m_LevelManagers = levelManagers;
 }
 }
