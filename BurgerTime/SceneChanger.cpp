@@ -42,6 +42,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	{
 
 		//Reset scores and text components
+		HighscoreManager::GetInstance().UpdateHighScore();
 		ValuesComponent::Reset();
 		for (int i{}; i < size; i++)
 		{
@@ -85,7 +86,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	}
 	else if(name == "highscore")
 	{
-
+		
 		Input::GetInstance().BindKey({ ButtonStates::buttonUp,SDLK_SPACE,1 }, std::make_unique<Replay>());
 
 		//Update Highscore screen
@@ -102,6 +103,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	else if(name == "coop")
 	{
 		//Reset values and text comp
+		HighscoreManager::GetInstance().UpdateHighScore();
 		ValuesComponent::Reset();
 		for (int i{}; i < size; i++)
 		{
@@ -170,6 +172,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 	else if(name == "pvp")
 	{
 
+		HighscoreManager::GetInstance().UpdateHighScore();
 		//Reset values and text
 		ValuesComponent::Reset();
 		for (int i{}; i < size; i++)

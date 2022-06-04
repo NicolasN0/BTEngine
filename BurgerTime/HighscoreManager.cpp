@@ -76,6 +76,20 @@ void dae::HighscoreManager::SetTextComponents(std::vector<TextComponent*>& textC
 	m_TextComponents = textComponents;
 }
 
+void dae::HighscoreManager::SetHighscoreComp(std::vector<TextComponent*> comps)
+{
+	m_HiSoreComps = comps;
+}
+
+void dae::HighscoreManager::UpdateHighScore()
+{
+	for(auto o : m_HiSoreComps)
+	{
+		
+		o->SetText(std::to_string(GetHighscores(1).at(0)));
+	}
+}
+
 //void dae::HighscoreManager::WriteHighscores()
 //{
 //

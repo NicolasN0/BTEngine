@@ -287,7 +287,7 @@ void dae::IngredientComponent::CheckCollisionEnemy()
 		for(auto o : overlapping)
 		{
 			BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();
-			if(enemy->GetIsFalling() == false)
+			if(enemy->GetIsFalling() == false && enemy->GetDying() == false)
 			{
 				enemy->Kill();
 			}
@@ -382,7 +382,12 @@ void dae::IngredientComponent::KillStandingEnemies()
 
 	for (auto o : m_FallingEnemies)
 	{
-		o->GetComponent<BasicEnemyComponent>()->Kill();
+		BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();
+		if(!enemy->GetDying())
+		{
+			enemy->Kill();
+		}
+		//o->GetComponent<BasicEnemyComponent>()->Kill();
 	}
 	m_FallingEnemies.clear();
 	m_HasMoved = false;

@@ -53,6 +53,7 @@ public:
 	{
 		 std::vector<GameObject*> controlObjects;
 		 std::vector<GameObject*> levelManagers;
+		 std::vector<TextComponent*> hiscoreVec;
 		 ReadHighscores();
 #pragma region StartScreen
 		 auto& startScreen = dae::SceneManager::GetInstance().CreateScene("start");
@@ -197,7 +198,7 @@ public:
 		 hiscore->GetComponent<TextComponent>()->SetText("0000");
 		 hiscore->SetPosition(180, 30);
 		 scene.Add(hiscore);
-
+		 hiscoreVec.push_back(hiscore->GetComponent<TextComponent>());
 
 		 auto pepper = new GameObject;
 		 pepper->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
@@ -300,7 +301,7 @@ public:
 		 hiscoreCoop->GetComponent<TextComponent>()->SetText("0000");
 		 hiscoreCoop->SetPosition(180, 30);
 		 coopScene.Add(hiscoreCoop);
-
+		 hiscoreVec.push_back(hiscoreCoop->GetComponent<TextComponent>());
 
 		 auto pepperCoop = new GameObject;
 		 pepperCoop->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
@@ -410,7 +411,7 @@ public:
 		 hiscorePvp->GetComponent<TextComponent>()->SetText("0000");
 		 hiscorePvp->SetPosition(180, 30);
 		 pvpScene.Add(hiscorePvp);
-
+		 hiscoreVec.push_back(hiscorePvp->GetComponent<TextComponent>());
 
 		 auto pepperPvp = new GameObject;
 		 pepperPvp->AddComponent<TextComponent>(new TextComponent("Lingua.otf", 26));
@@ -456,6 +457,8 @@ public:
 		// audioService->playSound(soundId);
 
 #pragma endregion audio
+
+		 HighscoreManager::GetInstance().SetHighscoreComp(hiscoreVec);
 
 		 HighscoreManager::GetInstance().SetTextComponents(textComponentsVec);
 
