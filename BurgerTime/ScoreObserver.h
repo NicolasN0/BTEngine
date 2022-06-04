@@ -5,14 +5,14 @@
 namespace dae
 {
 	class ScoreObserver :
-	    public Observer, public MonoBehaviour
+	    public Observer
 	{
 	public:
 		ScoreObserver(TextComponent* textComponent);
 
 		void Notify(const GameObject& go, Event event) override;
-		void Update(float dt) override;
-		void FixedUpdate(float timestep) override;
+		//void Update(float dt) override;
+		//void FixedUpdate(float timestep) override;
 	private:
 		TextComponent* m_pTextComponent;
 	};

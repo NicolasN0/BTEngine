@@ -23,11 +23,11 @@ void dae::ScoreObserver::Notify(const GameObject& go, Event event)
 	
 	}
 }
-
-void dae::ScoreObserver::Update(float )
-{
-}
-
-void dae::ScoreObserver::FixedUpdate(float )
-{
-}
+//
+//void dae::ScoreObserver::Update(float )
+//{
+//}
+//
+//void dae::ScoreObserver::FixedUpdate(float )
+//{
+//}

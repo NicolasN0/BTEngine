@@ -180,6 +180,7 @@
     <ClCompile Include="IngredientComponent.cpp" />
     <ClCompile Include="IngredientPartComponent.cpp" />
     <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="PepperObserver.cpp" />
     <ClCompile Include="SaltComponent.cpp" />
     <ClCompile Include="SceneChanger.cpp" />
     <ClCompile Include="ScoreObserver.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="IngredientComponent.h" />
     <ClInclude Include="IngredientPartComponent.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="PepperObserver.h" />
     <ClInclude Include="SaltComponent.h" />
     <ClInclude Include="SceneChanger.h" />
     <ClInclude Include="ScoreObserver.h" />

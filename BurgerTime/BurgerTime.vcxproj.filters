@@ -81,6 +81,9 @@
     <ClCompile Include="EnemyState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PepperObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="EnemyState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PepperObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

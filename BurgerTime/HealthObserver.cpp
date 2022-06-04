@@ -18,11 +18,11 @@ void dae::HealthObserver::Notify(const GameObject& go, Event event)
 		break;
 	}
 }
-
-void dae::HealthObserver::Update(float )
-{
-}
-
-void dae::HealthObserver::FixedUpdate(float )
-{
-}
+//
+//void dae::HealthObserver::Update(float )
+//{
+//}
+//
+//void dae::HealthObserver::FixedUpdate(float )
+//{
+//}

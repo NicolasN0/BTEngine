@@ -5,13 +5,13 @@
 namespace dae
 {
 	class HealthObserver :
-	    public Observer, public MonoBehaviour
+	    public Observer/*, public MonoBehaviour*/
 	{
 	public:
 		HealthObserver(TextComponent* textComponent);
 		void Notify(const GameObject& go, Event event) override;
-		void Update(float dt) override;
-		void FixedUpdate(float timestep) override;
+		//void Update(float dt) override;
+		//void FixedUpdate(float timestep) override;
 
 	private:
 		TextComponent* m_pTextComponent;

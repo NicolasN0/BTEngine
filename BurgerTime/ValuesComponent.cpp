@@ -63,6 +63,7 @@ int dae::ValuesComponent::GetPeppers() const
 void dae::ValuesComponent::DecreasePeppers()
 {
 	m_Peppers--;
+	m_Subject->Notify(*GetParent(), Event::PepperUsed);
 }
 
 void dae::ValuesComponent::ResetObserver()

@@ -41,6 +41,8 @@
 #include <filewritestream.h>
 #include <writer.h>
 
+#include "PepperObserver.h"
+
 
 using namespace std;
 using namespace dae;
@@ -210,6 +212,7 @@ public:
 		 Subject* ValuesSubject = new Subject;
 		 ValuesSubject->AddObserver(new HealthObserver(healthDisplayComp));
 		 ValuesSubject->AddObserver(new ScoreObserver(up->GetComponent<TextComponent>()));
+		 ValuesSubject->AddObserver(new PepperObserver(pepper->GetComponent<TextComponent>()));
 		 peterPepperP1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubject);
 
 		//Set HI-Score
@@ -314,8 +317,10 @@ public:
 		 Subject* ValuesSubjectCoopP2 = new Subject;
 		 ValuesSubjectCoopP1->AddObserver(new HealthObserver(healthDisplayCompCoop));
 		 ValuesSubjectCoopP1->AddObserver(new ScoreObserver(upCoop->GetComponent<TextComponent>()));
+		 ValuesSubjectCoopP1->AddObserver(new PepperObserver(pepperCoop->GetComponent<TextComponent>()));
 		 ValuesSubjectCoopP2->AddObserver(new HealthObserver(healthDisplayCompCoop));
 		 ValuesSubjectCoopP2->AddObserver(new ScoreObserver(upCoop->GetComponent<TextComponent>()));
+		 ValuesSubjectCoopP2->AddObserver(new PepperObserver(pepperCoop->GetComponent<TextComponent>()));
 		 peterPepperPlayer1->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoopP1);
 		 peterPepperPlayer2->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectCoopP2);
 
@@ -424,6 +429,7 @@ public:
 		 Subject* ValuesSubjectPvp = new Subject;
 		 ValuesSubjectPvp->AddObserver(new HealthObserver(healthPvpComp));
 		 ValuesSubjectPvp->AddObserver(new ScoreObserver(upPvp->GetComponent<TextComponent>()));
+		 ValuesSubjectPvp->AddObserver(new PepperObserver(pepperPvp->GetComponent<TextComponent>()));
 		 peterPepperPvp->GetComponent<ValuesComponent>()->SetSubject(ValuesSubjectPvp);
 
 
