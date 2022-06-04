@@ -381,7 +381,8 @@ public:
 		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetSpriteComp(hotdogPvp->GetComponent<SpriteComponent>());*/
 		 SpriteComponent* enemySprite = new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
 		 hotdogPvp->AddComponent(enemySprite);
-		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite));
+		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite,true));
+		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperPvp);
 		 hotdogPvp->SetTag("Enemy");
 
 		 playersPvp.push_back(peterPepperPvp);
@@ -507,7 +508,7 @@ private:
 
 		//Change
 		Document::AllocatorType& allocator = doc.GetAllocator();
-		highscores.PushBack(100, allocator);
+		//highscores.PushBack(100, allocator);
 		//Write
 		FILE* fp = nullptr;
 		fopen_s(&fp,"../Data/Highscores.json", "w"); // non-Windows use "w"

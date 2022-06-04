@@ -126,27 +126,32 @@ void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* comp)
 
 void dae::PeterPepperComponent::ThrowSalt()
 {
-
-
-	m_AudioService->SetEffectVolume(10);
-	int soundId;
-	soundId = m_AudioService->LoadSound("../Data/Sounds/Salt.wav");
-	m_AudioService->playSound(soundId);
-
-
-	GameObject* salt = new GameObject;
-	salt->AddComponent<SaltComponent>(new SaltComponent());
-	salt->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
-	salt->GetComponent<SaltComponent>()->SetSpriteComp(salt->GetComponent<SpriteComponent>());
-	if(m_IsFacingRight)
+	ValuesComponent* values = GetParent()->GetComponent<ValuesComponent>();
+	if(values->GetPeppers() > 0)
 	{
-		salt->SetPosition(GetParent()->GetPosition().x + 10, GetParent()->GetPosition().y);
-	}else
-	{
-		salt->SetPosition(GetParent()->GetPosition().x - 10, GetParent()->GetPosition().y);
+		m_AudioService->SetEffectVolume(10);
+		int soundId;
+		soundId = m_AudioService->LoadSound("../Data/Sounds/Salt.wav");
+		m_AudioService->playSound(soundId);
+
+
+		GameObject* salt = new GameObject;
+		salt->AddComponent<SaltComponent>(new SaltComponent());
+		salt->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
+		salt->GetComponent<SaltComponent>()->SetSpriteComp(salt->GetComponent<SpriteComponent>());
+		if(m_IsFacingRight)
+		{
+			salt->SetPosition(GetParent()->GetPosition().x + 10, GetParent()->GetPosition().y);
+		}else
+		{
+			salt->SetPosition(GetParent()->GetPosition().x - 10, GetParent()->GetPosition().y);
+		}
+		salt->SetScale(1.5f, 1.5f);
+		GetParent()->GetScene()->Add(salt);
+
+		values->DecreasePeppers();
+		std::cout << values->GetPeppers();
 	}
-	salt->SetScale(1.5f, 1.5f);
-	GetParent()->GetScene()->Add(salt);
 }
 
 void dae::PeterPepperComponent::UpdateSprite(float dt)
