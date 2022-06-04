@@ -1,7 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
 #include "SpriteComponent.h"
-
+#include "EnemyState.h"
 namespace dae
 {
 	enum class EEnemyType
@@ -11,12 +11,14 @@ namespace dae
 		Pickle
 	};
 
+	
 
 	class BasicEnemyComponent :
 		public MonoBehaviour
 	{
 	public:
-		BasicEnemyComponent(EEnemyType enemyType,bool isPlayer = false);
+		~BasicEnemyComponent();
+		BasicEnemyComponent(EEnemyType enemyType,SpriteComponent* sprite,bool isPlayer = false);
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
@@ -42,31 +44,53 @@ namespace dae
 
 		void SetStunned(bool stunned);
 		bool GetStunned() const;
-	private:
+
+		bool GetIsPlayer() const;
+		glm::vec3 GetDirection() const;
+
+		//State functions
 		void CheckOverlaps();
 		void UpdatePos(float dt);
 		void UpdateDirection();
 		
 		void UpdateSprite();
 
+		SpriteComponent* GetSpriteComp();
+
+		bool GetDying() const;
+		void SetDyingComplete(bool dyingComplete);
+		bool GetDyingComplete();
+
+
+	private:
+
 		bool m_Stunned;
 		float m_StunTimer;
 		float m_MaxStunTime;
+
+		bool m_Dying;
+		bool m_DyingComplete;
 
 		glm::vec3 m_PlayerDir;
 		bool m_IsOnLadder{};
 		bool m_IsOnPlatform{};
 		bool m_Falling{};
+
+
 		GameObject* m_Target{};
 		float m_MoveSpeed{20};
 		bool m_CanSwitch{true};
 		glm::vec3 m_Direction{};
+
+
 		Subject* m_Subject{};
 
 		EEnemyType m_Type;
 		bool m_IsPlayer{};
 
 		SpriteComponent* m_SpriteComp;
+
+		EnemyState* m_State;
 
 		
 	};

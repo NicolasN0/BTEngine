@@ -1381,9 +1381,12 @@ void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredient
 void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 {
 	auto HotDog = new GameObject;
-	HotDog->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
-	HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(type));
-	HotDog->GetComponent<BasicEnemyComponent>()->SetSpriteComp(HotDog->GetComponent<SpriteComponent>());
+	SpriteComponent* enemySprite = new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
+	//HotDog->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
+	//HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(type));
+	//HotDog->GetComponent<BasicEnemyComponent>()->SetSpriteComp(HotDog->GetComponent<SpriteComponent>());
+	HotDog->AddComponent(enemySprite);
+	HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite));
 
 	//HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 	//HotDog->SetPosition(300, 250);

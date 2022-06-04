@@ -2,13 +2,32 @@
 #include "ValuesComponent.h"
 #include <iostream>
 
-dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp(),m_Stunned(),m_StunTimer(),m_MaxStunTime(2)
+#include "EnemyState.h"
+
+dae::BasicEnemyComponent::~BasicEnemyComponent()
 {
+	delete m_State;
+	m_State = nullptr;
+}
+
+dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType,  SpriteComponent* sprite, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp(),m_Stunned(),m_StunTimer(),m_MaxStunTime(2)
+{
+	m_SpriteComp = sprite;
+	switch (enemyType)
+	{
+	case EEnemyType::Hotdog:
+		m_SpriteComp->SetFrameRow(2);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(0);
+		break;
+	}
+	m_State = new EnemyMovingState();
+	m_State->Enter(*this);
 }
 
 void dae::BasicEnemyComponent::Update(float dt)
 {
-	if(m_Falling == false)
+	/*if(m_Falling == false)
 	{
 		if(!m_Stunned)
 		{
@@ -33,9 +52,19 @@ void dae::BasicEnemyComponent::Update(float dt)
 			m_Stunned = false;
 			m_StunTimer = 0;
 		}
-	}
+	}*/
 	
+	//State Test
+	EnemyState* state = m_State->Update(*this,dt);
+	if(state != nullptr)
+	{
+		delete m_State;
+		m_State = state;
 
+		m_State->Enter(*this);
+	}
+
+	
 
 }
 
@@ -71,7 +100,7 @@ bool dae::BasicEnemyComponent::GetIsFalling() const
 
 void dae::BasicEnemyComponent::Kill()
 {
-	std::cout << "kill";
+	std::cout << "toDying";
 	switch(m_Type)
 	{
 	case EEnemyType::Hotdog:
@@ -88,7 +117,9 @@ void dae::BasicEnemyComponent::Kill()
 		break;
 	}
 
-	m_Parent->~GameObject();
+	m_Dying = true;
+
+	//m_Parent->~GameObject();
 }
 
 void dae::BasicEnemyComponent::SetSubject(Subject* subject)
@@ -123,6 +154,16 @@ bool dae::BasicEnemyComponent::GetStunned() const
 	return m_Stunned;
 }
 
+bool dae::BasicEnemyComponent::GetIsPlayer() const
+{
+	return m_IsPlayer;
+}
+
+glm::vec3 dae::BasicEnemyComponent::GetDirection() const
+{
+	return m_Direction;
+}
+
 void dae::BasicEnemyComponent::CheckOverlaps()
 {
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
@@ -149,28 +190,7 @@ void dae::BasicEnemyComponent::CheckOverlaps()
 void dae::BasicEnemyComponent::UpdatePos(float dt)
 {
 
-	/*glm::vec3 curPos = GetParent()->GetPosition();
-	glm::vec3 furPos = glm::vec3(curPos.x + (m_Direction.x * dt), curPos.y + (m_Direction.y * dt), 1);
-	GetParent()->SetPosition(furPos.x, furPos.y);*/
-
-
-	/*if(m_Direction.x > 0 || m_Direction.x < 0)
-	{
-		if (m_IsOnPlatform == false)
-		{
-			GetParent()->SetPosition(curPos.x, curPos.y);
-			m_CanSwitch = true;
-		}
-	}
-
-	if (m_Direction.y > 0 || m_Direction.y < 0)
-	{
-		if (m_IsOnLadder == false)
-		{
-			GetParent()->SetPosition(curPos.x, curPos.y);
-			m_CanSwitch = true;
-		}
-	}*/
+	
 	if (m_Direction.y > 0 || m_Direction.y < 0)
 	{
 		if (m_IsOnLadder == true)
@@ -319,4 +339,24 @@ void dae::BasicEnemyComponent::UpdateSprite()
 		m_SpriteComp->SetStartFrame(2);
 		
 	}
+}
+
+dae::SpriteComponent* dae::BasicEnemyComponent::GetSpriteComp()
+{
+	return m_SpriteComp;
+}
+
+bool dae::BasicEnemyComponent::GetDying() const
+{
+	return m_Dying;
+}
+
+void dae::BasicEnemyComponent::SetDyingComplete(bool dyingComplete)
+{
+	m_DyingComplete = dyingComplete;
+}
+
+bool dae::BasicEnemyComponent::GetDyingComplete()
+{
+	return m_DyingComplete;
 }

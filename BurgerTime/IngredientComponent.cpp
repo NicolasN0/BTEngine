@@ -50,7 +50,11 @@ void dae::IngredientComponent::Update(float dt)
 		}
 	}
 
-	CheckCollisionPlayer();
+	if(!m_inContainer)
+	{
+		CheckCollisionPlayer();
+		
+	}
 
 	if(m_isFalling == true)
 	{
@@ -69,8 +73,14 @@ void dae::IngredientComponent::Update(float dt)
 	{
 		if(m_StandingEnemies > 0)
 		{
-			m_StandingEnemies--;
-			InstantLetFall();
+			if(!m_inContainer)
+			{
+				m_StandingEnemies--;
+				InstantLetFall();
+			} else
+			{
+				KillStandingEnemies();
+			}
 		} else if(m_StandingEnemies == 0 && m_FallingEnemies.size() > 0)
 		{
 			
@@ -132,7 +142,7 @@ void dae::IngredientComponent::CheckPressedAmount()
 	if (m_PressedCount == m_Parent->GetChildCount())
 	{
 		//Should only happen once per enemyFill
-		if (m_HasMoved == false)
+		if (m_HasMoved == false && m_Parent->IsOverlappingAnyWithTag("Player"))
 		{
 			std::vector<GameObject*> allEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
 
@@ -325,7 +335,7 @@ void dae::IngredientComponent::Bounce(float dt)
 			m_BouncingDown = false;
 			m_isBouncing = false;
 			m_CurrentBounceHeight = 0;
-			std::cout << "bounceDone";
+			//std::cout << "bounceDone";
 		}
 		
 	}

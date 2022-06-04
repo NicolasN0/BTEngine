@@ -375,9 +375,12 @@ public:
 		 peterPepperPvp->SetTag("Player");
 
 		 auto hotdogPvp = new GameObject;
-		 hotdogPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
+		/* hotdogPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
 		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog,true));
-		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetSpriteComp(hotdogPvp->GetComponent<SpriteComponent>());
+		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetSpriteComp(hotdogPvp->GetComponent<SpriteComponent>());*/
+		 SpriteComponent* enemySprite = new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
+		 hotdogPvp->AddComponent(enemySprite);
+		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite));
 		 hotdogPvp->SetTag("Enemy");
 
 		 playersPvp.push_back(peterPepperPvp);
