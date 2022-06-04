@@ -62,8 +62,9 @@ namespace dae
 		void SetDyingComplete(bool dyingComplete);
 		bool GetDyingComplete();
 
-
 	private:
+		void SetHorizontalDir();
+		void SetVerticalDir();
 
 		bool m_Stunned;
 		float m_StunTimer;
@@ -93,7 +94,10 @@ namespace dae
 
 		EnemyState* m_State;
 
-		
+		bool m_BlockedHor;
+		bool m_BlockedVer;
+		bool m_ForceSwitch;
+		glm::vec3 m_BlockedCor;
 	};
 
 }

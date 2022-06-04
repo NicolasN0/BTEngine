@@ -473,7 +473,7 @@ public:
 
 		 SceneChanger::GetInstance().SetControlObjects(controlObjects);
 
-		 SceneChanger::GetInstance().SetCurrentScene("highscore");
+		 SceneChanger::GetInstance().SetCurrentScene("start");
 	}
 
 private:

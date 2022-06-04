@@ -11,6 +11,9 @@ dae::BasicEnemyComponent::~BasicEnemyComponent()
 }
 
 dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType,  SpriteComponent* sprite, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp(),m_Stunned(),m_StunTimer(),m_MaxStunTime(2)
+,m_BlockedHor()
+,m_BlockedVer()
+,m_BlockedCor()
 {
 	m_SpriteComp = sprite;
 	switch (enemyType)
@@ -218,6 +221,8 @@ void dae::BasicEnemyComponent::UpdatePos(float dt)
 
 			if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder") == false)
 			{
+				m_BlockedVer = true;
+				m_BlockedCor = glm::vec3(GetParent()->GetPosition());
 				GetParent()->SetPosition(curPos.x, curPos.y);
 			}
 		}
@@ -236,6 +241,8 @@ void dae::BasicEnemyComponent::UpdatePos(float dt)
 
 			if (GetParent()->IsCenterOverlappingAnyWithTag("Platform") == false)
 			{
+				m_BlockedHor = true;
+				m_BlockedCor = glm::vec3(GetParent()->GetPosition());
 				GetParent()->SetPosition(curPos.x, curPos.y);
 			}
 		}
@@ -245,6 +252,69 @@ void dae::BasicEnemyComponent::UpdatePos(float dt)
 
 void dae::BasicEnemyComponent::UpdateDirection()
 {
+	//if(m_IsOnPlatform == true && m_IsOnLadder == true)
+	//{
+	//	m_CanSwitch = true;
+	//}
+
+
+	//if(m_CanSwitch == true)
+	//{
+
+	//	//Check if same line
+	//	if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) )
+	//	{
+	//		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+	//		{
+
+	//			m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+	//		}
+	//		else
+	//		{
+	//			m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+	//		}
+
+	//		//Return so it doesnt constantly checks
+	//		return;
+	//	}
+
+
+	//	if(m_IsOnLadder == true)
+	//	{
+	//		if(m_Target->GetPosition().y < GetParent()->GetPosition().y)
+	//		{
+	//			
+	//			m_Direction = glm::vec3(0, -m_MoveSpeed, 0);
+	//		} else
+	//		{
+	//			m_Direction = glm::vec3(0, m_MoveSpeed, 0);
+	//		}
+	//		//Return so it doesnt constantly checks
+	//		m_CanSwitch = false;
+	//		//return;
+
+	//	} else if(m_IsOnPlatform == true)
+	//	{
+	//		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+	//		{
+
+	//			m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+	//		}
+	//		else
+	//		{
+	//			m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+	//		}
+
+	//		
+	//		m_CanSwitch = false;
+	//		//return;
+	//		
+	//	}
+	//}
+
+
+	//Test
+
 	if(m_IsOnPlatform == true && m_IsOnLadder == true)
 	{
 		m_CanSwitch = true;
@@ -254,8 +324,8 @@ void dae::BasicEnemyComponent::UpdateDirection()
 	if(m_CanSwitch == true)
 	{
 
-		//Check if same line
-		if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) )
+		
+		if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) && m_BlockedHor == false)
 		{
 			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
 			{
@@ -271,8 +341,29 @@ void dae::BasicEnemyComponent::UpdateDirection()
 			return;
 		}
 
+		//test
+		glm::vec3 futurDir;
+		if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+		{
 
-		if(m_IsOnLadder == true)
+			futurDir.y = -m_MoveSpeed;
+		}
+		else
+		{
+			futurDir.y = m_MoveSpeed;
+		}
+		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+		{
+
+			futurDir.x = -m_MoveSpeed;
+		}
+		else
+		{
+			futurDir.x = m_MoveSpeed;
+		}
+		//test
+
+		if(m_IsOnLadder == true && m_BlockedVer == false)
 		{
 			if(m_Target->GetPosition().y < GetParent()->GetPosition().y)
 			{
@@ -282,11 +373,9 @@ void dae::BasicEnemyComponent::UpdateDirection()
 			{
 				m_Direction = glm::vec3(0, m_MoveSpeed, 0);
 			}
-			//Return so it doesnt constantly checks
 			m_CanSwitch = false;
-			//return;
 
-		} else if(m_IsOnPlatform == true)
+		} else if(m_IsOnPlatform == true && m_BlockedHor == false)
 		{
 			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
 			{
@@ -300,10 +389,22 @@ void dae::BasicEnemyComponent::UpdateDirection()
 
 			
 			m_CanSwitch = false;
-			//return;
 			
 		}
 	}
+
+	if(abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
+	{
+		m_BlockedHor = false;
+	}
+
+	if (abs(GetParent()->GetPosition().x - m_BlockedCor.y) > 15)
+	{
+		m_BlockedVer = false;
+	}
+	
+
+	
 }
 
 void dae::BasicEnemyComponent::UpdateSprite()
@@ -374,4 +475,33 @@ void dae::BasicEnemyComponent::SetDyingComplete(bool dyingComplete)
 bool dae::BasicEnemyComponent::GetDyingComplete()
 {
 	return m_DyingComplete;
+}
+
+void dae::BasicEnemyComponent::SetHorizontalDir()
+{
+	if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+	{
+
+		m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+	}
+	else
+	{
+		m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+	}
+
+	m_CanSwitch = false;
+}
+
+void dae::BasicEnemyComponent::SetVerticalDir()
+{
+	if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+	{
+
+		m_Direction = glm::vec3(0, -m_MoveSpeed, 0);
+	}
+	else
+	{
+		m_Direction = glm::vec3(0, m_MoveSpeed, 0);
+	}
+	m_CanSwitch = false;
 }
