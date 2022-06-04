@@ -42,6 +42,7 @@ private:
 	void Bounce(float dt);
 	void InitializeValuesComp();
 	void KillStandingEnemies();
+	void SpawnStandingScoresEffect(int numberEnemies);
 
 	float m_CurrentBounceHeight;
 	float m_MaxBounceHeight;

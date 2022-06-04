@@ -4,24 +4,26 @@
 
 #include "IngredientPartComponent.h"
 #include "BasicEnemyComponent.h"
+#include "EffectComponent.h"
+
 dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
-,m_PressedCount{}
-,m_curPlatformHeight{}
-,m_lastPlatformHeight{}
-,m_PlatformSize{}
-,m_inContainer{}
-,m_isFalling{}
-,m_isBouncing{}
-,m_IngredientSize{}
-, m_isCollected{}
-,m_StandingEnemies{}
-,m_HasMoved{}
-,m_CurrentBounceHeight{}
-,m_MaxBounceHeight{10.f}
-,m_BounceSpeed{50.f}
-,m_TotalFallingEnemies{}
-,m_ValuesComp{}
-,m_Players{}
+                                                  ,m_PressedCount{}
+                                                  ,m_curPlatformHeight{}
+                                                  ,m_lastPlatformHeight{}
+                                                  ,m_PlatformSize{}
+                                                  ,m_inContainer{}
+                                                  ,m_isFalling{}
+                                                  ,m_isBouncing{}
+                                                  ,m_IngredientSize{}
+                                                  , m_isCollected{}
+                                                  ,m_StandingEnemies{}
+                                                  ,m_HasMoved{}
+                                                  ,m_CurrentBounceHeight{}
+                                                  ,m_MaxBounceHeight{10.f}
+                                                  ,m_BounceSpeed{50.f}
+                                                  ,m_TotalFallingEnemies{}
+                                                  ,m_ValuesComp{}
+                                                  ,m_Players{}
 {
 	
 }
@@ -355,22 +357,28 @@ void dae::IngredientComponent::KillStandingEnemies()
 {
 	switch (m_TotalFallingEnemies)
 	{
-	case 1: 
+	case 1:
+		SpawnStandingScoresEffect(1);
 		m_ValuesComp->IncreaseScore(500);
 		break;
 	case 2:
+		SpawnStandingScoresEffect(2);
 		m_ValuesComp->IncreaseScore(1000);
 		break;
 	case 3:
+		SpawnStandingScoresEffect(3);
 		m_ValuesComp->IncreaseScore(2000);
 		break;
 	case 4:
+		SpawnStandingScoresEffect(4);
 		m_ValuesComp->IncreaseScore(4000);
 		break;
 	case 5:
+		SpawnStandingScoresEffect(5);
 		m_ValuesComp->IncreaseScore(8000);
 		break;
 	case 6:
+		SpawnStandingScoresEffect(6);
 		m_ValuesComp->IncreaseScore(16000);
 		break;
 
@@ -392,4 +400,18 @@ void dae::IngredientComponent::KillStandingEnemies()
 	m_FallingEnemies.clear();
 	m_HasMoved = false;
 	m_TotalFallingEnemies = 0;
+}
+
+void dae::IngredientComponent::SpawnStandingScoresEffect(int numberEnemies)
+{
+	dae::SpriteComponent* effectSprite = new dae::SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
+	dae::GameObject* score = new dae::GameObject();
+	score->AddComponent(effectSprite);
+	score->SetPosition(m_FallingEnemies.at(0)->GetPosition());
+	score->SetScale(2, 2);
+	score->AddComponent<dae::EffectComponent>(new dae::EffectComponent(1));
+	effectSprite->SetFrameRow(10);
+	effectSprite->SetNumberOfFrames(1);
+	effectSprite->SetStartFrame(numberEnemies + 2);
+	GetParent()->GetScene()->Add(score);
 }

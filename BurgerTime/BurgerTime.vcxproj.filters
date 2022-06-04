@@ -81,8 +81,11 @@
     <ClCompile Include="EnemyState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EffectComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
     <ClCompile Include="PepperObserver.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Observers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,7 +138,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PepperObserver.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

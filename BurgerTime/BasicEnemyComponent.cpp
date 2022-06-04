@@ -20,6 +20,16 @@ dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType,  SpriteCompo
 		m_SpriteComp->SetNumberOfFrames(2);
 		m_SpriteComp->SetStartFrame(0);
 		break;
+	case EEnemyType::Pickle:
+		m_SpriteComp->SetFrameRow(4);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(0);
+		break;
+	case EEnemyType::Egg:
+		m_SpriteComp->SetFrameRow(6);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(0);
+		break;
 	}
 	m_State = new EnemyMovingState();
 	m_State->Enter(*this);
@@ -96,6 +106,11 @@ void dae::BasicEnemyComponent::SetIsFalling(bool isFalling)
 bool dae::BasicEnemyComponent::GetIsFalling() const
 {
 	return m_Falling;
+}
+
+dae::EEnemyType dae::BasicEnemyComponent::GetType() const
+{
+	return m_Type;
 }
 
 void dae::BasicEnemyComponent::Kill()

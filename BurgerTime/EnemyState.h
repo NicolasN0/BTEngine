@@ -66,6 +66,7 @@ namespace dae
 		virtual void Enter(dae::BasicEnemyComponent& enemy);
 
 	private:
+		void SpawnScoreEffect(dae::BasicEnemyComponent& enemy, int rarity);
 		float m_DyingTimer;
 		float m_MaxDyingTime;
 		dae::SpriteComponent* m_SpriteComp;

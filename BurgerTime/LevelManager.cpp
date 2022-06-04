@@ -78,7 +78,18 @@ void dae::LevelManager::Update(float dt)
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel1.size();
 				std::cout << randIndex;
-				MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
+				if(m_CurrentEnemies == m_MaxEnemies.at(m_Level-1) -1)
+				{
+					
+					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Egg);
+				} else if(m_CurrentEnemies == m_MaxEnemies.at(m_Level - 1) - 2)
+				{
+					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Pickle);
+
+				} else
+				{
+					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
+				}
 				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 				m_SpawnTimer = 0;
 			}
@@ -90,7 +101,21 @@ void dae::LevelManager::Update(float dt)
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel2.size();
 				std::cout << randIndex;
-				MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
+				if (m_CurrentEnemies == m_MaxEnemies.at(m_Level - 1) - 1)
+				{
+
+					MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Egg);
+				}
+				else if (m_CurrentEnemies == m_MaxEnemies.at(m_Level - 1) - 2)
+				{
+					MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Pickle);
+
+				}
+				else
+				{
+					MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
+				}
+				//MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
 				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 				m_SpawnTimer = 0;
 			}
@@ -102,7 +127,21 @@ void dae::LevelManager::Update(float dt)
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel3.size();
 				std::cout << randIndex;
-				MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
+				if (m_CurrentEnemies == m_MaxEnemies.at(m_Level - 1) - 1)
+				{
+
+					MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Egg);
+				}
+				else if (m_CurrentEnemies == m_MaxEnemies.at(m_Level - 1) - 2)
+				{
+					MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Pickle);
+
+				}
+				else
+				{
+					MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
+				}
+				//MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
 				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 				m_SpawnTimer = 0;
 			}
@@ -1386,7 +1425,7 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 	//HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(type));
 	//HotDog->GetComponent<BasicEnemyComponent>()->SetSpriteComp(HotDog->GetComponent<SpriteComponent>());
 	HotDog->AddComponent(enemySprite);
-	HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite));
+	HotDog->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(type, enemySprite));
 
 	//HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 	//HotDog->SetPosition(300, 250);

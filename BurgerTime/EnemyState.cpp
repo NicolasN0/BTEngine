@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "BasicEnemyComponent.h"
+#include "EffectComponent.h"
+#include "Scene.h"
 #include "SpriteComponent.h"
 
 EnemyState* EnemyStunnedState::Update(dae::BasicEnemyComponent& enemy, float dt)
@@ -36,9 +38,24 @@ EnemyState* EnemyStunnedState::Update(dae::BasicEnemyComponent& enemy, float dt)
 
 void EnemyStunnedState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 {
-	m_SpriteComp->SetFrameRow(3);
-	m_SpriteComp->SetNumberOfFrames(2);
-	m_SpriteComp->SetStartFrame(4);
+	switch(enemy.GetType())
+	{
+	case dae::EEnemyType::Hotdog:
+		m_SpriteComp->SetFrameRow(3);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(4);
+		break;
+	case dae::EEnemyType::Pickle:
+		m_SpriteComp->SetFrameRow(5);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(4);
+		break;
+	case dae::EEnemyType::Egg:
+		m_SpriteComp->SetFrameRow(7);
+		m_SpriteComp->SetNumberOfFrames(2);
+		m_SpriteComp->SetStartFrame(4);
+		break;
+	}
 }
 
 void EnemyStunnedState::Enter(dae::BasicEnemyComponent& enemy)
@@ -87,35 +104,95 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 	{
 		m_SpriteComp->SetPaused(false);
 	}
+	dae::EEnemyType type = enemy.GetType();
 
 	if (dir.y > 0)
 	{
-
-		m_SpriteComp->SetFrameRow(2);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(0);
+		switch (type)
+		{
+		case dae::EEnemyType::Hotdog:
+			m_SpriteComp->SetFrameRow(2);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(0);
+			break;
+		case dae::EEnemyType::Pickle:
+			m_SpriteComp->SetFrameRow(4);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(0);
+			break;
+		case dae::EEnemyType::Egg:
+			m_SpriteComp->SetFrameRow(6);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(0);
+			break;
+		}
 
 
 	}
 	else if (dir.y < 0)
 	{
-		m_SpriteComp->SetFrameRow(2);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(4);
+		switch (type)
+		{
+		case dae::EEnemyType::Hotdog:
+			m_SpriteComp->SetFrameRow(2);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(4);
+			break;
+		case dae::EEnemyType::Pickle:
+			m_SpriteComp->SetFrameRow(4);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(4);
+			break;
+		case dae::EEnemyType::Egg:
+			m_SpriteComp->SetFrameRow(6);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(4);
+			break;
+		}
 	}
 	else if (dir.x > 0)
 	{
-		m_SpriteComp->SetFrameRow(2);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(2);
+		switch (type)
+		{
+		case dae::EEnemyType::Hotdog:
+			m_SpriteComp->SetFrameRow(2);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(6);
+			break;
+		case dae::EEnemyType::Pickle:
+			m_SpriteComp->SetFrameRow(4);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(9);
+			break;
+		case dae::EEnemyType::Egg:
+			m_SpriteComp->SetFrameRow(6);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(9);
+			break;
+		}
 
 
 	}
 	else if (dir.x < 0)
 	{
-		m_SpriteComp->SetFrameRow(2);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(2);
+		switch (type)
+		{
+		case dae::EEnemyType::Hotdog:
+			m_SpriteComp->SetFrameRow(2);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(2);
+			break;
+		case dae::EEnemyType::Pickle:
+			m_SpriteComp->SetFrameRow(4);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(2);
+			break;
+		case dae::EEnemyType::Egg:
+			m_SpriteComp->SetFrameRow(6);
+			m_SpriteComp->SetNumberOfFrames(2);
+			m_SpriteComp->SetStartFrame(2);
+			break;
+		}
 
 	}
 }
@@ -127,12 +204,32 @@ void EnemyMovingState::Enter(dae::BasicEnemyComponent& enemy)
 
 EnemyState* EnemyDyingState::Update(dae::BasicEnemyComponent& enemy, float dt)
 {
-	//enemy.UpdateSprite();
 	UpdateSprites(enemy);
 	m_DyingTimer += dt;
 	if (m_DyingTimer > m_MaxDyingTime)
 	{
-		//enemy.SetDyingComplete(true);
+		switch(enemy.GetType())
+		{
+		case dae::EEnemyType::Hotdog:
+			{
+				SpawnScoreEffect(enemy,0);
+
+			}
+			break;
+		case dae::EEnemyType::Pickle:
+			{
+				SpawnScoreEffect(enemy, 1);
+
+			}
+			break;
+		case dae::EEnemyType::Egg:
+			{
+				SpawnScoreEffect(enemy, 2);
+		
+			}
+			break;
+		}
+
 		std::cout << "Actual Kill";
 		enemy.GetParent()->Delete();
 	}
@@ -142,15 +239,45 @@ EnemyState* EnemyDyingState::Update(dae::BasicEnemyComponent& enemy, float dt)
 
 void EnemyDyingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 {
-	m_SpriteComp->SetFrameRow(3);
-	m_SpriteComp->SetNumberOfFrames(4);
-	m_SpriteComp->SetStartFrame(0);
+	switch (enemy.GetType())
+	{
+	case dae::EEnemyType::Hotdog:
+		m_SpriteComp->SetFrameRow(3);
+		m_SpriteComp->SetNumberOfFrames(4);
+		m_SpriteComp->SetStartFrame(0);
+		break;
+	case dae::EEnemyType::Pickle:
+		m_SpriteComp->SetFrameRow(5);
+		m_SpriteComp->SetNumberOfFrames(4);
+		m_SpriteComp->SetStartFrame(0);
+		break;
+	case dae::EEnemyType::Egg:
+		m_SpriteComp->SetFrameRow(7);
+		m_SpriteComp->SetNumberOfFrames(4);
+		m_SpriteComp->SetStartFrame(0);
+		break;
+	}
 }
 
 void EnemyDyingState::Enter(dae::BasicEnemyComponent& enemy)
 {
 	m_SpriteComp = enemy.GetSpriteComp();
 	m_MaxDyingTime = 0.3f;
+}
+
+void EnemyDyingState::SpawnScoreEffect(dae::BasicEnemyComponent& enemy, int rarity)
+{
+
+	dae::SpriteComponent* effectSprite = new dae::SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
+	dae::GameObject* score = new dae::GameObject();
+	score->AddComponent(effectSprite);
+	score->SetPosition(enemy.GetParent()->GetPosition());
+	score->SetScale(2, 2);
+	score->AddComponent<dae::EffectComponent>(new dae::EffectComponent(1));
+	effectSprite->SetFrameRow(10);
+	effectSprite->SetNumberOfFrames(1);
+	effectSprite->SetStartFrame(rarity);
+	enemy.GetParent()->GetScene()->Add(score);
 }
 
 EnemyState* EnemyFallingState::Update(dae::BasicEnemyComponent& enemy, float dt)

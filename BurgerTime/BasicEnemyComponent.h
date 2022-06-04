@@ -34,6 +34,8 @@ namespace dae
 		void SetIsFalling(bool isFalling);
 		bool GetIsFalling() const;
 
+		EEnemyType GetType() const;
+
 		void Kill();
 
 		void SetSubject(Subject* subject);
@@ -48,7 +50,6 @@ namespace dae
 		bool GetIsPlayer() const;
 		glm::vec3 GetDirection() const;
 
-		//State functions
 		void CheckOverlaps();
 		void UpdatePos(float dt);
 		void UpdateDirection();
