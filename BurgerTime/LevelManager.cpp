@@ -1164,7 +1164,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		break;
 	case 4:
 		HighscoreManager::GetInstance().AddHighscore(m_Players.at(0)->GetComponent<ValuesComponent>()->GetScores());
-		m_Level = 0;
+		m_Level = 1;
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 		break;
 	default:
