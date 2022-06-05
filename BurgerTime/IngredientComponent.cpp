@@ -7,23 +7,23 @@
 #include "EffectComponent.h"
 
 dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
-                                                  ,m_PressedCount{}
-                                                  ,m_curPlatformHeight{}
-                                                  ,m_lastPlatformHeight{}
-                                                  ,m_PlatformSize{}
-                                                  ,m_inContainer{}
-                                                  ,m_isFalling{}
-                                                  ,m_isBouncing{}
-                                                  ,m_IngredientSize{}
-                                                  , m_isCollected{}
-                                                  ,m_StandingEnemies{}
-                                                  ,m_HasMoved{}
-                                                  ,m_CurrentBounceHeight{}
-                                                  ,m_MaxBounceHeight{10.f}
-                                                  ,m_BounceSpeed{50.f}
-                                                  ,m_TotalFallingEnemies{}
-                                                  ,m_ValuesComp{}
-                                                  ,m_Players{}
+,m_PressedCount{}
+,m_curPlatformHeight{}
+,m_lastPlatformHeight{}
+,m_PlatformSize{}
+,m_inContainer{}
+,m_isFalling{}
+,m_isBouncing{}
+,m_IngredientSize{}
+, m_isCollected{}
+,m_StandingEnemies{}
+,m_HasMoved{}
+,m_CurrentBounceHeight{}
+,m_MaxBounceHeight{10.f}
+,m_BounceSpeed{50.f}
+,m_TotalFallingEnemies{}
+,m_ValuesComp{}
+,m_Players{}
 {
 	
 }
@@ -286,7 +286,6 @@ void dae::IngredientComponent::CheckCollisionPlatform()
 
 		if ((m_curPlatformHeight - m_lastPlatformHeight) > (m_PlatformSize + m_IngredientSize))
 		{
-
 			ResetFalling();
 		}
 

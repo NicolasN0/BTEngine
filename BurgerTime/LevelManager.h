@@ -23,6 +23,7 @@ namespace dae
 		void MakeEnemey(glm::vec3 pos, EEnemyType type);
 		void ReadInLevel(const std::wstring& filename);
 
+
 		std::vector<GameObject*> m_LevelObjects{};
 		int m_Level{};
 		Scene* m_Scene;
@@ -43,7 +44,7 @@ namespace dae
 		std::vector<glm::vec3> m_EnemyPosLevel3;
 
 		rapidjson::Document m_Doc;
-
+		int m_SpawnCount;
 	};
 }
 

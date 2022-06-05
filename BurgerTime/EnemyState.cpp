@@ -23,7 +23,7 @@ EnemyState* EnemyStunnedState::Update(dae::BasicEnemyComponent& enemy, float dt)
 		return new EnemyMovingState();
 	}
 
-	//enemy.UpdateSprite();
+	
 	UpdateSprites(enemy);
 	if(enemy.GetIsFalling())
 	{

@@ -175,7 +175,7 @@ public:
 		 peterPepperP1->SetScale(1.5f, 1.5f);
 		 peterPepperP1->SetTag("Player");
 
-		 peterPepperP1->SetDebugDraw(true);
+		 peterPepperP1->SetDebugDraw(false);
 
 		 players.push_back(peterPepperP1);
 		 controlObjects.push_back(peterPepperP1);

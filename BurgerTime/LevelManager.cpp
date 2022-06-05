@@ -29,6 +29,7 @@ dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, 
 , m_EnemyPosLevel3()
 ,m_SpawnTimer()
 ,m_SpawnMax(6)
+,m_SpawnCount(1)
 
 {
 	ReadInLevel(levelFile);
@@ -70,6 +71,7 @@ void dae::LevelManager::Update(float dt)
 	m_SpawnTimer += dt;
 	if(m_SpawnTimer > m_SpawnMax)
 	{
+		m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
 		switch(m_Level)
 		{
 		case 1:
@@ -77,8 +79,8 @@ void dae::LevelManager::Update(float dt)
 			{
 				//std::cout << "spawns";
 				int randIndex = rand() % m_EnemyPosLevel1.size();
-				std::cout << randIndex;
-				if(m_CurrentEnemies == m_MaxEnemies.at(m_Level-1) -1)
+				//std::cout << randIndex;
+				/*if(m_CurrentEnemies == m_MaxEnemies.at(m_Level-1) -1)
 				{
 					
 					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Egg);
@@ -89,8 +91,24 @@ void dae::LevelManager::Update(float dt)
 				} else
 				{
 					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
+				}*/
+				if (m_SpawnCount % m_MaxEnemies.at(m_Level - 1) == 0)
+				{
+
+					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Egg);
+				}
+				else if (m_SpawnCount % (m_MaxEnemies.at(m_Level - 1) - 1) == 0)
+				{
+					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Pickle);
+
+				}
+				else
+				{
+					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
 				}
 				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
+				m_SpawnCount++;
+				std::cout << m_CurrentEnemies;
 				m_SpawnTimer = 0;
 			}
 			break;
@@ -204,7 +222,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_LadderSize.x, ladder["size"].GetFloat(), m_LadderSize.z));
 				go->SetPosition(ladder["x"].GetFloat(), ladder["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Ladder");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -236,7 +254,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(platform["size"].GetFloat(), m_PlatformSize.y, m_PlatformSize.z));
 				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Platform");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -253,7 +271,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 				go->SetPosition(container["x"].GetFloat(), container["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Container");
 				m_LevelObjects.push_back(go);
 				go->AddComponent<ContainerComponent>(new ContainerComponent(container["amount"].GetInt()));
@@ -270,7 +288,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 				go->SetPosition(containerPlatform["x"].GetFloat(), containerPlatform["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Platform");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -284,7 +302,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		{
 			const rapidjson::Value& ingredient = *it;
 
-			MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, true, m_Players);
+			MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_Players);
 			
 
 		}
@@ -341,7 +359,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_LadderSize.x, ladder["size"].GetFloat(), m_LadderSize.z));
 				go->SetPosition(ladder["x"].GetFloat(), ladder["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Ladder");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -435,7 +453,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(platform["size"].GetFloat(), m_PlatformSize.y, m_PlatformSize.z));
 				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Platform");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -545,7 +563,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 				go->SetPosition(container["x"].GetFloat(), container["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Container");
 				m_LevelObjects.push_back(go);
 				go->AddComponent<ContainerComponent>(new ContainerComponent(container["amount"].GetInt()));
@@ -562,7 +580,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 				go->SetPosition(containerPlatform["x"].GetFloat(), containerPlatform["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Platform");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -667,7 +685,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			{
 				const rapidjson::Value& ingredient = *it;
 
-				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, true, m_Players);
+				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_Players);
 
 
 			}
@@ -724,7 +742,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_LadderSize.x, ladder["size"].GetFloat(), m_LadderSize.z));
 				go->SetPosition(ladder["x"].GetFloat(), ladder["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Ladder");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -891,7 +909,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(platform["size"].GetFloat(), m_PlatformSize.y, m_PlatformSize.z));
 				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Platform");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -1030,7 +1048,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_ContainerSize.x, m_ContainerSize.y, m_PlatformSize.z));
 				go->SetPosition(container["x"].GetFloat(), container["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Container");
 				m_LevelObjects.push_back(go);
 				go->AddComponent<ContainerComponent>(new ContainerComponent(container["amount"].GetInt()));
@@ -1047,7 +1065,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				auto go = new GameObject;
 				go->SetSize(glm::vec3(m_ContainerSize.x, m_PlatformSize.y, m_PlatformSize.z));
 				go->SetPosition(containerPlatform["x"].GetFloat(), containerPlatform["y"].GetFloat());
-				go->SetDebugDraw(true);
+				go->SetDebugDraw(false);
 				go->SetTag("Platform");
 				m_LevelObjects.push_back(go);
 				m_Scene->Add(go);
@@ -1165,7 +1183,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			{
 				const rapidjson::Value& ingredient = *it;
 
-				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, true, m_Players);
+				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_Players);
 
 
 			}
@@ -1429,7 +1447,7 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 
 	//HotDog->AddComponent<TextureComponent>(new TextureComponent("HotDog.png"));
 	//HotDog->SetPosition(300, 250);
-	HotDog->SetDebugDraw(true);
+	HotDog->SetDebugDraw(false);
 	HotDog->SetPosition(pos);
 	HotDog->SetScale(1.5f, 1.5f);
 	HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(m_Players.at(0));
