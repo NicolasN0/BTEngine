@@ -97,13 +97,7 @@ void dae::Minigin::Run()
 		float lag = 0.0f;
 		float fixedTimeStep = 0.02f;
 
-		//DEBUGGING VARIABLES
-		/*float soundStep = 2.f;
-		float soundTime = 0.f;*/
-		/*float stop = 5.f;
-		float time = 0.f;*/
 
-		//std::thread audioThread(&Audio::Update, audioService);
 
 		while (m_Running)
 		{
@@ -111,8 +105,7 @@ void dae::Minigin::Run()
 			float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 
 			lastTime = currentTime;
-			//soundTime += deltaTime;
-			//time += deltaTime;
+
 
 			input.ProcessInput();
 			input.HandleInput(deltaTime);

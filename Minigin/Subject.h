@@ -7,18 +7,24 @@ namespace dae
 	class GameObject;
 	enum class Event;
 
-	class Subject
+	class Subject final
 	{
 	public:
+		Subject() = default;
 		~Subject();
-		void AddObserver(Observer* observer);
-		void RemoveObserver(Observer* observer);
+
+		Subject(const Subject&) = delete;
+		Subject(Subject&&) noexcept = delete;
+		Subject& operator= (const Subject&) = delete;
+		Subject& operator= (const Subject&&) noexcept = delete;
+
+		void AddObserver(Observer* const observer);
+		void RemoveObserver(Observer* const observer);
 
 		void Notify(const GameObject& go, Event event);
-	//protected:
 
 	private:
-		std::vector<Observer*> m_Observers;
+		std::vector<Observer*> m_pObservers;
 
 	};
 }

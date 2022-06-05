@@ -27,7 +27,6 @@ namespace dae
 		ButtonB = 0x2000,
 		ButtonX = 0x4000,
 		ButtonY = 0x8000,
-		//todo: add the other buttons
 	};
 
 	enum class ButtonStates
@@ -37,13 +36,12 @@ namespace dae
 		buttonUp
 	};
 
-	class Input : public Singleton<Input>
+	class Input final : public Singleton<Input>
 	{
 	private:
 		using ControllerKey = std::tuple<ButtonStates, ControllerButton,int>;
 		using KeyboardKey = std::tuple<ButtonStates, SDL_KeyCode,int>;
 		using ControllerCommandsMap = std::map<ControllerKey, std::unique_ptr<Command>>;
-		//using KeyboardCommandsMap = std::map<SDL_KeyCode, std::unique_ptr<Command>>;
 		using KeyboardCommandsMap = std::map<KeyboardKey, std::unique_ptr<Command>>;
 
 		ControllerCommandsMap m_consoleCommands{};
@@ -78,6 +76,7 @@ namespace dae
 		InputManager(InputManager&& other) = delete;
 		InputManager& operator=(const InputManager& other) = delete;
 		InputManager& operator=(InputManager&& other) = delete;
+
 		void ProcessInput();
 		bool IsPressed(ControllerButton button, int id) const;
 		bool IsDownThisFrame(ControllerButton button, int id) const;

@@ -1,23 +1,19 @@
 #pragma once
-#include <iostream>
 
 #include "Command.h"
+#include "SceneChanger.h"
 #include "PeterPepperComponent.h"
 #include "SelectorComponent.h"
-#include "SceneManager.h"
-#include <memory>
-
-#include "SceneChanger.h"
 #include "BasicEnemyComponent.h"
 
 namespace dae
 {
 	
 
-	class Selector : public  Command
+	class Selector final : public  Command
 	{
 	public:
-		Selector(SelectorComponent* selectorComp,bool goNext,int maxModes) : m_pSelectorComponent(selectorComp), m_GoNext(goNext), m_MaxModes(maxModes) {}
+		Selector(SelectorComponent* const selectorComp,bool goNext,int maxModes) : m_pSelectorComponent(selectorComp), m_GoNext(goNext), m_MaxModes(maxModes) {}
 		void Execute(float ) override
 		{
 		
@@ -47,10 +43,10 @@ namespace dae
 		bool m_GoNext;
 	};
 
-	class Continue : public  Command
+	class Continue final: public  Command
 	{
 	public:
-		Continue(SelectorComponent* selectorComp) : m_pSelectorComponent(selectorComp) {}
+		Continue(SelectorComponent* const selectorComp) : m_pSelectorComponent(selectorComp) {}
 		void Execute(float ) override
 		{
 		
@@ -74,10 +70,10 @@ namespace dae
 		
 	};
 
-	class Replay : public  Command
+	class Replay final : public  Command
 	{
 	public:
-		Replay() {}
+		Replay() = default;
 		void Execute(float ) override
 		{
 		
@@ -88,93 +84,93 @@ namespace dae
 
 	};
 
-	class Throw : public Command
+	class Throw final : public Command
 	{
 	public:
-		Throw(PeterPepperComponent* object) : m_pObject(object){}
+		Throw(PeterPepperComponent* const object) : m_pObject(object){}
 		void Execute(float ) override
 		{
 			//Throw salt
 			m_pObject->ThrowSalt();
 
-		};
-
+		}
+	private:
 		PeterPepperComponent* m_pObject;
 		
 	};
 
 #pragma region movement
-	class Move : public Command
+	class Move final : public Command
 	{
 	public:
-		Move(PeterPepperComponent* object, const glm::vec3& moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {}
+		Move(PeterPepperComponent* const object, const glm::vec3& moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {}
 		void Execute(float ) override
 		{
 		
 			m_pObject->SetMoveSpeed(m_MoveSpeed);
 
 		}
-
+	private:
 		PeterPepperComponent* m_pObject;
 		glm::vec3 m_MoveSpeed;
 	};
 
-	class StopMove : public Command
+	class StopMove final : public Command
 	{
 	public:
-		StopMove(PeterPepperComponent* object) : m_pObject(object){};
+		StopMove(PeterPepperComponent* const object) : m_pObject(object){};
 		void Execute(float ) override
 		{
 			
 			m_pObject->SetMoveSpeed(glm::vec3(0,0,0));
 
-		};
-
+		}
+	private:
 		PeterPepperComponent* m_pObject;
 	};
 
-	class MoveHotdog : public Command
+	class MoveHotdog final : public Command
 	{
 	public:
-		MoveHotdog(BasicEnemyComponent* object,const glm::vec3& moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {}
+		MoveHotdog(BasicEnemyComponent* const object,const glm::vec3& moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {}
 		void Execute(float ) override
 		{
 
 			m_pObject->SetDirection(m_MoveSpeed);
 			
-		};
-
+		}
+	private:
 		BasicEnemyComponent* m_pObject;
 		glm::vec3 m_MoveSpeed;
 	};
 
-	class StopMoveHotdog : public Command
+	class StopMoveHotdog final : public Command
 	{
 	public:
-		StopMoveHotdog(BasicEnemyComponent* object) : m_pObject(object){}
+		StopMoveHotdog(BasicEnemyComponent* const object) : m_pObject(object){}
 		void Execute(float ) override
 		{
 
 			
 			m_pObject->SetDirection(glm::vec3(0,0,0));
 
-		};
-
+		}
+	private:
 		BasicEnemyComponent* m_pObject;
 		
 	};
 
-	class NextLevel : public Command
+	class NextLevel final : public Command
 	{
 	public:
-		NextLevel(PeterPepperComponent* object) : m_pObject(object){};
+		NextLevel(PeterPepperComponent* const object) : m_pObject(object){}
 		void Execute(float ) override
 		{
 
 			m_pObject->SetNextLevel(true);
 
-		};
-
+		}
+	private:
 		PeterPepperComponent* m_pObject;
 		
 	};

@@ -5,17 +5,26 @@
 #endif
 #endif
 
+#include <SDL.h>
 #include <SDL_pixels.h>
-//#include "MiniginPCH.h"
 #include <filereadstream.h>
+#include <thread>
+#include <fstream>
+//json
+#include <filewritestream.h>
+#include <writer.h>
+
+#include "Minigin.h"
+
+
+#include "SceneManager.h"
+#include "InputManager.h"
+#include "HighscoreManager.h"
+#include "LevelManager.h"
+#include "SceneChanger.h"
 
 #include "GameObject.h"
-#include "Minigin.h"
-#include "SceneManager.h"
 
-
-#include <thread>
-#include "InputManager.h"
 
 #include "Scene.h"
 
@@ -24,24 +33,17 @@
 #include "TextureComponent.h"
 #include "PeterPepperComponent.h"
 #include "BasicEnemyComponent.h"
-#include "IngredientComponent.h"
-#include "IngredientPartComponent.h"
 #include "ValuesComponent.h"
+
+
 #include "ScoreObserver.h"
 #include "HealthObserver.h"
-#include <SDL.h>
+#include "PepperObserver.h"
 
 #include "Commands.h"
-#include "Locator.h"
-#include <fstream>
 
-#include "HighscoreManager.h"
-#include "LevelManager.h"
-#include "SceneChanger.h"
-#include <filewritestream.h>
-#include <writer.h>
 
-#include "PepperObserver.h"
+
 
 
 using namespace std;

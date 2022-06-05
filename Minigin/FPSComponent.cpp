@@ -12,7 +12,7 @@ void dae::FPSComponent::Update(float dt)
 		m_Gametime = 0.f;
 		DisplayText();
 	}
-	//std::cout << m_FPS;
+	
 }
 
 void dae::FPSComponent::FixedUpdate(float timestep)

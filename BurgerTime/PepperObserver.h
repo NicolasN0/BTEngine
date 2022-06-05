@@ -1,17 +1,16 @@
 #pragma once
-#include <Observer.h>
-
+#include "Observer.h"
 #include "TextComponent.h"
 
 namespace dae
 {
 	
 	
-	class PepperObserver :
+	class PepperObserver final:
 		public Observer
 	{
 	public:
-		PepperObserver(TextComponent* textComponent);
+		PepperObserver(TextComponent* const textComponent);
 
 		void Notify(const GameObject& go, Event event) override;
 	

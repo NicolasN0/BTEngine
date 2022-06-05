@@ -1,19 +1,18 @@
 #pragma once
-#include <memory>
 #include <string>
 #include <vector>
 
-#include "GameObject.h"
 #include "Singleton.h"
 
 namespace dae
 {
-	
+	class GameObject;
+
 class SceneChanger final : public dae::Singleton<SceneChanger>
 {
 public:
-	
-	void SetCurrentScene(std::string name);
+	//Setters
+	void SetCurrentScene(const std::string& name);
 	void SetControlObjects(const std::vector<dae::GameObject*>& controlObjects);
 	void SetLevelManagers(const std::vector<dae::GameObject*>& levelManagers);
 private:

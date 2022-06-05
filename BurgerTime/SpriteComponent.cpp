@@ -67,8 +67,7 @@ void dae::SpriteComponent::Render() const
 	destRect.x = static_cast<int>(pos.x);
 	destRect.y = static_cast<int>(pos.y);
 	SDL_QueryTexture(m_spTexture->GetSDLTexture(), nullptr, nullptr, &destRect.w, &destRect.h);
-	/*destRect.w = destRect.w * scale.x;
-	destRect.h = destRect.h * scale.y;*/
+	
 
 
 	int w;

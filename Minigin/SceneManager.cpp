@@ -5,24 +5,24 @@
 void dae::SceneManager::Update(float dt)
 {
 	
-	m_CurrentScene->Update(dt);
+	m_spCurrentScene->Update(dt);
 }
 
 void dae::SceneManager::FixedUpdate(float timestep)
 {
 	
-	m_CurrentScene->FixedUpdate(timestep);
+	m_spCurrentScene->FixedUpdate(timestep);
 }
 
-void dae::SceneManager::Render()
+void dae::SceneManager::Render() const
 {
 	
-	m_CurrentScene->Render();
+	m_spCurrentScene->Render();
 }
 
 void dae::SceneManager::ClearScenes()
 {
-	m_Scenes.clear();
+	m_spScenes.clear();
 }
 
 void dae::SceneManager::SetDelete(bool deleteScene)
@@ -30,13 +30,13 @@ void dae::SceneManager::SetDelete(bool deleteScene)
 	m_DeleteScenes = deleteScene;
 }
 
-void dae::SceneManager::SetCurrentScene(std::string name)
+void dae::SceneManager::SetCurrentScene(const std::string& name)
 {
-	for(auto& scene : m_Scenes)
+	for(auto& scene : m_spScenes)
 	{
 		if(scene->GetName() == name)
 		{
-			m_CurrentScene = scene;
+			m_spCurrentScene = scene;
 		}
 	}
 }
@@ -44,7 +44,7 @@ void dae::SceneManager::SetCurrentScene(std::string name)
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
-	m_Scenes.push_back(scene);
-	m_CurrentScene = scene;
+	m_spScenes.push_back(scene);
+	m_spCurrentScene = scene;
 	return *scene;
 }

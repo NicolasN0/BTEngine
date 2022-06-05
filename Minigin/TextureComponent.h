@@ -2,7 +2,7 @@
 #include "MonoBehaviour.h"
 namespace dae
 {
-    class TextureComponent :
+    class TextureComponent final:
         public MonoBehaviour
     {
     public:
@@ -10,9 +10,9 @@ namespace dae
         TextureComponent(const std::string& filename);
         void Update(float ) override {}
         void FixedUpdate(float) override {}
-        void Render() const;
+        void Render() const override;
     private:
-        std::shared_ptr<Texture2D> m_Texture{};
+        std::shared_ptr<Texture2D> m_spTexture{};
     };
 
 }

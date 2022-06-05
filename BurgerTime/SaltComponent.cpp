@@ -1,5 +1,5 @@
 #include "SaltComponent.h"
-
+#include "SpriteComponent.h"
 #include "BasicEnemyComponent.h"
 
 dae::SaltComponent::SaltComponent() : m_LifeTime() ,m_MaxLifeTime(1),m_pSpriteComp()
@@ -16,9 +16,17 @@ void dae::SaltComponent::Update(float dt)
 		GetParent()->Delete();
 	}
 
-	for (auto o : m_Parent->GetAllOverlappingWithTag("Enemy"))
+	for (auto o : m_pParent->GetAllOverlappingWithTag("Enemy"))
 	{
-		o->GetComponent<BasicEnemyComponent>()->SetStunned(true);
+		BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();
+		if(enemy)
+		{
+			if(enemy->GetStunned() == false)
+			{
+				enemy->SetStunned(true);
+			}
+		}
+	
 	}
 	
 }
@@ -27,7 +35,7 @@ void dae::SaltComponent::FixedUpdate(float )
 {
 }
 
-void dae::SaltComponent::SetSpriteComp(SpriteComponent* comp)
+void dae::SaltComponent::SetSpriteComp(SpriteComponent* const comp)
 {
 	m_pSpriteComp = comp;
 

@@ -13,7 +13,6 @@ void ConsoleAudio::Update()
 {
 	while(m_Running)
 	{
-		//m_Mutex.lock();
 		std::unique_lock<std::mutex> lock(m_Mutex);
 		m_ConditionVariable.wait(lock);
 
@@ -21,7 +20,7 @@ void ConsoleAudio::Update()
 		{
 			int id = m_Queue.front();
 			m_Queue.pop();
-			Mix_PlayChannel(-1, m_Sounds.at(id), 0);
+			Mix_PlayChannel(-1, m_pSounds.at(id), 0);
 		}
 		
 	}
@@ -31,7 +30,7 @@ void ConsoleAudio::Update()
 
 void ConsoleAudio::playSound(int soundID)
 {
-	//Mix_PlayChannel(-1, m_Sounds.at(soundID), 0);
+	//Mix_PlayChannel(-1, m_pSounds.at(soundID), 0);
 	std::lock_guard<std::mutex> lock(m_Mutex);
 	m_Queue.push(soundID);
 	m_ConditionVariable.notify_one();
@@ -44,26 +43,17 @@ void ConsoleAudio::stopSound(int)
 void ConsoleAudio::stopAllSounds()
 {
 	//Dont use mix functions after this, else call openAudio first
-	/*for(auto sound : m_Sounds)
-	{
-		Mix_FreeChunk(sound);
-		sound = nullptr;
-	}
-	m_Sounds.clear();*/
+	
 	
 	Mix_CloseAudio();
-	//while (Mix_Init(0))
-	//	Mix_Quit();
-	//stop threading
-
-	//Quit later
+	
 	m_Running = false;
 	m_ConditionVariable.notify_one();
 }
 
 void ConsoleAudio::PlayMusic()
 {
-	Mix_PlayMusic(m_Music, -1);
+	Mix_PlayMusic(m_pMusic, -1);
 }
 
 void ConsoleAudio::PauseMusic()
@@ -76,22 +66,20 @@ void ConsoleAudio::ResumeMusic()
 	Mix_ResumeMusic();
 }
 
-//void Audio::StopMusic()
-//{
-//}
+
 
 int ConsoleAudio::LoadSound(const char* file)
 {
 
-	m_Sounds.push_back(Mix_LoadWAV(file));
-	return int(m_Sounds.size()) - 1;
+	m_pSounds.push_back(Mix_LoadWAV(file));
+	return int(m_pSounds.size()) - 1;
 
 }
 
 void ConsoleAudio::LoadMusic(const char* file)
 {
-	m_Music = Mix_LoadMUS(file);
-	if (m_Music == nullptr)
+	m_pMusic = Mix_LoadMUS(file);
+	if (m_pMusic == nullptr)
 	{
 		std::string errorMsg = "SoundStream: Failed to load " + std::string{file} + ",\nSDL_mixer Error: " + Mix_GetError();
 		std::cerr << errorMsg;

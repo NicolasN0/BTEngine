@@ -6,10 +6,10 @@
 #include "Renderer.h"
 #include "Texture2D.h"
 #include "ResourceManager.h"
-dae::TextComponent::TextComponent(const std::string& filename, int size, SDL_Color color) : m_Color{color}
+dae::TextComponent::TextComponent(const std::string& filename, int size, SDL_Color color) : m_Color{color},m_NeedsUpdate(),m_Counter()
 {
 	
-	m_Font = ResourceManager::GetInstance().LoadFont(filename,size);
+	m_spFont = ResourceManager::GetInstance().LoadFont(filename,size);
 	Initialize();
 }
 
@@ -28,7 +28,7 @@ void dae::TextComponent::Update(float dt)
 	if(m_NeedsUpdate)
 	{
 		//const SDL_Color color = { 255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), m_Color);
+		const auto surf = TTF_RenderText_Blended(m_spFont->GetFont(), m_Text.c_str(), m_Color);
 		if (surf == nullptr) 
 		{
 		throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -39,22 +39,22 @@ void dae::TextComponent::Update(float dt)
 		throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_TextTexture = std::make_shared<Texture2D>(texture);
+		m_spTextTexture = std::make_shared<Texture2D>(texture);
 		m_NeedsUpdate = false;
-		//m_Counter = 0;
+		
 	}
 };
 
 
 void dae::TextComponent::Render() const
 {
-	if (m_TextTexture != nullptr)
+	if (m_spTextTexture != nullptr)
 		{
 			if(GetParent() != nullptr)
 			{
 				
 				const auto& pos = GetParent()->GetTransform().GetPosition();
-				Renderer::GetInstance().RenderTexture(*m_TextTexture, pos.x, pos.y);
+				Renderer::GetInstance().RenderTexture(*m_spTextTexture, pos.x, pos.y);
 			}
 		}
 }
@@ -65,8 +65,3 @@ void dae::TextComponent::SetText(const std::string& text)
 	m_NeedsUpdate = true;
 }
 
-//void dae::TextComponent::SetPosition(float x, float y)
-//{
-//	(x);
-//	(y);
-//}

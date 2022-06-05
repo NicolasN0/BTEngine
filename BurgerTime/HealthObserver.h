@@ -1,14 +1,13 @@
 #pragma once
-#include "MonoBehaviour.h"
 #include "Observer.h"
 #include "TextComponent.h"
 namespace dae
 {
-	class HealthObserver :
+	class HealthObserver final:
 	    public Observer
 	{
 	public:
-		HealthObserver(TextComponent* textComponent);
+		HealthObserver(TextComponent* const textComponent);
 		void Notify(const GameObject& go, Event event) override;
 	
 

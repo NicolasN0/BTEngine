@@ -3,16 +3,16 @@
 
 namespace dae
 {
-	class SpriteComponent :
+	class SpriteComponent final:
 	    public MonoBehaviour
 	{
 	public:
 		SpriteComponent(const std::string& filename,int spritesW, int spritesH);
 
 		//Core
-		virtual void Update(float dt);
-		virtual void FixedUpdate(float timestep);
-		virtual void Render() const;
+		virtual void Update(float dt) override;
+		virtual void FixedUpdate(float timestep) override;
+		virtual void Render() const override;
 
 		//Setters
 		void SetNumberOfFrames(int number);

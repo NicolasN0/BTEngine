@@ -1,10 +1,12 @@
 #pragma once
-#include <iostream>
 #include <MonoBehaviour.h>
 
 #include "Scene.h"
 #include "ValuesComponent.h"
 
+
+namespace dae
+{
 enum class EIngredientType
 {
 	Bun = 0,
@@ -15,18 +17,17 @@ enum class EIngredientType
 	Tomato = 5
 };
 
-namespace dae
-{
-class IngredientComponent :
+
+class IngredientComponent final:
     public MonoBehaviour
 {
 public:
 	IngredientComponent();
 
 	//Core
-	void Update(float dt);
-	void FixedUpdate(float timestep);
-	void Render() const;
+	void Update(float dt) override;
+	void FixedUpdate(float timestep) override;
+	void Render() const override;
 
 	//Getters
 	bool GetIsFalling() const;
@@ -41,18 +42,18 @@ public:
 
 private:
 	//Checkers
-	void CheckCollisionPlayer();
+	void CheckCollisionPlayer() const;
 	void CheckCollisionIngredient();
 	void CheckContainerOverlap();
 	void CheckCollisionPlatform();
-	void CheckCollisionEnemy();
+	void CheckCollisionEnemy() const;
 
 	//Private functions
 	void ResetFalling();
 	void Bounce(float dt);
 	void InitializeValuesComp();
 	void KillStandingEnemies();
-	void SpawnStandingScoresEffect(int numberEnemies);
+	void SpawnStandingScoresEffect(int numberEnemies) const;
 
 	bool m_isFalling;
 	bool m_BouncingDown;

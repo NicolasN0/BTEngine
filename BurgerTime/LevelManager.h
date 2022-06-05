@@ -3,19 +3,21 @@
 
 #include "BasicEnemyComponent.h"
 #include "IngredientComponent.h"
+//json
 #include "document.h"
 
 namespace dae
 {
-	class LevelManager :
+
+	class LevelManager final:
 	    public MonoBehaviour
 	{
 	public:
-		LevelManager(Scene* scene,const std::vector<GameObject*>& players,const  std::vector<GameObject*>& enemeyPlayers,const std::vector<GameObject*>& lvlBackground, const std::wstring& levelFile);
+		LevelManager(Scene* const scene,const std::vector<GameObject*>& players,const  std::vector<GameObject*>& enemeyPlayers,const std::vector<GameObject*>& lvlBackground, const std::wstring& levelFile);
 
 		//Core
-		virtual void Update(float dt);
-		virtual void FixedUpdate(float timestep);
+		virtual void Update(float dt) override;
+		virtual void FixedUpdate(float timestep) override;
 
 		//Getter
 		int GetCurLevel() const;
@@ -25,7 +27,7 @@ namespace dae
 		void ClearLevel();
 	private:
 		void CheckLevelCompleted();
-		void MakeIngredient(const glm::vec3& pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, const std::vector<GameObject*>& players);
+		void MakeIngredient(const glm::vec3& pos, EIngredientType ingredientType, Scene* const scene, bool debugDraw, const std::vector<GameObject*>& players);
 		void MakeEnemey(const glm::vec3& pos, EEnemyType type);
 		void ReadInLevel(const std::wstring& filename);
 
@@ -45,7 +47,7 @@ namespace dae
 
 		rapidjson::Document m_Doc;
 
-		Scene* m_Scene;
+		Scene* m_pScene;
 
 		std::vector<int> m_MaxEnemies;
 

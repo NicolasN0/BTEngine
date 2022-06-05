@@ -3,7 +3,7 @@
 #include "ValuesComponent.h"
 
 
-dae::PepperObserver::PepperObserver(TextComponent* textComponent) : m_pTextComponent(textComponent)
+dae::PepperObserver::PepperObserver(TextComponent* const textComponent) : m_pTextComponent(textComponent)
 {
 	
 }

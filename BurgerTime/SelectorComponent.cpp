@@ -22,7 +22,7 @@ void dae::SelectorComponent::PreviousGameMode()
 	m_Selected--;
 }
 
-int dae::SelectorComponent::GetSelected()
+int dae::SelectorComponent::GetSelected() const
 {
 	return m_Selected;
 }

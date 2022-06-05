@@ -3,13 +3,13 @@
 namespace dae
 {
 	
-	class EffectComponent :
+	class EffectComponent final:
 	    public MonoBehaviour
 	{
 	public:
 		EffectComponent(float lifetime);
-		virtual void Update(float dt);
-		virtual void FixedUpdate(float timestep);
+		virtual void Update(float dt) override;
+		virtual void FixedUpdate(float timestep) override;
 	private:
 		float m_Lifetime;
 		float m_MaxLifeTime;

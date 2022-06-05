@@ -11,15 +11,15 @@ namespace dae
 		Pickle
 	};
 
-	
 
-	class BasicEnemyComponent :
+
+	class BasicEnemyComponent final :
 		public MonoBehaviour
 	{
 	public:
 		//Rule of 5
 		BasicEnemyComponent(EEnemyType enemyType,SpriteComponent* const sprite,bool isPlayer = false);
-		~BasicEnemyComponent();
+		~BasicEnemyComponent() override;
 
 		BasicEnemyComponent(const BasicEnemyComponent&) = delete;
 		BasicEnemyComponent(BasicEnemyComponent&&) noexcept = delete;
@@ -28,9 +28,9 @@ namespace dae
 		BasicEnemyComponent& operator=(BasicEnemyComponent&&) noexcept = delete;
 
 		//Core
-		void Update(float dt);
-		void FixedUpdate(float timestep);
-		void Render() const;
+		void Update(float dt) override;
+		void FixedUpdate(float timestep) override;
+		void Render() const override;
 
 		//Getter
 		bool GetIsOnLadder() const; 
@@ -42,25 +42,27 @@ namespace dae
 		bool GetDyingComplete() const;
 		const glm::vec3& GetPosition() const;
 		const glm::vec3& GetDirection() const;
+		const glm::vec3& GetPrevDir() const;
 		SpriteComponent* const GetSpriteComp() const;
 		EEnemyType GetType() const;
 
 		//Setter
-		void SetTarget(GameObject* target);
-		void SetPosition(glm::vec3 pos);
+		void SetTarget(GameObject* const target);
+		void SetPosition(const glm::vec3& pos);
 		void SetIsFalling(bool isFalling);
-		void SetSubject(Subject* subject);
-		void SetSpriteComp(SpriteComponent* comp);
-		void SetDirection(glm::vec3 movespeed);
+		void SetSubject(Subject* const subject);
+		void SetSpriteComp(SpriteComponent* const comp);
+		void SetDirection(const glm::vec3& movespeed);
 		void SetStunned(bool stunned);
 		void SetDyingComplete(bool dyingComplete);
-
+		void SetCanSwitch(bool canSwitch);
+		void SetPrevDir(const glm::vec3& prevDir);
 		//Public
 		void Kill();
 		void CheckOverlaps();
 		void UpdatePos(float dt);
 		void UpdateDirection();
-		void UpdateSprite();
+		
 
 
 
@@ -85,7 +87,7 @@ namespace dae
 		float m_MaxStunTime;
 		float m_MoveSpeed;
 
-
+		glm::vec3 m_PrevDir;
 		glm::vec3 m_PlayerDir;
 		glm::vec3 m_Direction;
 		glm::vec3 m_BlockedCor;

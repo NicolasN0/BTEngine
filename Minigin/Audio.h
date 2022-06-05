@@ -1,14 +1,17 @@
 #pragma once
-#include <queue>
-#include <mutex>
-//#include <SDL_mixer.h>
+
 
 class Audio
 {
 public:
-    //Audio();
+    Audio() = default;
 	virtual ~Audio(){};
 
+    Audio(const Audio&) = delete;
+    Audio(Audio&&) noexcept = delete;
+
+    Audio& operator=(const Audio&) = delete;
+    Audio& operator=(Audio&&) noexcept = delete;
     virtual void Update() = 0;
    
 

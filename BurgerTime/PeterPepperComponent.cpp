@@ -1,12 +1,11 @@
-//#include "MiniginPCH.h"
+
 #include "PeterPepperComponent.h"
 
 #include <iostream>
-
+#include "SpriteComponent.h"
 #include "BasicEnemyComponent.h"
 #include "HighscoreManager.h"
 #include "Locator.h"
-#include "Observer.h"
 #include "SaltComponent.h"
 #include "Scene.h"
 #include "SceneChanger.h"
@@ -27,7 +26,7 @@ dae::PeterPepperComponent::PeterPepperComponent() : m_pSpriteComp()
 
 void dae::PeterPepperComponent::Update(float dt)
 {
-	//std::cout << std::to_string(GetParent()->GetPosition().x) + ' ' + std::to_string(GetParent()->GetPosition().y) << std::endl;
+	
 	if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder"))
 	{
 		m_IsOnLadder = true;
@@ -46,9 +45,9 @@ void dae::PeterPepperComponent::Update(float dt)
 		m_IsOnPlatform = false;
 	}
 
-	if(m_Parent->IsOverlappingAnyWithTag("Enemy") == true)
+	if(m_pParent->IsOverlappingAnyWithTag("Enemy") == true)
 	{
-		if(m_Parent->GetFirstOverlappingObjectWithTag("Enemy")->GetComponent<BasicEnemyComponent>()->GetStunned() == false)
+		if(m_pParent->GetFirstOverlappingObjectWithTag("Enemy")->GetComponent<BasicEnemyComponent>()->GetStunned() == false)
 		{
 			
 			Respawn();
@@ -148,7 +147,7 @@ void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* const comp)
 	InitializeSprite();
 }
 
-void dae::PeterPepperComponent::ThrowSalt()
+void dae::PeterPepperComponent::ThrowSalt() const
 {
 	ValuesComponent* values = GetParent()->GetComponent<ValuesComponent>();
 	if(values->GetPeppers() > 0)
@@ -190,56 +189,48 @@ void dae::PeterPepperComponent::UpdateSprite(float )
 
 	if(m_Movespeed.y > 0)
 	{
-		//set framerow
 		m_pSpriteComp->SetFrameRow(0);
 		m_pSpriteComp->SetNumberOfFrames(3);
 		m_pSpriteComp->SetStartFrame(0);
-		//m_pSpriteComp->SetFlip(false);
+		
 
 	} else if(m_Movespeed.y < 0)
 	{
 		m_pSpriteComp->SetFrameRow(0);
 		m_pSpriteComp->SetNumberOfFrames(3);
 		m_pSpriteComp->SetStartFrame(6);
-		//m_pSpriteComp->SetFlip(false);
+		
 	} else if(m_Movespeed.x > 0)
 	{
 		m_pSpriteComp->SetFrameRow(0);
 		m_pSpriteComp->SetNumberOfFrames(3);
 		m_pSpriteComp->SetStartFrame(9);
-		//m_pSpriteComp->SetFlip(true);
-		//if(!m_IsFlipped)
-		//{
-		//	m_pSpriteComp->SetFlip(true);
-		//	//m_IsFlipped = true;
-		//} 
-	
+
 	}
 	else if (m_Movespeed.x < 0)
 	{
 		m_pSpriteComp->SetFrameRow(0);
 		m_pSpriteComp->SetNumberOfFrames(3);
 		m_pSpriteComp->SetStartFrame(3);
-		//m_pSpriteComp->SetFlip(false);
+		
 	}
 }
 
-void dae::PeterPepperComponent::Respawn()
+void dae::PeterPepperComponent::Respawn() const
 {
-	if(m_Parent->GetComponent<ValuesComponent>()->GetLives() > 0)
+	if(m_pParent->GetComponent<ValuesComponent>()->GetLives() > 0)
 	{
-		//Damage();
-		m_Parent->GetComponent<ValuesComponent>()->Damage();
-		m_Parent->SetPosition(m_StartPos);
+		m_pParent->GetComponent<ValuesComponent>()->Damage();
+		m_pParent->SetPosition(m_StartPos);
 	} else
 	{
 		//PushBack score
-		HighscoreManager::GetInstance().AddHighscore(m_Parent->GetComponent<ValuesComponent>()->GetScores());
+		HighscoreManager::GetInstance().AddHighscore(m_pParent->GetComponent<ValuesComponent>()->GetScores());
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 	}
 }
 
-void dae::PeterPepperComponent::InitializeSprite()
+void dae::PeterPepperComponent::InitializeSprite() const
 {
 	std::vector<int> framesPerRow{ 9,9,6,6,6,6,6,6,3,6,9 };
 	m_pSpriteComp->SetFramesPerRow(framesPerRow);

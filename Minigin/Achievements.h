@@ -2,7 +2,7 @@
 #include "Observer.h"
 namespace dae
 {
-	class Achievements :
+	class Achievements final:
 	    public Observer
 	{
 	public:

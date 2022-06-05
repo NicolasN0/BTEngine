@@ -3,8 +3,5 @@
 
 void dae::Achievements::Notify(const GameObject& , Event )
 {
-	/*switch (event)
-	{
 	
-	}*/
 }

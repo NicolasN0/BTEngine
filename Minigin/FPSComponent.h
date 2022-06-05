@@ -3,7 +3,7 @@
 
 namespace dae
 {
-	class FPSComponent : public MonoBehaviour
+	class FPSComponent final : public MonoBehaviour
 	{
 	public:
 		void Update(float dt) override;

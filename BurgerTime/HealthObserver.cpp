@@ -1,8 +1,7 @@
-//#include "MiniginPCH.h"
 #include "HealthObserver.h"
 #include "PeterPepperComponent.h"
 #include "ValuesComponent.h"
-dae::HealthObserver::HealthObserver(TextComponent* textComponent) : m_pTextComponent(textComponent)
+dae::HealthObserver::HealthObserver(TextComponent* const textComponent) : m_pTextComponent(textComponent)
 {
 }
 
@@ -18,11 +17,3 @@ void dae::HealthObserver::Notify(const GameObject& go, Event event)
 		break;
 	}
 }
-//
-//void dae::HealthObserver::Update(float )
-//{
-//}
-//
-//void dae::HealthObserver::FixedUpdate(float )
-//{
-//}

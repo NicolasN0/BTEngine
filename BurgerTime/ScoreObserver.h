@@ -4,11 +4,11 @@
 
 namespace dae
 {
-	class ScoreObserver :
+	class ScoreObserver final:
 	    public Observer
 	{
 	public:
-		ScoreObserver(TextComponent* textComponent);
+		ScoreObserver(TextComponent* const textComponent);
 
 		void Notify(const GameObject& go, Event event) override;
 	

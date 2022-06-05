@@ -4,17 +4,16 @@
 
 using namespace dae;
 
-unsigned int Scene::m_IdCounter = 0;
 
-std::vector<GameObject*> dae::Scene::GetAllObjectsInWorld()
+const std::vector<GameObject*>& dae::Scene::GetAllObjectsInWorld() const
 {
-	return m_Objects;
+	return m_pObjects;
 }
 
-std::vector<GameObject*> dae::Scene::GetObjectsInWorldWithTag(std::string tag)
+std::vector<GameObject*> dae::Scene::GetObjectsInWorldWithTag(const std::string& tag) const
 {
 	std::vector<GameObject*> m_ObjectsWithTag;
-	for(auto o : m_Objects)
+	for(auto o : m_pObjects)
 	{
 		if(o->GetTag() == tag)
 		{
@@ -24,7 +23,7 @@ std::vector<GameObject*> dae::Scene::GetObjectsInWorldWithTag(std::string tag)
 	return m_ObjectsWithTag;
 }
 
-bool Scene::IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec3 sizeRectangle)
+bool Scene::IsPointInRectangle(const glm::vec3& point, const glm::vec3& posRectangle, const glm::vec3& sizeRectangle) const
 {
 	float tlx, tly, brx, bry;
 	tlx = posRectangle.x;
@@ -41,38 +40,33 @@ bool Scene::IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec
 
 }
 
-std::string dae::Scene::GetName() const
+const std::string& dae::Scene::GetName() const
 {
 	return m_Name;
 }
 
-Scene::Scene(const std::string& name) : m_Name(name) {}
+Scene::Scene(const std::string& name) : m_Name(name) ,m_pObjects(){}
 
 Scene::~Scene()
 {
-	/*for(auto o : m_Objects)
-	{
-		delete o;
-		o = nullptr;
-	}*/
-	size_t size = m_Objects.size();
+	
+	size_t size = m_pObjects.size();
 	for(size_t i = 0 ; i<size;i++)
 	{
-		delete m_Objects.at(i);
-		m_Objects.at(i) = nullptr;
+		delete m_pObjects.at(i);
+		m_pObjects.at(i) = nullptr;
 	}
 }
 
 
-void Scene::Add(GameObject* object)
+void Scene::Add(GameObject* const object)
 {
-	m_Objects.push_back(object);
+	m_pObjects.push_back(object);
 	object->SetScene(this);
 
 	//Add all child objects
 	for(auto c : object->GetChilds())
 	{
-		//m_Objects.push_back(c);
 		c->SetScene(this);
 	}
 	
@@ -80,19 +74,13 @@ void Scene::Add(GameObject* object)
 
 void Scene::Update(float dt)
 {
-	/*for (auto& object : m_Objects)
-	{
-
-		object->Update(dt);
-
-
-	}*/
-	size_t size = m_Objects.size();
+	
+	size_t size = m_pObjects.size();
 	for(size_t i = 0; i< size;i++)
 	{
-		m_Objects.at(i)->Update(dt);
+		m_pObjects.at(i)->Update(dt);
 	}
-	auto end = std::remove_if(m_Objects.begin(), m_Objects.end(), [](auto* object)
+	auto end = std::remove_if(m_pObjects.begin(), m_pObjects.end(), [](auto* object)
 	{
 		if(object->isSetToDelete())
 		{
@@ -101,15 +89,14 @@ void Scene::Update(float dt)
 			return true;
 		}
 		return false;
-		//return object->isSetToDelete();
 	});
-	m_Objects.erase(end, m_Objects.end());
+	m_pObjects.erase(end, m_pObjects.end());
 	
 }
 
 void Scene::FixedUpdate(float timestep)
 {
-	for (auto& object : m_Objects)
+	for (auto& object : m_pObjects)
 	{
 		object->FixedUpdate(timestep);
 	}
@@ -117,7 +104,7 @@ void Scene::FixedUpdate(float timestep)
 
 void Scene::Render() const
 {
-	for (const auto& object : m_Objects)
+	for (const auto& object : m_pObjects)
 	{
 		object->Render();
 	}

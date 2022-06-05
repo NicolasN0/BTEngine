@@ -83,7 +83,7 @@ void dae::IngredientComponent::Update(float dt)
 			{
 				KillStandingEnemies();
 			}
-		} else if(m_StandingEnemies == 0 && m_pFallingEnemies.size() > 0)
+		} else if(m_StandingEnemies == 0 &&  !m_pFallingEnemies.empty())
 		{
 			
 			KillStandingEnemies();
@@ -118,7 +118,7 @@ void dae::IngredientComponent::InstantLetFall()
 
 	SetIsFalling(true);
 
-	for (auto c : m_Parent->GetChilds())
+	for (auto c : m_pParent->GetChilds())
 	{
 		//reset first so they all allign
 		if(c->GetComponent<IngredientPartComponent>()->GetIsPressed())
@@ -128,7 +128,7 @@ void dae::IngredientComponent::InstantLetFall()
 		}
 	
 	}
-	for (auto c : m_Parent->GetChilds())
+	for (auto c : m_pParent->GetChilds())
 	{
 		//reset first so they all allign
 		c->GetComponent<IngredientPartComponent>()->SetIsPressed(true);
@@ -138,7 +138,7 @@ void dae::IngredientComponent::InstantLetFall()
 void dae::IngredientComponent::CheckPressedAmount()
 {
 	m_PressedCount = 0;
-	for (auto c : m_Parent->GetChilds())
+	for (auto c : m_pParent->GetChilds())
 	{
 
 		IngredientPartComponent* part = c->GetComponent<IngredientPartComponent>();
@@ -153,12 +153,12 @@ void dae::IngredientComponent::CheckPressedAmount()
 		}
 	}
 
-	if (m_PressedCount == m_Parent->GetChildCount())
+	if (m_PressedCount == m_pParent->GetChildCount())
 	{
 		//Should only happen once per enemyFill
-		if (m_HasMoved == false && m_Parent->IsOverlappingAnyWithTag("Player"))
+		if (m_HasMoved == false && m_pParent->IsOverlappingAnyWithTag("Player"))
 		{
-			std::vector<GameObject*> allEnemies = m_Parent->GetAllOverlappingWithTag("Enemy");
+			std::vector<GameObject*> allEnemies = m_pParent->GetAllOverlappingWithTag("Enemy");
 
 			for (auto o : allEnemies)
 			{
@@ -182,16 +182,16 @@ void dae::IngredientComponent::SetPlayers(const std::vector<GameObject*>& player
 	m_pPlayers = players;
 }
 
-void dae::IngredientComponent::CheckCollisionPlayer()
+void dae::IngredientComponent::CheckCollisionPlayer() const
 {
 	for(auto o: m_pPlayers)
 	{
-		if(abs(o->GetPosition().x - m_Parent->GetPosition().x) < m_Parent->GetSize().x)
+		if(abs(o->GetPosition().x - m_pParent->GetPosition().x) < m_pParent->GetSize().x)
 		{
 			//Only Check if one of the players is close
-			if (m_Parent->IsOverlappingAnyWithTag("Player"))
+			if (m_pParent->IsOverlappingAnyWithTag("Player"))
 			{
-				for(auto c : m_Parent->GetChilds())
+				for(auto c : m_pParent->GetChilds())
 				{
 					c->GetComponent<IngredientPartComponent>()->UpdatePressed();
 				}
@@ -203,13 +203,13 @@ void dae::IngredientComponent::CheckCollisionPlayer()
 void dae::IngredientComponent::CheckCollisionIngredient()
 {
 
-	if (m_Parent->IsOverlappingAnyWithTag("Ingredient"))
+	if (m_pParent->IsOverlappingAnyWithTag("Ingredient"))
 	{
 		if(m_inContainer == false)
 		{
-			GameObject* other = m_Parent->GetFirstOverlappingObjectWithTag("Ingredient");
+			GameObject* other = m_pParent->GetFirstOverlappingObjectWithTag("Ingredient");
 			
-			if(other->GetPosition().y > m_Parent->GetPosition().y)
+			if(other->GetPosition().y > m_pParent->GetPosition().y)
 			{
 
 				if(other->GetComponent<IngredientComponent>()->GetIsFalling() == false)
@@ -230,7 +230,7 @@ void dae::IngredientComponent::CheckCollisionIngredient()
 
 void dae::IngredientComponent::CheckContainerOverlap()
 {
-	if (m_Parent->IsOverlappingAnyWithTag("Container"))
+	if (m_pParent->IsOverlappingAnyWithTag("Container"))
 	{
 		m_inContainer = true;
 	}
@@ -243,7 +243,7 @@ void dae::IngredientComponent::ResetFalling()
 		m_isCollected = true;
 	}
 
-	for (auto c : m_Parent->GetChilds())
+	for (auto c : m_pParent->GetChilds())
 	{
 		c->GetComponent<IngredientPartComponent>()->Reset();
 	}
@@ -259,28 +259,28 @@ void dae::IngredientComponent::ResetFalling()
 
 void dae::IngredientComponent::CheckCollisionPlatform()
 {
-	if (m_Parent->IsOverlappingAnyWithTag("Platform"))
+	if (m_pParent->IsOverlappingAnyWithTag("Platform"))
 	{
 		
 		if (m_lastPlatformHeight == 0 && m_curPlatformHeight == 0)
 		{
-			m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
+			m_curPlatformHeight = m_pParent->GetPosition().y + m_pParent->GetSize().y;
 			m_lastPlatformHeight = m_curPlatformHeight;
 		}
 
 
-		m_curPlatformHeight = m_Parent->GetPosition().y + m_Parent->GetSize().y;
+		m_curPlatformHeight = m_pParent->GetPosition().y + m_pParent->GetSize().y;
 
 
 		if (m_PlatformSize == 0)
 		{
-			m_PlatformSize = m_Parent->GetFirstOverlappingObjectWithTag("Platform")->GetSize().y;
+			m_PlatformSize = m_pParent->GetFirstOverlappingObjectWithTag("Platform")->GetSize().y;
 		}
 
 
 		if (m_IngredientSize == 0)
 		{
-			m_IngredientSize = m_Parent->GetChildAt(0)->GetSize().y;
+			m_IngredientSize = m_pParent->GetChildAt(0)->GetSize().y;
 		}
 
 
@@ -292,11 +292,11 @@ void dae::IngredientComponent::CheckCollisionPlatform()
 	}
 }
 
-void dae::IngredientComponent::CheckCollisionEnemy()
+void dae::IngredientComponent::CheckCollisionEnemy() const
 {
 	if(m_isFalling == true || m_isBouncing == true)
 	{
-		std::vector<GameObject*> overlapping = m_Parent->GetAllOverlappingWithTag("Enemy");
+		std::vector<GameObject*> overlapping = m_pParent->GetAllOverlappingWithTag("Enemy");
 		for(auto o : overlapping)
 		{
 			BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();
@@ -318,7 +318,7 @@ void dae::IngredientComponent::Bounce(float dt)
 		if(m_BouncingDown == false)
 		{
 			m_CurrentBounceHeight += m_BounceSpeed * dt;
-			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y - m_BounceSpeed *dt);
+			m_pParent->SetPosition(m_pParent->GetPosition().x, m_pParent->GetPosition().y - m_BounceSpeed *dt);
 			//Move enemies too
 			for (auto o : m_pFallingEnemies)
 			{
@@ -328,7 +328,7 @@ void dae::IngredientComponent::Bounce(float dt)
 		} else
 		{
 			m_CurrentBounceHeight -= m_BounceSpeed * dt;
-			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y + m_BounceSpeed * dt);
+			m_pParent->SetPosition(m_pParent->GetPosition().x, m_pParent->GetPosition().y + m_BounceSpeed * dt);
 			//Move enemies too
 			for (auto o : m_pFallingEnemies)
 			{
@@ -348,7 +348,7 @@ void dae::IngredientComponent::Bounce(float dt)
 			m_BouncingDown = false;
 			m_isBouncing = false;
 			m_CurrentBounceHeight = 0;
-			//std::cout << "bounceDone";
+			
 		}
 		
 	}
@@ -357,7 +357,7 @@ void dae::IngredientComponent::Bounce(float dt)
 
 void dae::IngredientComponent::InitializeValuesComp()
 {
-	m_pValuesComp = m_Parent->GetScene()->GetObjectsInWorldWithTag("Player").at(0)->GetComponent<ValuesComponent>();
+	m_pValuesComp = m_pParent->GetScene()->GetObjectsInWorldWithTag("Player").at(0)->GetComponent<ValuesComponent>();
 	if (m_pValuesComp == nullptr)
 	{
 		std::cout << "Cant find player";
@@ -406,14 +406,13 @@ void dae::IngredientComponent::KillStandingEnemies()
 		{
 			enemy->Kill();
 		}
-		//o->GetComponent<BasicEnemyComponent>()->Kill();
 	}
 	m_pFallingEnemies.clear();
 	m_HasMoved = false;
 	m_TotalFallingEnemies = 0;
 }
 
-void dae::IngredientComponent::SpawnStandingScoresEffect(int numberEnemies)
+void dae::IngredientComponent::SpawnStandingScoresEffect(int numberEnemies) const
 {
 	dae::SpriteComponent* effectSprite = new dae::SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
 	dae::GameObject* score = new dae::GameObject();

@@ -206,10 +206,6 @@ void dae::InputManager::HandleInput(float dt)
 		}
 	}
 #pragma endregion Keyboard
-	/*if(Input::GetInstance().GetClear() == true)
-	{
-		Input::GetInstance().ClearKeys();
-		Input::GetInstance().SetClear(false);
-	}*/
+
 	
 }

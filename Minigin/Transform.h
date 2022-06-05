@@ -7,10 +7,10 @@ namespace dae
 	class Transform final
 	{
 	public:
-		const glm::vec3& GetPosition() const { return m_Position; }
+		const glm::vec3& GetPosition() const;
+		const glm::vec3& GetScale() const;
 		void SetPosition(float x, float y, float z);
-		void SetPosition(glm::vec3 pos);
-		const glm::vec3& GetScale() const { return m_Scale; }
+		void SetPosition(const glm::vec3& pos);
 		void SetScale(float x, float y, float z);
 	private:
 		glm::vec3 m_Position;

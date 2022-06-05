@@ -3,14 +3,14 @@
 namespace dae
 {
 	
-	class ValuesComponent :
+	class ValuesComponent final:
 	    public MonoBehaviour
 	{
 
 	public:
 		//Rule of 5
 		ValuesComponent();
-		~ValuesComponent();
+		~ValuesComponent() override;
 
 		ValuesComponent(const ValuesComponent&) = delete;
 		ValuesComponent(ValuesComponent&&) noexcept = delete;
@@ -18,8 +18,8 @@ namespace dae
 		ValuesComponent& operator=(const ValuesComponent&) = delete;
 		ValuesComponent& operator=(ValuesComponent&&) noexcept = delete;
 		//Core
-		virtual void Update(float dt);
-		virtual void FixedUpdate(float timestep);
+		virtual void Update(float dt) override;
+		virtual void FixedUpdate(float timestep) override;
 
 		//Getter
 		int GetLives() const;
@@ -27,7 +27,7 @@ namespace dae
 		int GetPeppers() const;
 
 		//Setter
-		void SetSubject(Subject* subject);
+		void SetSubject(Subject* const subject);
 		void SetLives(int lives);
 
 		//Public functions
@@ -43,7 +43,7 @@ namespace dae
 		static int m_Score;
 		static int m_Peppers;
 
-		Subject* m_Subject;
+		Subject* m_pSubject;
 	};
 }
 

@@ -4,7 +4,7 @@
 
 #include "Audio.h"
 
-class ConsoleAudio : public Audio
+class ConsoleAudio final: public Audio
 {
 public:
     ConsoleAudio();
@@ -31,13 +31,14 @@ public:
 
     virtual void SetMusicVolume(int volume) override;
 private:
-    std::vector<Mix_Chunk*> m_Sounds;
-    Mix_Music* m_Music;
-    std::queue<int> m_Queue;
+    void Initialize();
+
+    bool m_Running;
+    Mix_Music* m_pMusic;
 	std::mutex m_Mutex;
     std::condition_variable m_ConditionVariable;
-    bool m_Running;
+    std::queue<int> m_Queue;
+    std::vector<Mix_Chunk*> m_pSounds;
 
-    void Initialize();
 };
 

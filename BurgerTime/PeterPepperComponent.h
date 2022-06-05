@@ -1,21 +1,23 @@
 #pragma once
 #include "MonoBehaviour.h"
-#include "SpriteComponent.h"
+
 
 class Audio;
 
 namespace dae
 {
-	class PeterPepperComponent :
+	class SpriteComponent;
+
+	class PeterPepperComponent final:
 	    public MonoBehaviour
 	{
 	public:
 		PeterPepperComponent();
 
 		//Core
-		void Update(float dt);
-		void FixedUpdate(float timestep);
-		void Render() const;
+		void Update(float dt) override;
+		void FixedUpdate(float timestep) override;
+		void Render() const override;
 		
 		//Getter
 		bool GetIsOnLadder() const;
@@ -29,14 +31,14 @@ namespace dae
 
 		//Public functions
 		void UpdatePos(float dt);
-		void ThrowSalt();
+		void ThrowSalt() const;
 
 	private:
 		//Initializer
-		void InitializeSprite();
+		void InitializeSprite() const;
 		//Private functions
 		void UpdateSprite(float dt);
-		void Respawn();
+		void Respawn() const;
 
 		bool m_IsOnLadder;
 		bool m_IsOnPlatform;

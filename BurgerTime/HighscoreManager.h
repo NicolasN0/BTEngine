@@ -1,22 +1,26 @@
 #pragma once
-#include "GameObject.h"
-#include "Singleton.h"
 #include "TextComponent.h"
+#include "Singleton.h"
+
 
 namespace dae
 {
-	
+
 	class HighscoreManager final : public Singleton<HighscoreManager>
 	{
 	public:
-		void AddHighscore(int highscore);
+		//Getter
 		std::vector<int> GetHighscores(int number);
+		const std::vector<TextComponent*>& GetTextComponents() const;
+
+		//Setter
 		void SetHighscores(const std::vector<int>& highscores);
 		void SetTextComponents(const std::vector<TextComponent*>& textComponents);
 		void SetHighscoreComp(const std::vector<TextComponent*>& comps);
+
+		//Public
 		void UpdateHighScore();
-		//void WriteHighscores();
-		std::vector<TextComponent*>& GetTextComponents();
+		void AddHighscore(int highscore);
 	private:
 		friend class Singleton<HighscoreManager>;
 		HighscoreManager() = default;

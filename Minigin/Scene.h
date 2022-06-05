@@ -5,12 +5,11 @@
 namespace dae
 {
 	class GameObject;
-	class Scene
+	class Scene final
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		//void Add(const std::shared_ptr<GameObject>& object);
-		void Add(GameObject* object);
+		void Add(GameObject* const object);
 
 
 		void Update(float dt);
@@ -23,19 +22,19 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-		std::vector < GameObject*> GetAllObjectsInWorld();
-		std::vector < GameObject*> GetObjectsInWorldWithTag(std::string tag);
+		const std::vector < GameObject*>& GetAllObjectsInWorld() const;
+		std::vector < GameObject*> GetObjectsInWorldWithTag(const std::string& tag) const;
 
-		bool IsPointInRectangle(glm::vec3 point, glm::vec3 posRectangle, glm::vec3 sizeRectangle);
+		bool IsPointInRectangle(const glm::vec3& point, const glm::vec3& posRectangle, const glm::vec3& sizeRectangle) const;
 
-		std::string GetName() const;
+		const std::string& GetName() const;
 	private: 
 		explicit Scene(const std::string& name);
 
 		std::string m_Name;
-		std::vector <GameObject*> m_Objects{};
-		std::vector<GameObject*> m_ObjectsToDelete{};
-		static unsigned int m_IdCounter; 
+		std::vector <GameObject*> m_pObjects;
+		
+		
 	};
 
 }

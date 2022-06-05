@@ -1,6 +1,7 @@
 #pragma once
 #include "Singleton.h"
 #include <memory>
+#include <vector>
 namespace dae
 {
 	class Scene;
@@ -11,15 +12,15 @@ namespace dae
 
 		void Update(float dt);
 		void FixedUpdate(float timestep);
-		void Render();
-		void SetCurrentScene(std::string name);
-		void ClearScenes();
+		void Render() const;
+		void SetCurrentScene(const std::string& name);
 		void SetDelete(bool deleteScene);
+		void ClearScenes();
 	private:
 		friend class Singleton<SceneManager>;
 		SceneManager() = default;
-		std::vector<std::shared_ptr<Scene>> m_Scenes;
-		std::shared_ptr<Scene> m_CurrentScene;
+		std::vector<std::shared_ptr<Scene>> m_spScenes;
+		std::shared_ptr<Scene> m_spCurrentScene;
 		bool m_DeleteScenes;
 
 	};

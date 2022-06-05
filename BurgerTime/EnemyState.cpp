@@ -1,7 +1,4 @@
 #include "EnemyState.h"
-
-#include <iostream>
-
 #include "BasicEnemyComponent.h"
 #include "EffectComponent.h"
 #include "Scene.h"
@@ -20,6 +17,8 @@ EnemyState* EnemyStunnedState::Update(dae::BasicEnemyComponent& enemy, float dt)
 	{
 		enemy.SetStunned(false);
 		m_StunTimer = 0;
+		enemy.SetCanSwitch(true);
+		enemy.SetDirection(enemy.GetPrevDir());
 		return new EnemyMovingState();
 	}
 
@@ -61,6 +60,7 @@ void EnemyStunnedState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 void EnemyStunnedState::Enter(dae::BasicEnemyComponent& enemy)
 {
 	m_pSpriteComp = enemy.GetSpriteComp();
+	m_pSpriteComp->SetPaused(false);
 	m_MaxStunTime = 2;
 }
 
@@ -217,7 +217,6 @@ void EnemyMovingState::Enter(dae::BasicEnemyComponent& enemy)
 {
 	m_pSpriteComp = enemy.GetSpriteComp();
 
-	
 }
 
 void EnemyMovingState::SetTarget(dae::BasicEnemyComponent& enemy)
@@ -268,7 +267,6 @@ EnemyState* EnemyDyingState::Update(dae::BasicEnemyComponent& enemy, float dt)
 			break;
 		}
 
-		std::cout << "Actual Kill";
 		enemy.GetParent()->Delete();
 	}
 
@@ -320,6 +318,7 @@ void EnemyDyingState::SpawnScoreEffect(dae::BasicEnemyComponent& enemy, int rari
 
 EnemyState* EnemyFallingState::Update(dae::BasicEnemyComponent& enemy, float )
 {
+
 	if (enemy.GetDying())
 	{
 		return new EnemyDyingState();

@@ -1,10 +1,9 @@
-//#include "MiniginPCH.h"
 #include "ScoreObserver.h"
 #include "PeterPepperComponent.h"
 #include "ValuesComponent.h"
-dae::ScoreObserver::ScoreObserver(TextComponent* textComponent) : m_pTextComponent(textComponent)
+dae::ScoreObserver::ScoreObserver(TextComponent* const textComponent) : m_pTextComponent(textComponent)
 {
-	//textComponent->SetParent(GetParent());
+	
 }
 
 void dae::ScoreObserver::Notify(const GameObject& go, Event event)
@@ -23,11 +22,4 @@ void dae::ScoreObserver::Notify(const GameObject& go, Event event)
 	
 	}
 }
-//
-//void dae::ScoreObserver::Update(float )
-//{
-//}
-//
-//void dae::ScoreObserver::FixedUpdate(float )
-//{
-//}
+

@@ -1,5 +1,6 @@
 #include "HighscoreManager.h"
 #include <algorithm>
+//json includes
 #include <document.h>
 #include <filereadstream.h>
 #include <filewritestream.h>
@@ -8,7 +9,7 @@
 void dae::HighscoreManager::AddHighscore(int highscore)
 {
 	m_Highscores.push_back(highscore);
-	//std::sort(m_Highscores.begin(), m_Highscores.end());
+	
 
 	//Read
 	using rapidjson::Document;
@@ -90,12 +91,8 @@ void dae::HighscoreManager::UpdateHighScore()
 	}
 }
 
-//void dae::HighscoreManager::WriteHighscores()
-//{
-//
-//}
 
-std::vector<dae::TextComponent*>& dae::HighscoreManager::GetTextComponents()
+const std::vector<dae::TextComponent*>& dae::HighscoreManager::GetTextComponents() const
 {
 	return m_pTextComponents;
 }

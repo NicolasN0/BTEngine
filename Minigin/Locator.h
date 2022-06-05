@@ -37,4 +37,3 @@ private:
     static Audio* service_;
     static NullAudio nullService_;
 };
-//NullAudio Locator::nullService_ = NullAudio();

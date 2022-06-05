@@ -2,17 +2,17 @@
 #include <MonoBehaviour.h>
 namespace dae
 {
-	class SelectorComponent :
+	class SelectorComponent final :
 	    public MonoBehaviour
 	{
 	public:
 		//Core
 		SelectorComponent();
-		virtual void Update(float dt);
-		virtual void FixedUpdate(float timestep);
+		virtual void Update(float dt) override;
+		virtual void FixedUpdate(float timestep) override;
 
 		//Getter
-		int GetSelected();
+		int GetSelected() const;
 
 		//Public
 		void NextGameMode();

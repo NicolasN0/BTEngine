@@ -1,19 +1,21 @@
 #pragma once
 #include <MonoBehaviour.h>
 
-#include "SpriteComponent.h"
+
 
 namespace dae
 {
-	class SaltComponent :
+	class SpriteComponent;
+
+	class SaltComponent final :
 	    public MonoBehaviour
 	{
 	public:
 		SaltComponent();
-		virtual void Update(float dt);
-		virtual void FixedUpdate(float timestep);
+		virtual void Update(float dt) override;
+		virtual void FixedUpdate(float timestep) override;
 
-		void SetSpriteComp(SpriteComponent* comp);
+		void SetSpriteComp(SpriteComponent* const comp);
 		void UpdateSprite(float dt);
 	private:
 		SpriteComponent* m_pSpriteComp;

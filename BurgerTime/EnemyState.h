@@ -13,20 +13,20 @@ namespace dae
 	class EnemyState
 	{
 	public:
-		virtual ~EnemyState(){};
+		virtual ~EnemyState(){}
 		virtual  EnemyState* Update(dae::BasicEnemyComponent& , float ) { return nullptr; }
 		virtual void UpdateSprites(dae::BasicEnemyComponent& ){}
 		virtual void Enter(dae::BasicEnemyComponent& ) {}
 	};
 
 
-	class EnemyStunnedState : public EnemyState
+	class EnemyStunnedState final : public EnemyState
 	{
 	public:
 		EnemyStunnedState() : m_StunTimer(),m_MaxStunTime(),m_pSpriteComp(){}
-		virtual  EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt);
-		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy);
-		virtual void Enter(dae::BasicEnemyComponent& enemy);
+		virtual  EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt) override;
+		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy) override;
+		virtual void Enter(dae::BasicEnemyComponent& enemy) override;
 
 	private:
 		float m_StunTimer;
@@ -34,13 +34,13 @@ namespace dae
 		dae::SpriteComponent* m_pSpriteComp;
 	};
 
-	class EnemyMovingState : public EnemyState
+	class EnemyMovingState final : public EnemyState
 	{
 	public:
 		EnemyMovingState() : m_UpdateTargets(),m_PlayerCountChecked(),m_pSpriteComp(),m_pPlayers(){}
-		virtual EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt);
-		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy);
-		virtual void Enter(dae::BasicEnemyComponent& enemy);
+		virtual EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt) override;
+		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy) override;
+		virtual void Enter(dae::BasicEnemyComponent& enemy) override;
 	private:
 		void SetTarget(dae::BasicEnemyComponent& enemy);
 
@@ -51,22 +51,22 @@ namespace dae
 	};
 
 
-	class EnemyFallingState : public EnemyState
+	class EnemyFallingState final : public EnemyState
 	{
 	public:
-		virtual  EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt);
+		virtual  EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt) override;
 	
-		virtual void UpdateSprites(dae::BasicEnemyComponent& ){}
-		virtual void Enter(dae::BasicEnemyComponent& ){}
+		virtual void UpdateSprites(dae::BasicEnemyComponent& ) override {}
+		virtual void Enter(dae::BasicEnemyComponent&) override {}
 	};
 
-	class EnemyDyingState : public EnemyState
+	class EnemyDyingState final : public EnemyState
 	{
 	public:
 		EnemyDyingState() : m_MaxDyingTime(),m_pSpriteComp(),m_DyingTimer(){}
-		virtual  EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt);
-		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy);
-		virtual void Enter(dae::BasicEnemyComponent& enemy);
+		virtual  EnemyState* Update(dae::BasicEnemyComponent& enemy, float dt) override;
+		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy) override;
+		virtual void Enter(dae::BasicEnemyComponent& enemy) override;
 
 	private:
 		void SpawnScoreEffect(dae::BasicEnemyComponent& enemy, int rarity);

@@ -4,14 +4,14 @@ class Audio;
 
 namespace dae
 {
-	class IngredientPartComponent :
+	class IngredientPartComponent final:
 	    public MonoBehaviour
 	{
 	public:
 		IngredientPartComponent();
-		void Update(float dt);
-		void FixedUpdate(float timestep);
-		void Render() const;
+		void Update(float dt) override;
+		void FixedUpdate(float timestep) override;
+		void Render() const override;
 
 		bool GetIsPressed() const;
 		void SetIsPressed(bool isPressed);
@@ -22,7 +22,7 @@ namespace dae
 		bool m_IsPressed;
 		float m_HeightDiff;
 
-		Audio* m_AudioService;
+		Audio* m_pAudioService;
 	};
 	
 }

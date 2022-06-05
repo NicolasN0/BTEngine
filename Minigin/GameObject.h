@@ -1,7 +1,5 @@
 #pragma once
 #include "Transform.h"
-#include "SceneObject.h"
-#include <set>
 #include <string>
 #include <vector>
 #include "Subject.h"
@@ -13,7 +11,7 @@ namespace dae
 	class Scene;
 	class Texture2D;
 	class MonoBehaviour;
-	// todo: this should become final.
+	
 	class GameObject final
 	{
 	public:
@@ -39,32 +37,32 @@ namespace dae
 
 
 		//Parent
-		void SetParent(GameObject* parent);
-		GameObject* GetParent() const;
+		void SetParent(GameObject* const parent);
+		const GameObject* GetParent() const;
 
 
 		//Child
 		size_t GetChildCount() const;
 		GameObject* GetChildAt(int index) const;
 		void RemoveChild(int index);
-		void AddChild(GameObject* go);
-		std::vector<GameObject*> GetChilds() const;
+		void AddChild(GameObject* const go);
+		const std::vector<GameObject*>& GetChilds() const;
 
 		//Transform
-		const Transform& GetTransform() const { return m_Transform; }
+		const Transform& GetTransform() const;
 		void SetPosition(float x, float y);
-		void SetPosition(glm::vec3 pos);
+		void SetPosition(const glm::vec3& pos);
 		void SetScale(float x, float y);
 		const glm::vec3 &GetPosition() const;
 		const glm::vec3 &GetScale() const;
 
 	
 		const glm::vec3& GetSize() const;
-		void SetSize(glm::vec3 size);
+		void SetSize(const glm::vec3& size);
 
 		void SetLocalPosition(float x, float y);
 		void SetLocalScale(float x, float y);
-		void SetLocalPosition(glm::vec3 pos);
+		void SetLocalPosition(const glm::vec3& pos);
 		const glm::vec3& GetLocalPosition() const;
 
 		void UpdatePos();
@@ -72,21 +70,21 @@ namespace dae
 
 
 		//Tag
-		std::string GetTag() const;
-		void SetTag(std::string tag);
+		const std::string& GetTag() const;
+		void SetTag(const std::string& tag);
 
 
 		//Overlapping
-		bool GetIsOverlapping(dae::GameObject* object);
+		bool GetIsOverlapping(dae::GameObject* const object);
 		bool IsOverlappingAny();
-		bool IsOverlappingAnyWithTag(std::string tag);
-		bool IsCenterOverlappingAnyWithTag(std::string tag);
-		GameObject* GetFirstOverlappingObjectWithTag(std::string tag);
-		std::vector<GameObject*> GetAllOverlappingWithTag(std::string tag);
+		bool IsOverlappingAnyWithTag(const std::string& tag);
+		bool IsCenterOverlappingAnyWithTag(const std::string& tag);
+		GameObject* GetFirstOverlappingObjectWithTag(const std::string& tag);
+		std::vector<GameObject*> GetAllOverlappingWithTag(const std::string& tag);
 
 		//Scene
 		Scene* GetScene() const;
-		void SetScene(Scene* scene);
+		void SetScene(Scene* const scene);
 
 		void Delete();
 		bool isSetToDelete() const;
