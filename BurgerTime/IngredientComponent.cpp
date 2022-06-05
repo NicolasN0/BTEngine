@@ -117,8 +117,20 @@ void dae::IngredientComponent::InstantLetFall()
 {
 
 	SetIsFalling(true);
+
 	for (auto c : m_Parent->GetChilds())
 	{
+		//reset first so they all allign
+		if(c->GetComponent<IngredientPartComponent>()->GetIsPressed())
+		{
+			
+			c->GetComponent<IngredientPartComponent>()->Reset();
+		}
+	
+	}
+	for (auto c : m_Parent->GetChilds())
+	{
+		//reset first so they all allign
 		c->GetComponent<IngredientPartComponent>()->SetIsPressed(true);
 	}
 }

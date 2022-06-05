@@ -54,6 +54,7 @@ void dae::IngredientPartComponent::Reset()
 {
 	m_IsPressed = false;
 	GetParent()->SetPosition(GetParent()->GetLocalPosition().x, GetParent()->GetLocalPosition().y - m_HeightDiff);
+	std::cout << GetParent()->GetLocalPosition().y;
 }
 
 void dae::IngredientPartComponent::UpdatePressed()
