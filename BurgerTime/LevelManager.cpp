@@ -24,7 +24,7 @@ dae::LevelManager::LevelManager(Scene* const scene,const std::vector<GameObject*
 , m_LadderSize(9, 40, 1)
 , m_PlatformSize(95, 10, 1)
 , m_ContainerSize(65, 70, 1)
-, m_MaxEnemies{ 1,7,9 }
+, m_MaxEnemies{ 5,7,9 }
 , m_CurrentEnemies()
 , m_EnemyPosLevel1()
 , m_EnemyPosLevel2()
