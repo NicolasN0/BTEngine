@@ -388,6 +388,7 @@ public:
 		 hotdogPvp->AddComponent(enemySprite);
 		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite,true));
 		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetTarget(peterPepperPvp);
+		 hotdogPvp->SetScale(1.5f, 1.5f);
 		 hotdogPvp->SetTag("Enemy");
 
 		 playersPvp.push_back(peterPepperPvp);
