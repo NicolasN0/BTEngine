@@ -17,32 +17,32 @@ namespace dae
 	class Selector : public  Command
 	{
 	public:
-		Selector(SelectorComponent* selectorComp,bool goNext,int maxModes) : m_SelectorComponent(selectorComp), m_GoNext(goNext), m_MaxModes(maxModes) {}
-		void Execute(float dt) override
+		Selector(SelectorComponent* selectorComp,bool goNext,int maxModes) : m_pSelectorComponent(selectorComp), m_GoNext(goNext), m_MaxModes(maxModes) {}
+		void Execute(float ) override
 		{
 		
 			if(m_GoNext)
 			{
 				
-				if(m_SelectorComponent->GetSelected() < m_MaxModes-1)
+				if(m_pSelectorComponent->GetSelected() < m_MaxModes-1)
 				{
-					m_SelectorComponent->NextGameMode();
-					GameObject* parent = m_SelectorComponent->GetParent();
+					m_pSelectorComponent->NextGameMode();
+					GameObject* parent = m_pSelectorComponent->GetParent();
 					parent->SetPosition(parent->GetPosition().x, parent->GetPosition().y + 40);
 				}
 			} else
 			{
-				if (m_SelectorComponent->GetSelected() > 0)
+				if (m_pSelectorComponent->GetSelected() > 0)
 				{
-					m_SelectorComponent->PreviousGameMode();
-					GameObject* parent = m_SelectorComponent->GetParent();
+					m_pSelectorComponent->PreviousGameMode();
+					GameObject* parent = m_pSelectorComponent->GetParent();
 					parent->SetPosition(parent->GetPosition().x, parent->GetPosition().y - 40);
 				}
 			
 			}
 		}
 	private:
-		SelectorComponent* m_SelectorComponent;
+		SelectorComponent* m_pSelectorComponent;
 		int m_MaxModes;
 		bool m_GoNext;
 	};
@@ -50,11 +50,11 @@ namespace dae
 	class Continue : public  Command
 	{
 	public:
-		Continue(SelectorComponent* selectorComp) : m_SelectorComponent(selectorComp) {}
-		void Execute(float dt) override
+		Continue(SelectorComponent* selectorComp) : m_pSelectorComponent(selectorComp) {}
+		void Execute(float ) override
 		{
 		
-			switch(m_SelectorComponent->GetSelected())
+			switch(m_pSelectorComponent->GetSelected())
 			{
 			case 0:
 				SceneChanger::GetInstance().SetCurrentScene("game");
@@ -70,7 +70,7 @@ namespace dae
 			}
 		}
 	private:
-		SelectorComponent* m_SelectorComponent;
+		SelectorComponent* m_pSelectorComponent;
 		
 	};
 
@@ -78,7 +78,7 @@ namespace dae
 	{
 	public:
 		Replay() {}
-		void Execute(float dt) override
+		void Execute(float ) override
 		{
 		
 			SceneChanger::GetInstance().SetCurrentScene("start");
@@ -91,8 +91,8 @@ namespace dae
 	class Throw : public Command
 	{
 	public:
-		Throw(PeterPepperComponent* object) : m_pObject(object){};
-		void Execute(float dt) override
+		Throw(PeterPepperComponent* object) : m_pObject(object){}
+		void Execute(float ) override
 		{
 			//Throw salt
 			m_pObject->ThrowSalt();
@@ -107,46 +107,13 @@ namespace dae
 	class Move : public Command
 	{
 	public:
-		Move(PeterPepperComponent* object, glm::vec3 moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {};
-		void Execute(float dt) override
+		Move(PeterPepperComponent* object, const glm::vec3& moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {}
+		void Execute(float ) override
 		{
-			/*if(m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
-			{
-				if(m_pObject->GetIsOnLadder() == true)
-				{
-					glm::vec3 curPos = m_pObject->GetParent()->GetTransform().GetPosition();
-					glm::vec3 furPos = glm::vec3(curPos.x + (m_MoveSpeed.x * dt), curPos.y + (m_MoveSpeed.y * dt),1);
-
-
-					m_pObject->GetParent()->SetPosition(furPos.x, furPos.y);
-
-					if (m_pObject->GetParent()->IsCenterOverlappingAnyWithTag("Ladder") == false)
-					{
-						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
-					}
-				}
-
-			}
-			
-			if(m_MoveSpeed.x > 0 || m_MoveSpeed.x < 0)
-			{
-				if (m_pObject->GetIsOnPlatform() == true)
-				{
-					glm::vec3 curPos = m_pObject->GetParent()->GetTransform().GetPosition();
-					glm::vec3 furPos = glm::vec3(curPos.x + (m_MoveSpeed.x * dt), curPos.y + (m_MoveSpeed.y * dt), 1);
-					m_pObject->GetParent()->SetPosition(furPos.x, furPos.y);
-
-					if (m_pObject->GetParent()->IsCenterOverlappingAnyWithTag("Platform") == false)
-					{
-						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
-						
-					}
-
-				}
-			}*/
+		
 			m_pObject->SetMoveSpeed(m_MoveSpeed);
 
-		};
+		}
 
 		PeterPepperComponent* m_pObject;
 		glm::vec3 m_MoveSpeed;
@@ -156,7 +123,7 @@ namespace dae
 	{
 	public:
 		StopMove(PeterPepperComponent* object) : m_pObject(object){};
-		void Execute(float dt) override
+		void Execute(float ) override
 		{
 			
 			m_pObject->SetMoveSpeed(glm::vec3(0,0,0));
@@ -169,44 +136,10 @@ namespace dae
 	class MoveHotdog : public Command
 	{
 	public:
-		MoveHotdog(BasicEnemyComponent* object, glm::vec3 moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {};
-		void Execute(float dt) override
+		MoveHotdog(BasicEnemyComponent* object,const glm::vec3& moveSpeed) : m_pObject(object), m_MoveSpeed(moveSpeed) {}
+		void Execute(float ) override
 		{
-			
-			/*if (m_MoveSpeed.y > 0 || m_MoveSpeed.y < 0)
-			{
-				if (m_pObject->GetIsOnLadder() == true)
-				{
-					glm::vec3 curPos = m_pObject->GetParent()->GetTransform().GetPosition();
-					glm::vec3 furPos = glm::vec3(curPos.x + (m_MoveSpeed.x * dt), curPos.y + (m_MoveSpeed.y * dt), 1);
 
-
-					m_pObject->GetParent()->SetPosition(furPos.x, furPos.y);
-
-					if (m_pObject->GetParent()->IsCenterOverlappingAnyWithTag("Ladder") == false)
-					{
-						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
-					}
-				}
-
-			}
-
-			if (m_MoveSpeed.x > 0 || m_MoveSpeed.x < 0)
-			{
-				if (m_pObject->GetIsOnPlatform() == true)
-				{
-					glm::vec3 curPos = m_pObject->GetParent()->GetTransform().GetPosition();
-					glm::vec3 furPos = glm::vec3(curPos.x + (m_MoveSpeed.x * dt), curPos.y + (m_MoveSpeed.y * dt), 1);
-					m_pObject->GetParent()->SetPosition(furPos.x, furPos.y);
-
-					if (m_pObject->GetParent()->IsCenterOverlappingAnyWithTag("Platform") == false)
-					{
-						m_pObject->GetParent()->SetPosition(curPos.x, curPos.y);
-
-					}
-
-				}
-			}*/
 			m_pObject->SetDirection(m_MoveSpeed);
 			
 		};
@@ -218,8 +151,8 @@ namespace dae
 	class StopMoveHotdog : public Command
 	{
 	public:
-		StopMoveHotdog(BasicEnemyComponent* object) : m_pObject(object){};
-		void Execute(float dt) override
+		StopMoveHotdog(BasicEnemyComponent* object) : m_pObject(object){}
+		void Execute(float ) override
 		{
 
 			
@@ -235,7 +168,7 @@ namespace dae
 	{
 	public:
 		NextLevel(PeterPepperComponent* object) : m_pObject(object){};
-		void Execute(float dt) override
+		void Execute(float ) override
 		{
 
 			m_pObject->SetNextLevel(true);

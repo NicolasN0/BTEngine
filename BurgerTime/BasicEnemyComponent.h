@@ -17,92 +17,88 @@ namespace dae
 		public MonoBehaviour
 	{
 	public:
+		//Rule of 5
+		BasicEnemyComponent(EEnemyType enemyType,SpriteComponent* const sprite,bool isPlayer = false);
 		~BasicEnemyComponent();
-		BasicEnemyComponent(EEnemyType enemyType,SpriteComponent* sprite,bool isPlayer = false);
+
+		BasicEnemyComponent(const BasicEnemyComponent&) = delete;
+		BasicEnemyComponent(BasicEnemyComponent&&) noexcept = delete;
+
+		BasicEnemyComponent& operator=(const BasicEnemyComponent&) = delete;
+		BasicEnemyComponent& operator=(BasicEnemyComponent&&) noexcept = delete;
+
+		//Core
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
 
-		bool GetIsOnLadder() const { return m_IsOnLadder; }
-		bool GetIsOnPlatform() const { return m_IsOnPlatform; }
-
-		void SetTarget(GameObject* target) { m_Target = target; }
-
-		glm::vec3 GetPosition() const;
-		void SetPosition(glm::vec3 pos);
-
-		void SetIsFalling(bool isFalling);
+		//Getter
+		bool GetIsOnLadder() const; 
+		bool GetIsOnPlatform() const;
 		bool GetIsFalling() const;
-
+		bool GetIsPlayer() const;
+		bool GetStunned() const;
+		bool GetDying() const;
+		bool GetDyingComplete() const;
+		const glm::vec3& GetPosition() const;
+		const glm::vec3& GetDirection() const;
+		SpriteComponent* const GetSpriteComp() const;
 		EEnemyType GetType() const;
 
-		void Kill();
-
+		//Setter
+		void SetTarget(GameObject* target);
+		void SetPosition(glm::vec3 pos);
+		void SetIsFalling(bool isFalling);
 		void SetSubject(Subject* subject);
-
 		void SetSpriteComp(SpriteComponent* comp);
-
 		void SetDirection(glm::vec3 movespeed);
-
 		void SetStunned(bool stunned);
-		bool GetStunned() const;
+		void SetDyingComplete(bool dyingComplete);
 
-		bool GetIsPlayer() const;
-		glm::vec3 GetDirection() const;
-
+		//Public
+		void Kill();
 		void CheckOverlaps();
 		void UpdatePos(float dt);
 		void UpdateDirection();
-		
 		void UpdateSprite();
 
-		SpriteComponent* GetSpriteComp();
 
-		bool GetDying() const;
-		void SetDyingComplete(bool dyingComplete);
-		bool GetDyingComplete();
 
 	private:
 		void SetHorizontalDir();
 		void SetVerticalDir();
 
 		bool m_Stunned;
-		float m_StunTimer;
-		float m_MaxStunTime;
-
 		bool m_Dying;
 		bool m_DyingComplete;
-
-		glm::vec3 m_PlayerDir;
-		bool m_IsOnLadder{};
-		bool m_IsOnPlatform{};
-		bool m_Falling{};
-
-
-		GameObject* m_Target{};
-		float m_MoveSpeed{20};
-		bool m_CanSwitch{true};
-		glm::vec3 m_Direction{};
-
-
-		Subject* m_Subject{};
-
-		EEnemyType m_Type;
-		bool m_IsPlayer{};
-
-		SpriteComponent* m_SpriteComp;
-
-		EnemyState* m_State;
-
+		bool m_IsOnLadder;
+		bool m_IsOnPlatform;
+		bool m_Falling;
+		bool m_CanSwitch;
+		bool m_IsPlayer;
 		bool m_BlockedHor;
 		bool m_BlockedVer;
-		bool m_ForceSwitch;
-		glm::vec3 m_BlockedCor;
-		glm::vec3 m_LastSwitchCor;
 		bool m_CanSwitchLadder;
 		bool m_CanSwitchPlatform;
 
-	
+		float m_StunTimer;
+		float m_MaxStunTime;
+		float m_MoveSpeed;
+
+
+		glm::vec3 m_PlayerDir;
+		glm::vec3 m_Direction;
+		glm::vec3 m_BlockedCor;
+		glm::vec3 m_LastSwitchCor;
+
+		EEnemyType m_Type;
+
+		GameObject* m_pTarget;
+		EnemyState* m_pState;
+		Subject* m_pSubject;
+		SpriteComponent* m_pSpriteComp;
+
+
 	};
 
 }

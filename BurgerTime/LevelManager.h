@@ -11,40 +11,54 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
-		LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers,std::vector<GameObject*>& lvlBackground, const std::wstring& levelFile);
+		LevelManager(Scene* scene,const std::vector<GameObject*>& players,const  std::vector<GameObject*>& enemeyPlayers,const std::vector<GameObject*>& lvlBackground, const std::wstring& levelFile);
+
+		//Core
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
+
+		//Getter
+		int GetCurLevel() const;
+
+		//Public
 		void MakeLevel(int levelCount);
 		void ClearLevel();
-		int GetCurLevel() const;
 	private:
 		void CheckLevelCompleted();
-		void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players);
-		void MakeEnemey(glm::vec3 pos, EEnemyType type);
+		void MakeIngredient(const glm::vec3& pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, const std::vector<GameObject*>& players);
+		void MakeEnemey(const glm::vec3& pos, EEnemyType type);
 		void ReadInLevel(const std::wstring& filename);
 
 
-		std::vector<GameObject*> m_LevelObjects{};
-		int m_Level{};
-		Scene* m_Scene;
-		bool m_LevelMade{};
-		std::vector<GameObject*> m_Players;
-		std::vector<GameObject*> m_EnemyPlayers;
-		std::vector<GameObject*> m_LvlBackground;
-		glm::vec3 m_ContainerSize;
-		glm::vec3 m_PlatformSize;
-		glm::vec3 m_LadderSize;
+		bool m_LevelMade;
+
+		int m_Level;
+		int m_CurrentEnemies;
+		int m_SpawnCount;
 
 		float m_SpawnTimer;
 		float m_SpawnMax;
-		int m_CurrentEnemies;
+
+		glm::vec3 m_ContainerSize;
+		glm::vec3 m_LadderSize;
+		glm::vec3 m_PlatformSize;
+
+		rapidjson::Document m_Doc;
+
+		Scene* m_Scene;
+
 		std::vector<int> m_MaxEnemies;
+
 		std::vector<glm::vec3> m_EnemyPosLevel1;
 		std::vector<glm::vec3> m_EnemyPosLevel2;
 		std::vector<glm::vec3> m_EnemyPosLevel3;
 
-		rapidjson::Document m_Doc;
-		int m_SpawnCount;
+		std::vector<GameObject*> m_pLevelObjects;
+		std::vector<GameObject*> m_pPlayers;
+		std::vector<GameObject*> m_pEnemyPlayers;
+		std::vector<GameObject*> m_pLvlBackground;
+
+
 	};
 }
 

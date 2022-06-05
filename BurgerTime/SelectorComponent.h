@@ -6,11 +6,17 @@ namespace dae
 	    public MonoBehaviour
 	{
 	public:
+		//Core
+		SelectorComponent();
 		virtual void Update(float dt);
 		virtual void FixedUpdate(float timestep);
+
+		//Getter
+		int GetSelected();
+
+		//Public
 		void NextGameMode();
 		void PreviousGameMode();
-		int GetSelected();
 	private:
 		std::vector<bool> m_GamemodeSelected;
 		int m_Selected;

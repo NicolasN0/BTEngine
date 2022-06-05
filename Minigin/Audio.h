@@ -31,10 +31,5 @@ public:
     virtual void SetEffectVolume(int volume) = 0;
 
     virtual void SetMusicVolume(int volume) = 0;
-//private:
-//	std::vector<Mix_Chunk*> m_Sounds;
-//    Mix_Music* m_Music;
-//	std::queue<int> m_Queue;
-//	std::mutex m_Mutex;
-//    void Initialize();
+
 };

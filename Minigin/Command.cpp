@@ -8,7 +8,7 @@ dae::QuitGame::QuitGame(dae::Minigin* pEngine)
 {
 }
 
-void dae::QuitGame::Execute(float dt)
+void dae::QuitGame::Execute(float )
 {
 	m_pEngine->StopRunning();
 }

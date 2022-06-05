@@ -22,12 +22,12 @@ void dae::TextureComponent::Render() const
 	const auto& scale = GetParent()->GetTransform().GetScale();
 	//Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 	SDL_Rect destRect;
-	destRect.x = pos.x;
-	destRect.y = pos.y;
+	destRect.x = static_cast<int>(pos.x);
+	destRect.y = static_cast<int>(pos.y);
 	SDL_QueryTexture(m_Texture->GetSDLTexture(), nullptr, nullptr, &destRect.w, &destRect.h);
 
-	destRect.w = destRect.w * scale.x;
-	destRect.h = destRect.h * scale.y;
+	destRect.w = static_cast<int>(destRect.w * scale.x);
+	destRect.h = static_cast<int>(destRect.h * scale.y);
 
 	//Renderer::GetInstance().GetSDLRenderer();
 	SDL_RenderCopy(Renderer::GetInstance().GetSDLRenderer(), m_Texture->GetSDLTexture(), nullptr, &destRect);

@@ -22,15 +22,15 @@ dae::IngredientComponent::IngredientComponent() : m_FallSpeed{200.f}
 ,m_MaxBounceHeight{10.f}
 ,m_BounceSpeed{50.f}
 ,m_TotalFallingEnemies{}
-,m_ValuesComp{}
-,m_Players{}
+,m_pValuesComp{}
+,m_pPlayers{}
 {
 	
 }
 
 void dae::IngredientComponent::Update(float dt)
 {
-	if(m_ValuesComp == nullptr)
+	if(m_pValuesComp == nullptr)
 	{
 		InitializeValuesComp();
 	}
@@ -46,7 +46,7 @@ void dae::IngredientComponent::Update(float dt)
 		GetParent()->SetPosition(GetParent()->GetPosition().x, GetParent()->GetPosition().y + (m_FallSpeed * dt));
 
 		//Also move all enemies with it below
-		for(auto o : m_FallingEnemies)
+		for(auto o : m_pFallingEnemies)
 		{
 			o->SetPosition(o->GetPosition().x, o->GetPosition().y + (m_FallSpeed * dt));
 		}
@@ -83,7 +83,7 @@ void dae::IngredientComponent::Update(float dt)
 			{
 				KillStandingEnemies();
 			}
-		} else if(m_StandingEnemies == 0 && m_FallingEnemies.size() > 0)
+		} else if(m_StandingEnemies == 0 && m_pFallingEnemies.size() > 0)
 		{
 			
 			KillStandingEnemies();
@@ -95,7 +95,7 @@ void dae::IngredientComponent::Update(float dt)
 	CheckCollisionEnemy();
 }
 
-void dae::IngredientComponent::FixedUpdate(float timestep)
+void dae::IngredientComponent::FixedUpdate(float )
 {
 }
 
@@ -164,12 +164,12 @@ void dae::IngredientComponent::CheckPressedAmount()
 			{
 				if (o->GetComponent<BasicEnemyComponent>()->GetIsFalling() == false)
 				{
-					m_FallingEnemies.push_back(o);
+					m_pFallingEnemies.push_back(o);
 					o->GetComponent<BasicEnemyComponent>()->SetIsFalling(true);
 				}
 			}
-			m_StandingEnemies = m_FallingEnemies.size();
-			m_TotalFallingEnemies = m_FallingEnemies.size();
+			m_StandingEnemies = static_cast<int>(m_pFallingEnemies.size());
+			m_TotalFallingEnemies = static_cast<int>(m_pFallingEnemies.size());
 
 		}
 		m_HasMoved = true;
@@ -177,14 +177,14 @@ void dae::IngredientComponent::CheckPressedAmount()
 	}
 }
 
-void dae::IngredientComponent::SetPlayers(std::vector<GameObject*>& players)
+void dae::IngredientComponent::SetPlayers(const std::vector<GameObject*>& players)
 {
-	m_Players = players;
+	m_pPlayers = players;
 }
 
 void dae::IngredientComponent::CheckCollisionPlayer()
 {
-	for(auto o: m_Players)
+	for(auto o: m_pPlayers)
 	{
 		if(abs(o->GetPosition().x - m_Parent->GetPosition().x) < m_Parent->GetSize().x)
 		{
@@ -253,7 +253,7 @@ void dae::IngredientComponent::ResetFalling()
 
 	//test
 	m_isBouncing = true;
-	m_ValuesComp->IncreaseScore(50);
+	m_pValuesComp->IncreaseScore(50);
 	
 }
 
@@ -320,7 +320,7 @@ void dae::IngredientComponent::Bounce(float dt)
 			m_CurrentBounceHeight += m_BounceSpeed * dt;
 			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y - m_BounceSpeed *dt);
 			//Move enemies too
-			for (auto o : m_FallingEnemies)
+			for (auto o : m_pFallingEnemies)
 			{
 				o->SetPosition(o->GetPosition().x, o->GetPosition().y - m_BounceSpeed * dt);
 			}
@@ -330,7 +330,7 @@ void dae::IngredientComponent::Bounce(float dt)
 			m_CurrentBounceHeight -= m_BounceSpeed * dt;
 			m_Parent->SetPosition(m_Parent->GetPosition().x, m_Parent->GetPosition().y + m_BounceSpeed * dt);
 			//Move enemies too
-			for (auto o : m_FallingEnemies)
+			for (auto o : m_pFallingEnemies)
 			{
 				o->SetPosition(o->GetPosition().x, o->GetPosition().y + m_BounceSpeed * dt);
 			}
@@ -357,8 +357,8 @@ void dae::IngredientComponent::Bounce(float dt)
 
 void dae::IngredientComponent::InitializeValuesComp()
 {
-	m_ValuesComp = m_Parent->GetScene()->GetObjectsInWorldWithTag("Player").at(0)->GetComponent<ValuesComponent>();
-	if (m_ValuesComp == nullptr)
+	m_pValuesComp = m_Parent->GetScene()->GetObjectsInWorldWithTag("Player").at(0)->GetComponent<ValuesComponent>();
+	if (m_pValuesComp == nullptr)
 	{
 		std::cout << "Cant find player";
 	}
@@ -370,36 +370,36 @@ void dae::IngredientComponent::KillStandingEnemies()
 	{
 	case 1:
 		SpawnStandingScoresEffect(1);
-		m_ValuesComp->IncreaseScore(500);
+		m_pValuesComp->IncreaseScore(500);
 		break;
 	case 2:
 		SpawnStandingScoresEffect(2);
-		m_ValuesComp->IncreaseScore(1000);
+		m_pValuesComp->IncreaseScore(1000);
 		break;
 	case 3:
 		SpawnStandingScoresEffect(3);
-		m_ValuesComp->IncreaseScore(2000);
+		m_pValuesComp->IncreaseScore(2000);
 		break;
 	case 4:
 		SpawnStandingScoresEffect(4);
-		m_ValuesComp->IncreaseScore(4000);
+		m_pValuesComp->IncreaseScore(4000);
 		break;
 	case 5:
 		SpawnStandingScoresEffect(5);
-		m_ValuesComp->IncreaseScore(8000);
+		m_pValuesComp->IncreaseScore(8000);
 		break;
 	case 6:
 		SpawnStandingScoresEffect(6);
-		m_ValuesComp->IncreaseScore(16000);
+		m_pValuesComp->IncreaseScore(16000);
 		break;
 
 	default:
-		m_ValuesComp->IncreaseScore(0);
+		m_pValuesComp->IncreaseScore(0);
 		break;
 	}
 
 
-	for (auto o : m_FallingEnemies)
+	for (auto o : m_pFallingEnemies)
 	{
 		BasicEnemyComponent* enemy = o->GetComponent<BasicEnemyComponent>();
 		if(!enemy->GetDying())
@@ -408,7 +408,7 @@ void dae::IngredientComponent::KillStandingEnemies()
 		}
 		//o->GetComponent<BasicEnemyComponent>()->Kill();
 	}
-	m_FallingEnemies.clear();
+	m_pFallingEnemies.clear();
 	m_HasMoved = false;
 	m_TotalFallingEnemies = 0;
 }
@@ -418,7 +418,7 @@ void dae::IngredientComponent::SpawnStandingScoresEffect(int numberEnemies)
 	dae::SpriteComponent* effectSprite = new dae::SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
 	dae::GameObject* score = new dae::GameObject();
 	score->AddComponent(effectSprite);
-	score->SetPosition(m_FallingEnemies.at(0)->GetPosition());
+	score->SetPosition(m_pFallingEnemies.at(0)->GetPosition());
 	score->SetScale(2, 2);
 	score->AddComponent<dae::EffectComponent>(new dae::EffectComponent(1));
 	effectSprite->SetFrameRow(10);

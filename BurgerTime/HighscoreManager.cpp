@@ -71,19 +71,19 @@ void dae::HighscoreManager::SetHighscores(const std::vector<int>& highscores)
 	std::sort(m_Highscores.begin(), m_Highscores.end(),std::greater<>());
 }
 
-void dae::HighscoreManager::SetTextComponents(std::vector<TextComponent*>& textComponents)
+void dae::HighscoreManager::SetTextComponents(const std::vector<TextComponent*>& textComponents)
 {
-	m_TextComponents = textComponents;
+	m_pTextComponents = textComponents;
 }
 
-void dae::HighscoreManager::SetHighscoreComp(std::vector<TextComponent*> comps)
+void dae::HighscoreManager::SetHighscoreComp(const std::vector<TextComponent*>& comps)
 {
-	m_HiSoreComps = comps;
+	m_pHiSoreComps = comps;
 }
 
 void dae::HighscoreManager::UpdateHighScore()
 {
-	for(auto o : m_HiSoreComps)
+	for(auto o : m_pHiSoreComps)
 	{
 		
 		o->SetText(std::to_string(GetHighscores(1).at(0)));
@@ -97,5 +97,5 @@ void dae::HighscoreManager::UpdateHighScore()
 
 std::vector<dae::TextComponent*>& dae::HighscoreManager::GetTextComponents()
 {
-	return m_TextComponents;
+	return m_pTextComponents;
 }

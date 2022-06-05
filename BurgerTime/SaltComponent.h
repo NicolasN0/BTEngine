@@ -16,7 +16,7 @@ namespace dae
 		void SetSpriteComp(SpriteComponent* comp);
 		void UpdateSprite(float dt);
 	private:
-		SpriteComponent* m_SpriteComp;
+		SpriteComponent* m_pSpriteComp;
 		float m_LifeTime;
 		float m_MaxLifeTime;
 	};

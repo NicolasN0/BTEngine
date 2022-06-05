@@ -12,8 +12,8 @@ namespace dae
 		void AddHighscore(int highscore);
 		std::vector<int> GetHighscores(int number);
 		void SetHighscores(const std::vector<int>& highscores);
-		void SetTextComponents(std::vector<TextComponent*>& textComponents);
-		void SetHighscoreComp(std::vector<TextComponent*> comps);
+		void SetTextComponents(const std::vector<TextComponent*>& textComponents);
+		void SetHighscoreComp(const std::vector<TextComponent*>& comps);
 		void UpdateHighScore();
 		//void WriteHighscores();
 		std::vector<TextComponent*>& GetTextComponents();
@@ -21,8 +21,8 @@ namespace dae
 		friend class Singleton<HighscoreManager>;
 		HighscoreManager() = default;
 		std::vector<int> m_Highscores;
-		std::vector<TextComponent*> m_TextComponents;
-		std::vector<TextComponent*> m_HiSoreComps;
+		std::vector<TextComponent*> m_pTextComponents;
+		std::vector<TextComponent*> m_pHiSoreComps;
 	};
 }
 

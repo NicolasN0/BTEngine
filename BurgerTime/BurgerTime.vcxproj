@@ -163,11 +163,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\x64\Debug;$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\VisualC\external\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\x64\Release;$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\VisualC\external\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>Minigin.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command />
+      <Command>xcopy "$(SolutionDir)Data\*" "$(SolutionDir)$(Platform)\Data\*" /y /D /s</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

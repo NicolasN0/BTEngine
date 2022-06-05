@@ -22,53 +22,63 @@ class IngredientComponent :
 {
 public:
 	IngredientComponent();
+
+	//Core
 	void Update(float dt);
 	void FixedUpdate(float timestep);
 	void Render() const;
 
+	//Getters
 	bool GetIsFalling() const;
-	void SetIsFalling(bool isFalling);
-	void InstantLetFall();
 
+	//Setter
+	void SetPlayers(const std::vector<GameObject*>& players);
+	void SetIsFalling(bool isFalling);
+
+	//Public functions
+	void InstantLetFall();
 	void CheckPressedAmount();
-	void SetPlayers(std::vector<GameObject*>& players);
+
 private:
+	//Checkers
 	void CheckCollisionPlayer();
 	void CheckCollisionIngredient();
 	void CheckContainerOverlap();
-	void ResetFalling();
 	void CheckCollisionPlatform();
 	void CheckCollisionEnemy();
+
+	//Private functions
+	void ResetFalling();
 	void Bounce(float dt);
 	void InitializeValuesComp();
 	void KillStandingEnemies();
 	void SpawnStandingScoresEffect(int numberEnemies);
 
-	float m_CurrentBounceHeight;
-	float m_MaxBounceHeight;
-	float m_BounceSpeed;
-	bool m_BouncingDown;
-
-	float m_FallSpeed;
-	int m_PressedCount;
 	bool m_isFalling;
+	bool m_BouncingDown;
 	bool m_isBouncing;
 	bool m_inContainer;
 	bool m_isCollected;
+	bool m_HasMoved;
+
+	float m_BounceSpeed;
+	float m_MaxBounceHeight;
+	float m_CurrentBounceHeight;
+	float m_FallSpeed;
 	float m_curPlatformHeight;
 	float m_lastPlatformHeight;
 	float m_PlatformSize;
 	float m_IngredientSize;
 
-
-	std::vector<GameObject*> m_FallingEnemies;
+	int m_PressedCount;
 	int m_StandingEnemies;
 	int m_TotalFallingEnemies;
-	bool m_HasMoved;
 
-	ValuesComponent* m_ValuesComp;
 
-	std::vector<GameObject*> m_Players;
+	ValuesComponent* m_pValuesComp;
+
+	std::vector<GameObject*> m_pFallingEnemies;
+	std::vector<GameObject*> m_pPlayers;
 };
 
 

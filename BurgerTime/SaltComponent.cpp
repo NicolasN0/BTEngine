@@ -2,7 +2,7 @@
 
 #include "BasicEnemyComponent.h"
 
-dae::SaltComponent::SaltComponent() : m_LifeTime() ,m_MaxLifeTime(1)
+dae::SaltComponent::SaltComponent() : m_LifeTime() ,m_MaxLifeTime(1),m_pSpriteComp()
 {
 
 }
@@ -23,22 +23,22 @@ void dae::SaltComponent::Update(float dt)
 	
 }
 
-void dae::SaltComponent::FixedUpdate(float timestep)
+void dae::SaltComponent::FixedUpdate(float )
 {
 }
 
 void dae::SaltComponent::SetSpriteComp(SpriteComponent* comp)
 {
-	m_SpriteComp = comp;
+	m_pSpriteComp = comp;
 
-	m_SpriteComp->SetFrameRow(3);
-	m_SpriteComp->SetNumberOfFrames(4);
-	m_SpriteComp->SetStartFrame(12);
+	m_pSpriteComp->SetFrameRow(3);
+	m_pSpriteComp->SetNumberOfFrames(4);
+	m_pSpriteComp->SetStartFrame(12);
 }
 
-void dae::SaltComponent::UpdateSprite(float dt)
+void dae::SaltComponent::UpdateSprite(float )
 {
-	m_SpriteComp->SetFrameRow(3);
-	m_SpriteComp->SetNumberOfFrames(4);
-	m_SpriteComp->SetStartFrame(12);
+	m_pSpriteComp->SetFrameRow(3);
+	m_pSpriteComp->SetNumberOfFrames(4);
+	m_pSpriteComp->SetStartFrame(12);
 }

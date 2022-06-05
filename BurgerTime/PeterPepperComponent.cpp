@@ -11,15 +11,19 @@
 #include "Scene.h"
 #include "SceneChanger.h"
 #include "ValuesComponent.h"
-dae::PeterPepperComponent::PeterPepperComponent() : m_SpriteComp(), m_AudioService()
+dae::PeterPepperComponent::PeterPepperComponent() : m_pSpriteComp()
+,m_pAudioService()
+,m_IsOnLadder()
+,m_IsOnPlatform()
+,m_NextLevelTest()
+,m_IsFlipped()
+,m_IsFacingRight()
+,m_StartPos(110,100,0)
 {
-	m_AudioService = Locator::getAudio();
+	m_pAudioService = Locator::getAudio();
 }
 
-dae::PeterPepperComponent::~PeterPepperComponent()
-{
-	
-}
+
 
 void dae::PeterPepperComponent::Update(float dt)
 {
@@ -63,6 +67,26 @@ void dae::PeterPepperComponent::Render() const
 {
 }
 
+bool dae::PeterPepperComponent::GetIsOnLadder() const
+{
+	return m_IsOnLadder;
+}
+
+bool dae::PeterPepperComponent::GetIsOnPlatform() const
+{
+	return m_IsOnPlatform;
+}
+
+bool dae::PeterPepperComponent::GetNextLevel() const
+{
+	return m_NextLevelTest;
+}
+
+void dae::PeterPepperComponent::SetNextLevel(bool nextLevel)
+{
+	m_NextLevelTest = nextLevel;
+}
+
 
 void dae::PeterPepperComponent::UpdatePos(float dt)
 {
@@ -104,7 +128,7 @@ void dae::PeterPepperComponent::UpdatePos(float dt)
 
 }
 
-void dae::PeterPepperComponent::SetMoveSpeed(glm::vec3 movespeed)
+void dae::PeterPepperComponent::SetMoveSpeed(const glm::vec3& movespeed)
 {
 	m_Movespeed = movespeed;
 	if(m_Movespeed.x < 0)
@@ -118,9 +142,9 @@ void dae::PeterPepperComponent::SetMoveSpeed(glm::vec3 movespeed)
 	}
 }
 
-void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* comp)
+void dae::PeterPepperComponent::SetSpriteComp(SpriteComponent* const comp)
 {
-	m_SpriteComp = comp;
+	m_pSpriteComp = comp;
 	InitializeSprite();
 }
 
@@ -129,10 +153,10 @@ void dae::PeterPepperComponent::ThrowSalt()
 	ValuesComponent* values = GetParent()->GetComponent<ValuesComponent>();
 	if(values->GetPeppers() > 0)
 	{
-		m_AudioService->SetEffectVolume(10);
+		m_pAudioService->SetEffectVolume(10);
 		int soundId;
-		soundId = m_AudioService->LoadSound("../Data/Sounds/Salt.wav");
-		m_AudioService->playSound(soundId);
+		soundId = m_pAudioService->LoadSound("../Data/Sounds/Salt.wav");
+		m_pAudioService->playSound(soundId);
 
 
 		GameObject* salt = new GameObject;
@@ -154,49 +178,49 @@ void dae::PeterPepperComponent::ThrowSalt()
 	}
 }
 
-void dae::PeterPepperComponent::UpdateSprite(float dt)
+void dae::PeterPepperComponent::UpdateSprite(float )
 {
 	if(m_Movespeed.y == 0 && m_Movespeed.x == 0)
 	{
-		m_SpriteComp->SetPaused(true);
+		m_pSpriteComp->SetPaused(true);
 	} else
 	{
-		m_SpriteComp->SetPaused(false);
+		m_pSpriteComp->SetPaused(false);
 	}
 
 	if(m_Movespeed.y > 0)
 	{
 		//set framerow
-		m_SpriteComp->SetFrameRow(0);
-		m_SpriteComp->SetNumberOfFrames(3);
-		m_SpriteComp->SetStartFrame(0);
-		//m_SpriteComp->SetFlip(false);
+		m_pSpriteComp->SetFrameRow(0);
+		m_pSpriteComp->SetNumberOfFrames(3);
+		m_pSpriteComp->SetStartFrame(0);
+		//m_pSpriteComp->SetFlip(false);
 
 	} else if(m_Movespeed.y < 0)
 	{
-		m_SpriteComp->SetFrameRow(0);
-		m_SpriteComp->SetNumberOfFrames(3);
-		m_SpriteComp->SetStartFrame(6);
-		//m_SpriteComp->SetFlip(false);
+		m_pSpriteComp->SetFrameRow(0);
+		m_pSpriteComp->SetNumberOfFrames(3);
+		m_pSpriteComp->SetStartFrame(6);
+		//m_pSpriteComp->SetFlip(false);
 	} else if(m_Movespeed.x > 0)
 	{
-		m_SpriteComp->SetFrameRow(0);
-		m_SpriteComp->SetNumberOfFrames(3);
-		m_SpriteComp->SetStartFrame(9);
-		//m_SpriteComp->SetFlip(true);
+		m_pSpriteComp->SetFrameRow(0);
+		m_pSpriteComp->SetNumberOfFrames(3);
+		m_pSpriteComp->SetStartFrame(9);
+		//m_pSpriteComp->SetFlip(true);
 		//if(!m_IsFlipped)
 		//{
-		//	m_SpriteComp->SetFlip(true);
+		//	m_pSpriteComp->SetFlip(true);
 		//	//m_IsFlipped = true;
 		//} 
 	
 	}
 	else if (m_Movespeed.x < 0)
 	{
-		m_SpriteComp->SetFrameRow(0);
-		m_SpriteComp->SetNumberOfFrames(3);
-		m_SpriteComp->SetStartFrame(3);
-		//m_SpriteComp->SetFlip(false);
+		m_pSpriteComp->SetFrameRow(0);
+		m_pSpriteComp->SetNumberOfFrames(3);
+		m_pSpriteComp->SetStartFrame(3);
+		//m_pSpriteComp->SetFlip(false);
 	}
 }
 
@@ -218,6 +242,6 @@ void dae::PeterPepperComponent::Respawn()
 void dae::PeterPepperComponent::InitializeSprite()
 {
 	std::vector<int> framesPerRow{ 9,9,6,6,6,6,6,6,3,6,9 };
-	m_SpriteComp->SetFramesPerRow(framesPerRow);
+	m_pSpriteComp->SetFramesPerRow(framesPerRow);
 }
 

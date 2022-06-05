@@ -116,7 +116,7 @@ public:
 		 highscoretitel->SetPosition(210, 20);
 		 highscoreScene.Add(highscoretitel);
 
-		// 5 highscores
+		 // 5 highscores
 		 int startHeight {100};
 		 for(int i{} ;i < 5;i++)
 		 {
@@ -124,7 +124,7 @@ public:
 			 TextComponent* highscoreTextComp = new TextComponent("Lingua.otf", 36, SDL_Color{ 255,0,0 });
 			 highscoreTextComp->SetText("0000 0000");
 			 highscoreText->AddComponent(highscoreTextComp);
-			 highscoreText->SetPosition(225, startHeight);
+			 highscoreText->SetPosition(225.f, static_cast<float>(startHeight));
 			 highscoreScene.Add(highscoreText);
 
 			 textComponentsVec.push_back(highscoreTextComp);
@@ -165,7 +165,7 @@ public:
 
 
 		 //Make players for levelManager
-		//Set sames valuesComponent for every player
+		 //Set sames valuesComponent for every player
 		 auto peterPepperP1 = new GameObject;
 
 		 peterPepperP1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png",15,11));
@@ -238,7 +238,7 @@ public:
 		 std::vector<GameObject*> playersCoop;
 		 MakeGameBackground(coopScene);
 
-		//Make level backgrounds
+		 //Make level backgrounds
 		 std::vector<GameObject*> levelBackgroundsCoop;
 		 auto lvl1coop = new GameObject;
 		 lvl1coop->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Level1.png"));
@@ -261,11 +261,11 @@ public:
 		 levelBackgroundsCoop.push_back(lvl3coop);
 		 coopScene.Add(lvl3coop);
 
-		//Make players
-		auto peterPepperPlayer1 = new GameObject;
-		peterPepperPlayer1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
-		peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
-		peterPepperPlayer1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer1->GetComponent<SpriteComponent>());
+		 //Make players
+		 auto peterPepperPlayer1 = new GameObject;
+		 peterPepperPlayer1->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
+		 peterPepperPlayer1->AddComponent<PeterPepperComponent>(new PeterPepperComponent());
+		 peterPepperPlayer1->GetComponent<PeterPepperComponent>()->SetSpriteComp(peterPepperPlayer1->GetComponent<SpriteComponent>());
 		 peterPepperPlayer1->AddComponent<ValuesComponent>(new ValuesComponent);
 		 peterPepperPlayer1->SetScale(1.5f, 1.5f);
 		 peterPepperPlayer1->SetTag("Player");
@@ -344,7 +344,6 @@ public:
 
 		 std::vector<GameObject*> playerEnemyPvp;
 		 std::vector<GameObject*> playersPvp;
-		/* std::vector<GameObject*> playerEnemyPvp;*/
 		 MakeGameBackground(pvpScene);
 
 		 std::vector<GameObject*> levelBackgroundsPvp;
@@ -381,9 +380,6 @@ public:
 		 peterPepperPvp->SetTag("Player");
 
 		 auto hotdogPvp = new GameObject;
-		/* hotdogPvp->AddComponent<SpriteComponent>(new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11));
-		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog,true));
-		 hotdogPvp->GetComponent<BasicEnemyComponent>()->SetSpriteComp(hotdogPvp->GetComponent<SpriteComponent>());*/
 		 SpriteComponent* enemySprite = new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
 		 hotdogPvp->AddComponent(enemySprite);
 		 hotdogPvp->AddComponent<BasicEnemyComponent>(new BasicEnemyComponent(EEnemyType::Hotdog, enemySprite,true));
@@ -448,23 +444,6 @@ public:
 
 
 
-		 
-
-#pragma region audio
-		// Audio* audioService = Locator::getAudio();
-		////Music
-		// audioService->LoadMusic("../Data/Sounds/Electric_Light_Orchestra_-_Mr_Blue_Sky.mp3");
-		// audioService->SetMusicVolume(5);
-		// audioService->PlayMusic();
-		////Sound
-		// audioService->SetEffectVolume(10);
-		// int soundId;
-		// soundId =audioService->LoadSound("../Data/Sounds/power_up1.wav");
-		// audioService->playSound(soundId);
-		// soundId = audioService->LoadSound("../Data/Sounds/book_page_turn.wav");
-		// audioService->playSound(soundId);
-
-#pragma endregion audio
 
 		 HighscoreManager::GetInstance().SetHighscoreComp(hiscoreVec);
 
@@ -513,10 +492,6 @@ private:
 		HighscoreManager::GetInstance().SetHighscores(scores);
 
 
-		//Change
-		Document::AllocatorType& allocator = doc.GetAllocator();
-		//highscores.PushBack(100, allocator);
-		//Write
 		FILE* fp = nullptr;
 		fopen_s(&fp,"../Data/Highscores.json", "w"); // non-Windows use "w"
 
@@ -585,145 +560,6 @@ private:
 		scene.Add(pepper);*/
 	}
 
-	/*void MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene& scene, bool debugDraw, std::vector<GameObject*>& players) const
-	{
-		auto totalIngredient = new GameObject;
-		auto part1 = new GameObject;
-		auto part2 = new GameObject;
-		auto part3 = new GameObject;
-		auto part4 = new GameObject;
-
-		totalIngredient->AddChild(part1);
-		totalIngredient->AddChild(part2);
-		totalIngredient->AddChild(part3);
-		totalIngredient->AddChild(part4);
-
-		for (int i{}; i < totalIngredient->GetChildCount(); i++)
-		{
-			switch (ingredientType)
-			{
-			case EIngredientType::Bun:
-				if (i == 0)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
-
-				}
-				else if (i == totalIngredient->GetChildCount() - 1)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunR.png"));
-				}
-				else
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Bun.png"));
-				}
-				break;
-			case EIngredientType::Cheese:
-				if (i == 0)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
-
-				}
-				else if (i == totalIngredient->GetChildCount() - 1)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseR.png"));
-				}
-				else
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Cheese.png"));
-				}
-				break;
-			case EIngredientType::Lettuce:
-				if (i == 0)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
-
-				}
-				else if (i == totalIngredient->GetChildCount() - 1)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceR.png"));
-				}
-				else
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Lettuce.png"));
-				}
-				break;
-			case EIngredientType::Tomato:
-				if (i == 0)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
-
-				}
-				else if (i == totalIngredient->GetChildCount() - 1)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoR.png"));
-				}
-				else
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Tomato.png"));
-				}
-				break;
-			case EIngredientType::Patty:
-				if (i == 0)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
-
-				}
-				else if (i == totalIngredient->GetChildCount() - 1)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyR.png"));
-				}
-				else
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/Patty.png"));
-				}
-				break;
-			case EIngredientType::BunBottom:
-				if (i == 0)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));
-
-				}
-				else if (i == totalIngredient->GetChildCount() - 1)
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotR.png"));
-				}
-				else
-				{
-					totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBot.png"));
-				}
-				break;
-			default:
-				std::cout << "noType";
-				break;
-			}
-
-			totalIngredient->GetChildAt(i)->AddComponent<dae::IngredientPartComponent>(new dae::IngredientPartComponent());
-
-		}
-
-
-
-		part1->SetPosition(0, 0);
-		part2->SetPosition(part1->GetSize().x, 0);
-		part3->SetPosition(part1->GetSize().x * 2, 0);
-		part4->SetPosition(part1->GetSize().x * 3, 0);
-
-
-		totalIngredient->SetDebugDraw(debugDraw);
-		part1->SetDebugDraw(debugDraw);
-		part2->SetDebugDraw(debugDraw);
-		part3->SetDebugDraw(debugDraw);
-		part4->SetDebugDraw(debugDraw);
-
-		totalIngredient->SetScale(1.8f, 1.8f);
-		totalIngredient->SetSize(glm::vec3(part1->GetSize().x * 4, part1->GetSize().y, 0));
-		totalIngredient->SetTag("Ingredient");
-
-		totalIngredient->SetPosition(pos.x, pos.y);
-		totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
-		totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
-		scene.Add(totalIngredient);
-	}*/
 
 };
 

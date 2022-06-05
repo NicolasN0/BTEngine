@@ -41,26 +41,26 @@ void EnemyStunnedState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 	switch(enemy.GetType())
 	{
 	case dae::EEnemyType::Hotdog:
-		m_SpriteComp->SetFrameRow(3);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(4);
+		m_pSpriteComp->SetFrameRow(3);
+		m_pSpriteComp->SetNumberOfFrames(2);
+		m_pSpriteComp->SetStartFrame(4);
 		break;
 	case dae::EEnemyType::Pickle:
-		m_SpriteComp->SetFrameRow(5);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(4);
+		m_pSpriteComp->SetFrameRow(5);
+		m_pSpriteComp->SetNumberOfFrames(2);
+		m_pSpriteComp->SetStartFrame(4);
 		break;
 	case dae::EEnemyType::Egg:
-		m_SpriteComp->SetFrameRow(7);
-		m_SpriteComp->SetNumberOfFrames(2);
-		m_SpriteComp->SetStartFrame(4);
+		m_pSpriteComp->SetFrameRow(7);
+		m_pSpriteComp->SetNumberOfFrames(2);
+		m_pSpriteComp->SetStartFrame(4);
 		break;
 	}
 }
 
 void EnemyStunnedState::Enter(dae::BasicEnemyComponent& enemy)
 {
-	m_SpriteComp = enemy.GetSpriteComp();
+	m_pSpriteComp = enemy.GetSpriteComp();
 	m_MaxStunTime = 2;
 }
 
@@ -73,8 +73,8 @@ EnemyState* EnemyMovingState::Update(dae::BasicEnemyComponent& enemy, float dt)
 
 	if(!m_PlayerCountChecked)
 	{
-		m_Players = enemy.GetParent()->GetScene()->GetObjectsInWorldWithTag("Player");
-		if (m_Players.size() > 1)
+		m_pPlayers = enemy.GetParent()->GetScene()->GetObjectsInWorldWithTag("Player");
+		if (m_pPlayers.size() > 1)
 		{
 			m_UpdateTargets = true;
 		}
@@ -114,11 +114,11 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 	glm::vec3 dir = enemy.GetDirection();
 	if (dir.y == 0 && dir.x == 0)
 	{
-		m_SpriteComp->SetPaused(true);
+		m_pSpriteComp->SetPaused(true);
 	}
 	else
 	{
-		m_SpriteComp->SetPaused(false);
+		m_pSpriteComp->SetPaused(false);
 	}
 	dae::EEnemyType type = enemy.GetType();
 
@@ -127,19 +127,19 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 		switch (type)
 		{
 		case dae::EEnemyType::Hotdog:
-			m_SpriteComp->SetFrameRow(2);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(0);
+			m_pSpriteComp->SetFrameRow(2);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(0);
 			break;
 		case dae::EEnemyType::Pickle:
-			m_SpriteComp->SetFrameRow(4);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(0);
+			m_pSpriteComp->SetFrameRow(4);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(0);
 			break;
 		case dae::EEnemyType::Egg:
-			m_SpriteComp->SetFrameRow(6);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(0);
+			m_pSpriteComp->SetFrameRow(6);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(0);
 			break;
 		}
 
@@ -150,19 +150,19 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 		switch (type)
 		{
 		case dae::EEnemyType::Hotdog:
-			m_SpriteComp->SetFrameRow(2);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(4);
+			m_pSpriteComp->SetFrameRow(2);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(4);
 			break;
 		case dae::EEnemyType::Pickle:
-			m_SpriteComp->SetFrameRow(4);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(4);
+			m_pSpriteComp->SetFrameRow(4);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(4);
 			break;
 		case dae::EEnemyType::Egg:
-			m_SpriteComp->SetFrameRow(6);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(4);
+			m_pSpriteComp->SetFrameRow(6);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(4);
 			break;
 		}
 	}
@@ -171,19 +171,19 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 		switch (type)
 		{
 		case dae::EEnemyType::Hotdog:
-			m_SpriteComp->SetFrameRow(2);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(6);
+			m_pSpriteComp->SetFrameRow(2);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(6);
 			break;
 		case dae::EEnemyType::Pickle:
-			m_SpriteComp->SetFrameRow(4);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(9);
+			m_pSpriteComp->SetFrameRow(4);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(9);
 			break;
 		case dae::EEnemyType::Egg:
-			m_SpriteComp->SetFrameRow(6);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(9);
+			m_pSpriteComp->SetFrameRow(6);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(9);
 			break;
 		}
 
@@ -194,19 +194,19 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 		switch (type)
 		{
 		case dae::EEnemyType::Hotdog:
-			m_SpriteComp->SetFrameRow(2);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(2);
+			m_pSpriteComp->SetFrameRow(2);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(2);
 			break;
 		case dae::EEnemyType::Pickle:
-			m_SpriteComp->SetFrameRow(4);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(2);
+			m_pSpriteComp->SetFrameRow(4);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(2);
 			break;
 		case dae::EEnemyType::Egg:
-			m_SpriteComp->SetFrameRow(6);
-			m_SpriteComp->SetNumberOfFrames(2);
-			m_SpriteComp->SetStartFrame(2);
+			m_pSpriteComp->SetFrameRow(6);
+			m_pSpriteComp->SetNumberOfFrames(2);
+			m_pSpriteComp->SetStartFrame(2);
 			break;
 		}
 
@@ -215,7 +215,7 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 
 void EnemyMovingState::Enter(dae::BasicEnemyComponent& enemy)
 {
-	m_SpriteComp = enemy.GetSpriteComp();
+	m_pSpriteComp = enemy.GetSpriteComp();
 
 	
 }
@@ -227,17 +227,17 @@ void EnemyMovingState::SetTarget(dae::BasicEnemyComponent& enemy)
 
 
 	glm::vec3 pos = enemy.GetParent()->GetPosition();
-	for(size_t i{}; i < m_Players.size();i++)
+	for(size_t i{}; i < m_pPlayers.size();i++)
 	{
-		glm::vec3 playerPos = m_Players.at(i)->GetPosition();
-		float dist = sqrt(pow(pos.x - pos.y, 2) + pow(playerPos.x - playerPos.y, 2));
+		glm::vec3 playerPos = m_pPlayers.at(i)->GetPosition();
+		float dist = sqrtf(powf(pos.x - pos.y, 2) + powf(playerPos.x - playerPos.y, 2));
 		if(dist > maxDist)
 		{
 			maxDist = dist;
-			index = i;
+			index = static_cast<int>(i);
 		}
 	}
-	enemy.SetTarget(m_Players.at(index));
+	enemy.SetTarget(m_pPlayers.at(index));
 }
 
 EnemyState* EnemyDyingState::Update(dae::BasicEnemyComponent& enemy, float dt)
@@ -280,26 +280,26 @@ void EnemyDyingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 	switch (enemy.GetType())
 	{
 	case dae::EEnemyType::Hotdog:
-		m_SpriteComp->SetFrameRow(3);
-		m_SpriteComp->SetNumberOfFrames(4);
-		m_SpriteComp->SetStartFrame(0);
+		m_pSpriteComp->SetFrameRow(3);
+		m_pSpriteComp->SetNumberOfFrames(4);
+		m_pSpriteComp->SetStartFrame(0);
 		break;
 	case dae::EEnemyType::Pickle:
-		m_SpriteComp->SetFrameRow(5);
-		m_SpriteComp->SetNumberOfFrames(4);
-		m_SpriteComp->SetStartFrame(0);
+		m_pSpriteComp->SetFrameRow(5);
+		m_pSpriteComp->SetNumberOfFrames(4);
+		m_pSpriteComp->SetStartFrame(0);
 		break;
 	case dae::EEnemyType::Egg:
-		m_SpriteComp->SetFrameRow(7);
-		m_SpriteComp->SetNumberOfFrames(4);
-		m_SpriteComp->SetStartFrame(0);
+		m_pSpriteComp->SetFrameRow(7);
+		m_pSpriteComp->SetNumberOfFrames(4);
+		m_pSpriteComp->SetStartFrame(0);
 		break;
 	}
 }
 
 void EnemyDyingState::Enter(dae::BasicEnemyComponent& enemy)
 {
-	m_SpriteComp = enemy.GetSpriteComp();
+	m_pSpriteComp = enemy.GetSpriteComp();
 	m_MaxDyingTime = 0.3f;
 }
 
@@ -318,7 +318,7 @@ void EnemyDyingState::SpawnScoreEffect(dae::BasicEnemyComponent& enemy, int rari
 	enemy.GetParent()->GetScene()->Add(score);
 }
 
-EnemyState* EnemyFallingState::Update(dae::BasicEnemyComponent& enemy, float dt)
+EnemyState* EnemyFallingState::Update(dae::BasicEnemyComponent& enemy, float )
 {
 	if (enemy.GetDying())
 	{

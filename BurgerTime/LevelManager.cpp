@@ -13,23 +13,26 @@
 #include "InputManager.h"
 #include "TextureComponent.h"
 
-dae::LevelManager::LevelManager(Scene* scene, std::vector<GameObject*> players, std::vector<GameObject*> enemeyPlayers, std::vector<GameObject*>& lvlBackground,const std::wstring& levelFile) : m_Level{ 1 }, m_Scene{ scene }, m_LevelMade{}, m_Players(players)
-, m_EnemyPlayers(enemeyPlayers)
-, m_LvlBackground(lvlBackground)
+dae::LevelManager::LevelManager(Scene* scene,const std::vector<GameObject*>& players,const std::vector<GameObject*>& enemeyPlayers,const std::vector<GameObject*>& lvlBackground,const std::wstring& levelFile)
+: m_Level{ 1 }
+, m_Scene{ scene }
+, m_LevelMade{}
+, m_pPlayers(players)
+, m_pLevelObjects()
+, m_pEnemyPlayers(enemeyPlayers)
+, m_pLvlBackground(lvlBackground)
 , m_LadderSize(9, 40, 1)
 , m_PlatformSize(95, 10, 1)
 , m_ContainerSize(65, 70, 1)
 , m_MaxEnemies{ 5,7,9 }
 , m_CurrentEnemies()
-//, m_EnemyPosLevel1({ glm::vec3(250, 100,1),glm::vec3(447, 160,1),glm::vec3(362, 244,1),glm::vec3(280, 362,1) })
 , m_EnemyPosLevel1()
-//, m_EnemyPosLevel2({ glm::vec3(450, 213,1),glm::vec3(279, 369,1),glm::vec3(365, 245,1),glm::vec3(206, 276,1),glm::vec3(107, 213,1) })
 , m_EnemyPosLevel2()
-//, m_EnemyPosLevel3({ glm::vec3(279, 391,1),glm::vec3(278, 246,1),glm::vec3(365, 250,1),glm::vec3(449, 104,1),glm::vec3(109, 188,1) })
 , m_EnemyPosLevel3()
 ,m_SpawnTimer()
 ,m_SpawnMax(6)
 ,m_SpawnCount(1)
+
 
 {
 	ReadInLevel(levelFile);
@@ -71,7 +74,7 @@ void dae::LevelManager::Update(float dt)
 	m_SpawnTimer += dt;
 	if(m_SpawnTimer > m_SpawnMax)
 	{
-		m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
+		m_CurrentEnemies = static_cast<int>(m_Scene->GetObjectsInWorldWithTag("Enemy").size());
 		switch(m_Level)
 		{
 		case 1:
@@ -106,7 +109,7 @@ void dae::LevelManager::Update(float dt)
 				{
 					MakeEnemey(m_EnemyPosLevel1.at(randIndex), EEnemyType::Hotdog);
 				}
-				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
+				m_CurrentEnemies = static_cast<int>(m_Scene->GetObjectsInWorldWithTag("Enemy").size());
 				m_SpawnCount++;
 				std::cout << m_CurrentEnemies;
 				m_SpawnTimer = 0;
@@ -134,7 +137,7 @@ void dae::LevelManager::Update(float dt)
 					MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
 				}
 				//MakeEnemey(m_EnemyPosLevel2.at(randIndex), EEnemyType::Hotdog);
-				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
+				m_CurrentEnemies = static_cast<int>(m_Scene->GetObjectsInWorldWithTag("Enemy").size());
 				m_SpawnTimer = 0;
 			}
 			break;
@@ -160,7 +163,7 @@ void dae::LevelManager::Update(float dt)
 					MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
 				}
 				//MakeEnemey(m_EnemyPosLevel3.at(randIndex), EEnemyType::Hotdog);
-				m_CurrentEnemies = m_Scene->GetObjectsInWorldWithTag("Enemy").size();
+				m_CurrentEnemies = static_cast<int>(m_Scene->GetObjectsInWorldWithTag("Enemy").size());
 				m_SpawnTimer = 0;
 			}
 			break;
@@ -172,7 +175,7 @@ void dae::LevelManager::Update(float dt)
 	
 }
 
-void dae::LevelManager::FixedUpdate(float timestep)
+void dae::LevelManager::FixedUpdate(float )
 {
 }
 
@@ -187,28 +190,28 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		{
 	
 		
-		for(size_t i = 0 ; i< m_LvlBackground.size();i++)
+		for(size_t i = 0 ; i< m_pLvlBackground.size();i++)
 		{
 			if(i == levelCount-1)
 			{
-				m_LvlBackground.at(i)->SetVisibility(true);
+				m_pLvlBackground.at(i)->SetVisibility(true);
 			} else
 			{
-				m_LvlBackground.at(i)->SetVisibility(false);
+				m_pLvlBackground.at(i)->SetVisibility(false);
 			}
 		}
 			//Player start pos
 
 			assert(m_Doc.HasMember("level1"));
 			const rapidjson::Value& level = m_Doc["level1"];
-			for(auto o : m_Players)
+			for(auto o : m_pPlayers)
 			{
 				//o->SetPosition(glm::vec3(110, 100,1));
 				o->SetPosition(level["playerStart"]["x"].GetFloat(), level["playerStart"]["y"].GetFloat()) ;
 				
 			}
 
-			for (auto o : m_EnemyPlayers)
+			for (auto o : m_pEnemyPlayers)
 			{
 				o->SetPosition(m_EnemyPosLevel1.at(0));
 
@@ -224,7 +227,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(ladder["x"].GetFloat(), ladder["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Ladder");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -240,7 +243,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(v["x"].GetFloat(), v["y"].GetFloat());
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);
 		}*/
 		
@@ -256,7 +259,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Platform");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -273,7 +276,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(container["x"].GetFloat(), container["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Container");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				go->AddComponent<ContainerComponent>(new ContainerComponent(container["amount"].GetInt()));
 				m_Scene->Add(go);
 
@@ -290,7 +293,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(containerPlatform["x"].GetFloat(), containerPlatform["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Platform");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -302,7 +305,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		{
 			const rapidjson::Value& ingredient = *it;
 
-			MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_pPlayers);
 			
 
 		}
@@ -315,15 +318,15 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		{
 			ClearLevel();
 		
-			for (size_t i = 0; i < m_LvlBackground.size(); i++)
+			for (size_t i = 0; i < m_pLvlBackground.size(); i++)
 			{
 				if (i == levelCount -1)
 				{
-					m_LvlBackground.at(i)->SetVisibility(true);
+					m_pLvlBackground.at(i)->SetVisibility(true);
 				}
 				else
 				{
-					m_LvlBackground.at(i)->SetVisibility(false);
+					m_pLvlBackground.at(i)->SetVisibility(false);
 				}
 			}
 			//Player Start Pos
@@ -331,20 +334,20 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 			assert(m_Doc.HasMember("level2"));
 			const rapidjson::Value& level = m_Doc["level2"];
-			for (auto o : m_Players)
+			for (auto o : m_pPlayers)
 			{
 				//o->SetPosition(glm::vec3(110, 100,1));
 				o->SetPosition(level["playerStart"]["x"].GetFloat(), level["playerStart"]["y"].GetFloat());
 
 			}
 
-			/*for (auto o : m_Players)
+			/*for (auto o : m_pPlayers)
 			{
 				o->SetPosition(glm::vec3(103, 100, 2));
 
 			}*/
 
-			for (auto o : m_EnemyPlayers)
+			for (auto o : m_pEnemyPlayers)
 			{
 				o->SetPosition(m_EnemyPosLevel2.at(0));
 
@@ -361,7 +364,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(ladder["x"].GetFloat(), ladder["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Ladder");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -372,7 +375,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(110, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);
 
 			go = new GameObject;
@@ -380,7 +383,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(153, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);
 
 			go = new GameObject;
@@ -388,7 +391,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(196, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -396,7 +399,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(241, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -404,7 +407,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(283, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -412,7 +415,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(326, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -420,7 +423,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(369, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -428,7 +431,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(412, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -436,7 +439,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(456, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			
@@ -455,7 +458,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Platform");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -465,7 +468,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(110, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -473,7 +476,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(110, 135);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 
@@ -482,7 +485,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(110, 165);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 		/*	go = new GameObject;
@@ -490,7 +493,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(110, 220);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 
@@ -499,7 +502,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(196, 195);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -507,7 +510,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(196, 280);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -515,7 +518,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(196, 335);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 
@@ -524,7 +527,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(283, 165);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -532,7 +535,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(283, 250);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -540,7 +543,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(283, 310);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			/*go = new GameObject;
@@ -548,7 +551,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(369, 195);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 #pragma endregion platform
@@ -565,7 +568,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(container["x"].GetFloat(), container["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Container");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				go->AddComponent<ContainerComponent>(new ContainerComponent(container["amount"].GetInt()));
 				m_Scene->Add(go);
 
@@ -582,7 +585,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(containerPlatform["x"].GetFloat(), containerPlatform["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Platform");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -591,7 +594,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(126, 370);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -599,7 +602,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(126, 310);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 
@@ -609,7 +612,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(212, 455);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -617,7 +620,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(212, 395);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 
@@ -627,7 +630,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(298, 455);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -635,7 +638,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(298, 395);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 
@@ -644,7 +647,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(384, 370);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -652,40 +655,40 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(384, 310);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 #pragma endregion container
 
 #pragma region ingredients
 			
-			/*MakeIngredient(glm::vec3(130, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(130, 135, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(130, 165, 0), EIngredientType::Cheese, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(130, 220, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+			/*MakeIngredient(glm::vec3(130, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(130, 135, 0), EIngredientType::Lettuce, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(130, 165, 0), EIngredientType::Cheese, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(130, 220, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);
 
 
-			MakeIngredient(glm::vec3(215, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(215, 135, 0), EIngredientType::Cheese, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(215, 190, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(215, 340, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(215, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(215, 135, 0), EIngredientType::Cheese, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(215, 190, 0), EIngredientType::Lettuce, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(215, 340, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);
 
-			MakeIngredient(glm::vec3(300, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(300, 250, 0), EIngredientType::Cheese, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(300, 305, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(300, 340, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+			MakeIngredient(glm::vec3(300, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(300, 250, 0), EIngredientType::Cheese, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(300, 305, 0), EIngredientType::Lettuce, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(300, 340, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);
 
-			MakeIngredient(glm::vec3(387, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Lettuce, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 190, 0), EIngredientType::Cheese, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 220, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);*/
+			MakeIngredient(glm::vec3(387, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Lettuce, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 190, 0), EIngredientType::Cheese, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 220, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);*/
 
 			const rapidjson::Value& ingredients = level["ingredients"];
 			for (rapidjson::Value::ConstValueIterator it = ingredients.Begin(); it != ingredients.End(); it++)
 			{
 				const rapidjson::Value& ingredient = *it;
 
-				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_Players);
+				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_pPlayers);
 
 
 			}
@@ -699,34 +702,34 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		{
 			ClearLevel();
 			
-			for (size_t i = 0; i < m_LvlBackground.size(); i++)
+			for (size_t i = 0; i < m_pLvlBackground.size(); i++)
 			{
 				if (i == levelCount - 1)
 				{
-					m_LvlBackground.at(i)->SetVisibility(true);
+					m_pLvlBackground.at(i)->SetVisibility(true);
 				}
 				else
 				{
-					m_LvlBackground.at(i)->SetVisibility(false);
+					m_pLvlBackground.at(i)->SetVisibility(false);
 				}
 			}
 			//Player Start Pos
 
 			assert(m_Doc.HasMember("level3"));
 			const rapidjson::Value& level = m_Doc["level3"];
-			for (auto o : m_Players)
+			for (auto o : m_pPlayers)
 			{
 				//o->SetPosition(glm::vec3(110, 100,1));
 				o->SetPosition(level["playerStart"]["x"].GetFloat(), level["playerStart"]["y"].GetFloat());
 
 			}
-			/*for (auto o : m_Players)
+			/*for (auto o : m_pPlayers)
 			{
 				o->SetPosition(glm::vec3(103, 100, 1));
 
 			}*/
 
-			for (auto o : m_EnemyPlayers)
+			for (auto o : m_pEnemyPlayers)
 			{
 				o->SetPosition(m_EnemyPosLevel3.at(0));
 
@@ -744,7 +747,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(ladder["x"].GetFloat(), ladder["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Ladder");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -753,7 +756,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(109, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);
 
 			go = new GameObject;
@@ -761,7 +764,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(109, 310);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -769,7 +772,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(153, 310);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -777,7 +780,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(196, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -785,7 +788,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(195, 195);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			//go = new GameObject;
@@ -793,7 +796,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(239, 105);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 		/*	go = new GameObject;
@@ -801,7 +804,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(239, 165);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -809,7 +812,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(239, 396);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -817,7 +820,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(282, 135);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -825,7 +828,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(281, 396);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 		/*	go = new GameObject;
@@ -833,7 +836,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(324, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -841,7 +844,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(324, 195);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 		/*	go = new GameObject;
@@ -849,7 +852,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(324, 396);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 
@@ -858,7 +861,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(369, 135);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 
@@ -867,7 +870,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(369, 225);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			
@@ -877,7 +880,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(411, 344);
 			go->SetDebugDraw(true);
 			go->SetTag("Ladder");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -885,7 +888,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(455, 105);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			//go = new GameObject;
@@ -893,7 +896,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(455, 310);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Ladder");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 #pragma endregion ladder
@@ -911,7 +914,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(platform["x"].GetFloat(), platform["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Platform");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -921,7 +924,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(109, 105);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -929,7 +932,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(109, 135);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -937,7 +940,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(109, 165);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -945,7 +948,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(109, 195);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			//go = new GameObject;
@@ -953,7 +956,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(109, 310);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			//go = new GameObject;
@@ -961,7 +964,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(109, 335);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			/*go = new GameObject;
@@ -969,7 +972,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(109, 370);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -977,7 +980,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(196, 250);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -985,7 +988,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(195, 396);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -993,7 +996,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(195, 420);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -1001,7 +1004,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(282, 225);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -1009,7 +1012,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(369, 165);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			/*go = new GameObject;
@@ -1017,7 +1020,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(369, 310);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -1025,7 +1028,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(369, 335);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -1033,7 +1036,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(369, 370);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 #pragma endregion platform
 
@@ -1050,7 +1053,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(container["x"].GetFloat(), container["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Container");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				go->AddComponent<ContainerComponent>(new ContainerComponent(container["amount"].GetInt()));
 				m_Scene->Add(go);
 
@@ -1067,7 +1070,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 				go->SetPosition(containerPlatform["x"].GetFloat(), containerPlatform["y"].GetFloat());
 				go->SetDebugDraw(false);
 				go->SetTag("Platform");
-				m_LevelObjects.push_back(go);
+				m_pLevelObjects.push_back(go);
 				m_Scene->Add(go);
 
 			}
@@ -1076,7 +1079,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(124, 282);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 		/*	go = new GameObject;
@@ -1084,7 +1087,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(125, 222);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 
@@ -1094,7 +1097,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(125, 455);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -1102,7 +1105,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(125, 395);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 
@@ -1112,7 +1115,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(212, 370);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			//go = new GameObject;
@@ -1120,7 +1123,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(212, 310);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Container");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//go->AddComponent<ContainerComponent>(new ContainerComponent());
 			//m_Scene->Add(go);
 
@@ -1130,7 +1133,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(298, 370);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			//go = new GameObject;
@@ -1138,7 +1141,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(298, 310);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Container");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//go->AddComponent<ContainerComponent>(new ContainerComponent());
 			//m_Scene->Add(go);
 
@@ -1147,7 +1150,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(384, 455);
 			go->SetDebugDraw(true);
 			go->SetTag("Platform");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			m_Scene->Add(go);*/
 
 			/*go = new GameObject;
@@ -1155,7 +1158,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(384, 395);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 
@@ -1164,7 +1167,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			//go->SetPosition(384, 282);
 			//go->SetDebugDraw(true);
 			//go->SetTag("Platform");
-			//m_LevelObjects.push_back(go);
+			//m_pLevelObjects.push_back(go);
 			//m_Scene->Add(go);
 
 			/*go = new GameObject;
@@ -1172,7 +1175,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			go->SetPosition(384, 222);
 			go->SetDebugDraw(true);
 			go->SetTag("Container");
-			m_LevelObjects.push_back(go);
+			m_pLevelObjects.push_back(go);
 			go->AddComponent<ContainerComponent>(new ContainerComponent());
 			m_Scene->Add(go);*/
 #pragma endregion container
@@ -1183,35 +1186,35 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			{
 				const rapidjson::Value& ingredient = *it;
 
-				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_Players);
+				MakeIngredient(glm::vec3(ingredient["x"].GetFloat(), ingredient["y"].GetFloat(), 0), static_cast<EIngredientType>(ingredient["type"].GetInt()), m_Scene, false, m_pPlayers);
 
 
 			}
 
-			//MakeIngredient(glm::vec3(130, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			//MakeIngredient(glm::vec3(130, 165, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-			//MakeIngredient(glm::vec3(130, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+			//MakeIngredient(glm::vec3(130, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			//MakeIngredient(glm::vec3(130, 165, 0), EIngredientType::Patty, m_Scene, false, m_pPlayers);
+			//MakeIngredient(glm::vec3(130, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);
 
 
-			//MakeIngredient(glm::vec3(130, 305, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			//MakeIngredient(glm::vec3(130, 340, 0), EIngredientType::Tomato, m_Scene, false, m_Players);
-			//MakeIngredient(glm::vec3(130, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+			//MakeIngredient(glm::vec3(130, 305, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			//MakeIngredient(glm::vec3(130, 340, 0), EIngredientType::Tomato, m_Scene, false, m_pPlayers);
+			//MakeIngredient(glm::vec3(130, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);
 
-		/*	MakeIngredient(glm::vec3(215, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(215, 135, 0), EIngredientType::Tomato, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(215, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);*/
+		/*	MakeIngredient(glm::vec3(215, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(215, 135, 0), EIngredientType::Tomato, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(215, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);*/
 
-			//MakeIngredient(glm::vec3(300, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			//MakeIngredient(glm::vec3(300, 135, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-			//MakeIngredient(glm::vec3(300, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);
+			//MakeIngredient(glm::vec3(300, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			//MakeIngredient(glm::vec3(300, 135, 0), EIngredientType::Patty, m_Scene, false, m_pPlayers);
+			//MakeIngredient(glm::vec3(300, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);
 
-		/*	MakeIngredient(glm::vec3(387, 102, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Tomato, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);*/
+		/*	MakeIngredient(glm::vec3(387, 102, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 165, 0), EIngredientType::Tomato, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 190, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);*/
 
-		/*	MakeIngredient(glm::vec3(387, 305, 0), EIngredientType::Bun, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 340, 0), EIngredientType::Patty, m_Scene, false, m_Players);
-			MakeIngredient(glm::vec3(387, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_Players);*/
+		/*	MakeIngredient(glm::vec3(387, 305, 0), EIngredientType::Bun, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 340, 0), EIngredientType::Patty, m_Scene, false, m_pPlayers);
+			MakeIngredient(glm::vec3(387, 360, 0), EIngredientType::BunBottom, m_Scene, false, m_pPlayers);*/
 
 #pragma endregion ingrediens
 			
@@ -1220,7 +1223,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 
 		break;
 	case 4:
-		HighscoreManager::GetInstance().AddHighscore(m_Players.at(0)->GetComponent<ValuesComponent>()->GetScores());
+		HighscoreManager::GetInstance().AddHighscore(m_pPlayers.at(0)->GetComponent<ValuesComponent>()->GetScores());
 		m_Level = 1;
 		SceneChanger::GetInstance().SetCurrentScene("highscore");
 		break;
@@ -1237,11 +1240,11 @@ void dae::LevelManager::ClearLevel()
 {
 	m_CurrentEnemies = 0;
 	
-	for(auto o: m_LevelObjects)
+	for(auto o: m_pLevelObjects)
 	{
 		o->Delete();
 	}
-	m_LevelObjects.clear();
+	m_pLevelObjects.clear();
 }
 
 int dae::LevelManager::GetCurLevel() const
@@ -1269,7 +1272,7 @@ void dae::LevelManager::CheckLevelCompleted()
 	}
 
 	//TEST
-	for(auto o:m_Players)
+	for(auto o:m_pPlayers)
 	{
 		if(o->GetComponent<PeterPepperComponent>()->GetNextLevel())
 		{
@@ -1281,7 +1284,7 @@ void dae::LevelManager::CheckLevelCompleted()
 	}
 }
 
-void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredientType, Scene* scene, bool debugDraw, std::vector<GameObject*>& players)
+void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ingredientType, Scene* , bool debugDraw, const std::vector<GameObject*>& players)
 {
 	auto totalIngredient = new GameObject;
 	auto part1 = new GameObject;
@@ -1427,15 +1430,15 @@ void dae::LevelManager::MakeIngredient(glm::vec3 pos, EIngredientType ingredient
 	totalIngredient->SetPosition(pos.x, pos.y);
 	totalIngredient->AddComponent<IngredientComponent>(new IngredientComponent);
 	totalIngredient->GetComponent<IngredientComponent>()->SetPlayers(players);
-	m_LevelObjects.push_back(part1);
-	m_LevelObjects.push_back(part2);
-	m_LevelObjects.push_back(part3);
-	m_LevelObjects.push_back(part4);
-	m_LevelObjects.push_back(totalIngredient);
+	m_pLevelObjects.push_back(part1);
+	m_pLevelObjects.push_back(part2);
+	m_pLevelObjects.push_back(part3);
+	m_pLevelObjects.push_back(part4);
+	m_pLevelObjects.push_back(totalIngredient);
 	m_Scene->Add(totalIngredient);
 }
 
-void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
+void dae::LevelManager::MakeEnemey(const glm::vec3& pos, EEnemyType type)
 {
 	auto HotDog = new GameObject;
 	SpriteComponent* enemySprite = new SpriteComponent("PeterPepperSpriteTrans.png", 15, 11);
@@ -1450,9 +1453,9 @@ void dae::LevelManager::MakeEnemey(glm::vec3 pos, EEnemyType type)
 	HotDog->SetDebugDraw(false);
 	HotDog->SetPosition(pos);
 	HotDog->SetScale(1.5f, 1.5f);
-	HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(m_Players.at(0));
+	HotDog->GetComponent<BasicEnemyComponent>()->SetTarget(m_pPlayers.at(0));
 	HotDog->SetTag("Enemy");
-	m_LevelObjects.push_back(HotDog);
+	m_pLevelObjects.push_back(HotDog);
 	m_Scene->Add(HotDog);
 
 }

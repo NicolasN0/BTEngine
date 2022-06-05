@@ -1,6 +1,7 @@
 #include "EffectComponent.h"
 
-dae::EffectComponent::EffectComponent(float lifetime) : m_MaxLifeTime(lifetime)
+dae::EffectComponent::EffectComponent(float lifetime) : m_Lifetime()
+, m_MaxLifeTime(lifetime)
 {
 }
 
@@ -13,6 +14,6 @@ void dae::EffectComponent::Update(float dt)
 	}
 }
 
-void dae::EffectComponent::FixedUpdate(float timestep)
+void dae::EffectComponent::FixedUpdate(float )
 {
 }

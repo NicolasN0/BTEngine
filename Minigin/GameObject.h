@@ -17,12 +17,13 @@ namespace dae
 	class GameObject final
 	{
 	public:
+		//Core
 		void Update(float dt);
 		void FixedUpdate(float timestep);
 		void Render() const;
 
 		
-
+		//Rule of 5
 		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -35,8 +36,6 @@ namespace dae
 		void AddComponent(T* component);
 		template <typename T>
 		T* GetComponent() const;
-		
-		//void RemoveComponent();
 
 
 		//Parent
@@ -70,6 +69,8 @@ namespace dae
 
 		void UpdatePos();
 		void UpdateScale();
+
+
 		//Tag
 		std::string GetTag() const;
 		void SetTag(std::string tag);
@@ -94,18 +95,23 @@ namespace dae
 		//Debug
 		void SetDebugDraw(bool newVal);
 	private:
-		glm::vec3 m_Size;
-		glm::vec3 m_LocalPos;
-		glm::vec3 m_LocalScale;
-		Transform m_Transform;
-		std::vector<MonoBehaviour*> m_pComponents{};
-		GameObject* m_Parent{};
-		std::vector<GameObject*> m_Childs{};
-		std::string m_Tag;
-		Scene* m_Scene;
 		bool m_DebugDraw;
 		bool m_SetToDelete;
 		bool m_Visible;
+
+		std::string m_Tag;
+
+		glm::vec3 m_Size;
+		glm::vec3 m_LocalPos;
+		glm::vec3 m_LocalScale;
+
+		Transform m_Transform;
+
+		GameObject* m_pParent;
+		Scene* m_pScene;
+
+		std::vector<GameObject*> m_pChilds;
+		std::vector<MonoBehaviour*> m_pComponents;
 	};
 
 	template <typename T>

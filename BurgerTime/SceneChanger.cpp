@@ -15,7 +15,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 {
 	Audio* audioService = Locator::getAudio();
 
-	size_t size = m_ControlObjects.size();
+	size_t size = m_pControlObjects.size();
 	
 
 	dae::Input::GetInstance().ClearKeys();
@@ -25,7 +25,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 		audioService->LoadMusic("../Data/Sounds/Start.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
-		for (auto o : m_ControlObjects)
+		for (auto o : m_pControlObjects)
 		{
 			if (o->GetTag() == "Indicator")
 			{
@@ -46,14 +46,14 @@ void SceneChanger::SetCurrentScene(std::string name)
 		ValuesComponent::Reset();
 		for (int i{}; i < size; i++)
 		{
-			if (m_ControlObjects.at(i)->GetTag() == "Player")
+			if (m_pControlObjects.at(i)->GetTag() == "Player")
 			{
-				m_ControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
+				m_pControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
 			}
 		}
 
 		//Reset level
-		LevelManager* manager = m_LevelManagers.at(0)->GetComponent<LevelManager>();
+		LevelManager* manager = m_pLevelManagers.at(0)->GetComponent<LevelManager>();
 		manager->ClearLevel();
 		manager->MakeLevel(1);
 
@@ -61,7 +61,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 		audioService->LoadMusic("../Data/Sounds/GameLoop.mp3");
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
-		for(auto o : m_ControlObjects)
+		for(auto o : m_pControlObjects)
 		{
 			if(o->GetTag() == "Player")
 			{
@@ -107,15 +107,15 @@ void SceneChanger::SetCurrentScene(std::string name)
 		ValuesComponent::Reset();
 		for (int i{}; i < size; i++)
 		{
-			if (m_ControlObjects.at(i)->GetTag() == "Player")
+			if (m_pControlObjects.at(i)->GetTag() == "Player")
 			{
-				m_ControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
+				m_pControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
 			}
 		}
 
 		
 		//Reset level
-		LevelManager* manager = m_LevelManagers.at(1)->GetComponent<LevelManager>();
+		LevelManager* manager = m_pLevelManagers.at(1)->GetComponent<LevelManager>();
 		manager->ClearLevel();
 		manager->MakeLevel(1);
 
@@ -124,7 +124,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
 		int count{};
-		for (auto o : m_ControlObjects)
+		for (auto o : m_pControlObjects)
 		{
 			if (o->GetTag() == "Player")
 			{
@@ -177,14 +177,14 @@ void SceneChanger::SetCurrentScene(std::string name)
 		ValuesComponent::Reset();
 		for (int i{}; i < size; i++)
 		{
-			if (m_ControlObjects.at(i)->GetTag() == "Player")
+			if (m_pControlObjects.at(i)->GetTag() == "Player")
 			{
-				m_ControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
+				m_pControlObjects.at(i)->GetComponent<ValuesComponent>()->ResetObserver();
 			}
 		}
 
 		//Reset level
-		LevelManager* manager = m_LevelManagers.at(2)->GetComponent<LevelManager>();
+		LevelManager* manager = m_pLevelManagers.at(2)->GetComponent<LevelManager>();
 		manager->ClearLevel();
 		manager->MakeLevel(1);
 
@@ -194,7 +194,7 @@ void SceneChanger::SetCurrentScene(std::string name)
 		audioService->SetMusicVolume(5);
 		audioService->PlayMusic();
 		int count{};
-		for (auto o : m_ControlObjects)
+		for (auto o : m_pControlObjects)
 		{
 			if (o->GetTag() == "Player")
 			{
@@ -240,12 +240,12 @@ void SceneChanger::SetCurrentScene(std::string name)
 
 }
 
-void SceneChanger::SetControlObjects(std::vector<dae::GameObject*> controlObjects)
+void SceneChanger::SetControlObjects(const std::vector<dae::GameObject*>& controlObjects)
 {
-	m_ControlObjects = controlObjects;
+	m_pControlObjects = controlObjects;
 }
-void SceneChanger::SetLevelManagers(std::vector<dae::GameObject*>& levelManagers)
+void SceneChanger::SetLevelManagers(const std::vector<dae::GameObject*>& levelManagers)
 {
-	m_LevelManagers = levelManagers;
+	m_pLevelManagers = levelManagers;
 }
 }

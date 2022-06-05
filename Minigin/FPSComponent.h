@@ -11,9 +11,10 @@ namespace dae
 		int GetFPS() const;
 	private:
 		void DisplayText();
+
 		int m_Frames;
-		float m_Gametime;
 		int m_FPS;
+		float m_Gametime;
 	};
 
 }

@@ -11,7 +11,7 @@ dae::IngredientPartComponent::IngredientPartComponent() : m_IsPressed(), m_Heigh
 	m_AudioService = Locator::getAudio();
 }
 
-void dae::IngredientPartComponent::Update(float dt)
+void dae::IngredientPartComponent::Update(float )
 {
 	//if(m_IsPressed == false)
 	//{
@@ -24,7 +24,7 @@ void dae::IngredientPartComponent::Update(float dt)
 	//}
 }
 
-void dae::IngredientPartComponent::FixedUpdate(float timestep)
+void dae::IngredientPartComponent::FixedUpdate(float )
 {
 }
 

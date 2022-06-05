@@ -1,10 +1,14 @@
 #include "SelectorComponent.h"
 
-void dae::SelectorComponent::Update(float dt)
+dae::SelectorComponent::SelectorComponent() : m_Selected()
 {
 }
 
-void dae::SelectorComponent::FixedUpdate(float timestep)
+void dae::SelectorComponent::Update(float )
+{
+}
+
+void dae::SelectorComponent::FixedUpdate(float )
 {
 }
 

@@ -8,17 +8,21 @@ int dae::ValuesComponent::m_Lives{ 3 };
 int dae::ValuesComponent::m_Score{};
 int dae::ValuesComponent::m_Peppers{ 5 };
 
+dae::ValuesComponent::ValuesComponent() : m_Subject()
+{
+}
+
 dae::ValuesComponent::~ValuesComponent()
 {
 	delete m_Subject;
 	m_Subject = nullptr;
 }
 
-void dae::ValuesComponent::Update(float dt)
+void dae::ValuesComponent::Update(float )
 {
 }
 
-void dae::ValuesComponent::FixedUpdate(float timestep)
+void dae::ValuesComponent::FixedUpdate(float )
 {
 }
 
