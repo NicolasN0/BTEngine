@@ -101,6 +101,8 @@ namespace dae
 		glm::vec3 m_LastSwitchCor;
 		bool m_CanSwitchLadder;
 		bool m_CanSwitchPlatform;
+
+	
 	};
 
 }

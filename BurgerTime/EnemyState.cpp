@@ -71,6 +71,22 @@ EnemyState* EnemyMovingState::Update(dae::BasicEnemyComponent& enemy, float dt)
 		return new EnemyDyingState();
 	}
 
+	if(!m_PlayerCountChecked)
+	{
+		m_Players = enemy.GetParent()->GetScene()->GetObjectsInWorldWithTag("Player");
+		if (m_Players.size() > 1)
+		{
+			m_UpdateTargets = true;
+		}
+		m_PlayerCountChecked = true;
+	}
+
+	if(m_UpdateTargets)
+	{
+		SetTarget(enemy);
+	}
+
+
 	enemy.CheckOverlaps();
 	if (enemy.GetIsPlayer() == false)
 	{
@@ -200,6 +216,28 @@ void EnemyMovingState::UpdateSprites(dae::BasicEnemyComponent& enemy)
 void EnemyMovingState::Enter(dae::BasicEnemyComponent& enemy)
 {
 	m_SpriteComp = enemy.GetSpriteComp();
+
+	
+}
+
+void EnemyMovingState::SetTarget(dae::BasicEnemyComponent& enemy)
+{
+	int index{};
+	float maxDist{};
+
+
+	glm::vec3 pos = enemy.GetParent()->GetPosition();
+	for(size_t i{}; i < m_Players.size();i++)
+	{
+		glm::vec3 playerPos = m_Players.at(i)->GetPosition();
+		float dist = sqrt(pow(pos.x - pos.y, 2) + pow(playerPos.x - playerPos.y, 2));
+		if(dist > maxDist)
+		{
+			maxDist = dist;
+			index = i;
+		}
+	}
+	enemy.SetTarget(m_Players.at(index));
 }
 
 EnemyState* EnemyDyingState::Update(dae::BasicEnemyComponent& enemy, float dt)

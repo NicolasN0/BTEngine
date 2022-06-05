@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "EnemyState.h"
+#include "Scene.h"
 
 dae::BasicEnemyComponent::~BasicEnemyComponent()
 {
@@ -10,12 +11,12 @@ dae::BasicEnemyComponent::~BasicEnemyComponent()
 	m_State = nullptr;
 }
 
-dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType,  SpriteComponent* sprite, bool isPlayer) : m_Type{enemyType} , m_IsPlayer(isPlayer),m_SpriteComp(),m_Stunned(),m_StunTimer(),m_MaxStunTime(2)
-,m_BlockedHor()
-,m_BlockedVer()
-,m_BlockedCor()
-,m_CanSwitchPlatform(true)
-,m_CanSwitchLadder(true)
+dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType, SpriteComponent* sprite, bool isPlayer) : m_Type{ enemyType }, m_IsPlayer(isPlayer), m_SpriteComp(), m_Stunned(), m_StunTimer(), m_MaxStunTime(2)
+, m_BlockedHor()
+, m_BlockedVer()
+, m_BlockedCor()
+, m_CanSwitchPlatform(true)
+, m_CanSwitchLadder(true)
 {
 	m_SpriteComp = sprite;
 	switch (enemyType)
@@ -38,6 +39,9 @@ dae::BasicEnemyComponent::BasicEnemyComponent(EEnemyType enemyType,  SpriteCompo
 	}
 	m_State = new EnemyMovingState();
 	m_State->Enter(*this);
+
+	
+	
 }
 
 void dae::BasicEnemyComponent::Update(float dt)
@@ -223,6 +227,9 @@ void dae::BasicEnemyComponent::UpdatePos(float dt)
 
 			if (GetParent()->IsCenterOverlappingAnyWithTag("Ladder") == false)
 			{
+				//test
+				m_CanSwitchPlatform = true;
+
 				m_BlockedVer = true;
 				m_BlockedCor = glm::vec3(GetParent()->GetPosition());
 				GetParent()->SetPosition(curPos.x, curPos.y);
@@ -243,6 +250,9 @@ void dae::BasicEnemyComponent::UpdatePos(float dt)
 
 			if (GetParent()->IsCenterOverlappingAnyWithTag("Platform") == false)
 			{
+				//test
+				m_CanSwitchLadder = true;
+
 				m_BlockedHor = true;
 				m_BlockedCor = glm::vec3(GetParent()->GetPosition());
 				GetParent()->SetPosition(curPos.x, curPos.y);
@@ -317,87 +327,17 @@ void dae::BasicEnemyComponent::UpdateDirection()
 
 	//Test
 
-	if(m_IsOnPlatform == true && m_IsOnLadder == true)
-	{
-		m_CanSwitch = true;
-	}
-
-
-	if(m_CanSwitch == true)
-	{
-
-		
-		if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) && m_BlockedHor == false)
-		{
-			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
-			{
-
-				m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
-			}
-			else
-			{
-				m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
-			}
-
-			//Return so it doesnt constantly checks
-			return;
-		}
-
-
-
-		if(m_IsOnLadder == true && m_BlockedVer == false)
-		{
-			if(m_Target->GetPosition().y < GetParent()->GetPosition().y)
-			{
-				
-				m_Direction = glm::vec3(0, -m_MoveSpeed, 0);
-			} else
-			{
-				m_Direction = glm::vec3(0, m_MoveSpeed, 0);
-			}
-			m_CanSwitch = false;
-
-		} else if(m_IsOnPlatform == true && m_BlockedHor == false)
-		{
-			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
-			{
-
-				m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
-			}
-			else
-			{
-				m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
-			}
-
-			
-			m_CanSwitch = false;
-			
-		}
-	}
-
-	if(abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
-	{
-		m_BlockedHor = false;
-	}
-
-	if (abs(GetParent()->GetPosition().x - m_BlockedCor.y) > 15)
-	{
-		m_BlockedVer = false;
-	}
-
-
-	//test2
-	//if (m_IsOnPlatform == true && m_IsOnLadder == true)
+	//if(m_IsOnPlatform == true && m_IsOnLadder == true)
 	//{
 	//	m_CanSwitch = true;
 	//}
 
 
-	//if (m_CanSwitch == true)
+	//if(m_CanSwitch == true)
 	//{
 
-
-	//	if (m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) && m_BlockedHor == false)
+	//	
+	//	if(m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) && m_BlockedHor == false)
 	//	{
 	//		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
 	//		{
@@ -413,49 +353,21 @@ void dae::BasicEnemyComponent::UpdateDirection()
 	//		return;
 	//	}
 
-	//	//test
-	//	glm::vec3 futurDir;
-	//	if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
-	//	{
-
-	//		futurDir.y = -m_MoveSpeed;
-	//	}
-	//	else
-	//	{
-	//		futurDir.y = m_MoveSpeed;
-	//	}
-	//	if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
-	//	{
-
-	//		futurDir.x = -m_MoveSpeed;
-	//	}
-	//	else
-	//	{
-	//		futurDir.x = m_MoveSpeed;
-	//	}
-	//	//test
 
 
-	//	if (m_IsOnLadder == true && m_BlockedVer == false && ((futurDir.y == m_Direction.y) || m_CanSwitchLadder == true))
+	//	if(m_IsOnLadder == true && m_BlockedVer == false)
 	//	{
-	//		if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+	//		if(m_Target->GetPosition().y < GetParent()->GetPosition().y)
 	//		{
-
+	//			
 	//			m_Direction = glm::vec3(0, -m_MoveSpeed, 0);
-	//		}
-	//		else
+	//		} else
 	//		{
 	//			m_Direction = glm::vec3(0, m_MoveSpeed, 0);
 	//		}
 	//		m_CanSwitch = false;
-	//		//Only set self to false and other one later to true if coordinates turn out wel
-	//		//m_CanSwitchPlatform = true;
-	//		m_LastSwitchCor.x = GetParent()->GetPosition().x;
 
-
-	//		m_CanSwitchLadder = false;
-	//	}
-	//	else if (m_IsOnPlatform == true && m_BlockedHor == false && ((futurDir.x == m_Direction.x) || m_CanSwitchPlatform == true))
+	//	} else if(m_IsOnPlatform == true && m_BlockedHor == false)
 	//	{
 	//		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
 	//		{
@@ -466,36 +378,136 @@ void dae::BasicEnemyComponent::UpdateDirection()
 	//		{
 	//			m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
 	//		}
-	//		//m_CanSwitchLadder = true;
-	//		m_LastSwitchCor.y = GetParent()->GetPosition().y;
 
-
-	//		m_CanSwitchPlatform = false;
-
+	//		
 	//		m_CanSwitch = false;
-
+	//		
 	//	}
 	//}
 
-	//if (abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
+	//if(abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
 	//{
-	//	m_BlockedHor = false;
+	//	m_BlockedVer = false;
+	//	//m_BlockedHor = false;
 	//}
 
 	//if (abs(GetParent()->GetPosition().x - m_BlockedCor.y) > 15)
 	//{
-	//	m_BlockedVer = false;
+	//	m_BlockedHor = false;
+	//	//m_BlockedVer = false;
 	//}
 
-	//if(abs(GetParent()->GetPosition().y - m_LastSwitchCor.y) > 15)
-	//{
-	//	m_CanSwitchPlatform = true;
-	//}
 
-	//if (abs(GetParent()->GetPosition().x - m_LastSwitchCor.x) > 15)
-	//{
-	//	m_CanSwitchLadder = true;
-	//}
+	//test2
+	if (m_IsOnPlatform == true && m_IsOnLadder == true)
+	{
+		m_CanSwitch = true;
+	}
+
+
+	if (m_CanSwitch == true)
+	{
+
+
+		if (m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) && m_BlockedHor == false)
+		{
+			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+			{
+
+				m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+			}
+			else
+			{
+				m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+			}
+
+			//Return so it doesnt constantly checks
+			return;
+		}
+
+		//test
+		glm::vec3 futurDir;
+		if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+		{
+
+			futurDir.y = -m_MoveSpeed;
+		}
+		else
+		{
+			futurDir.y = m_MoveSpeed;
+		}
+		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+		{
+
+			futurDir.x = -m_MoveSpeed;
+		}
+		else
+		{
+			futurDir.x = m_MoveSpeed;
+		}
+		//test
+
+
+		if (m_IsOnLadder == true && m_BlockedVer == false && ((futurDir.y == m_Direction.y) || m_CanSwitchLadder == true))
+		{
+			if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+			{
+
+				m_Direction = glm::vec3(0, -m_MoveSpeed, 0);
+			}
+			else
+			{
+				m_Direction = glm::vec3(0, m_MoveSpeed, 0);
+			}
+			m_CanSwitch = false;
+
+			m_LastSwitchCor.x = GetParent()->GetPosition().x;
+			
+			m_CanSwitchLadder = false;
+		}
+		else if (m_IsOnPlatform == true && m_BlockedHor == false && ((futurDir.x == m_Direction.x) || m_CanSwitchPlatform == true))
+		{
+			if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+			{
+
+				m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+			}
+			else
+			{
+				m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+			}
+			
+			m_CanSwitch = false;
+
+			m_LastSwitchCor.y = GetParent()->GetPosition().y;
+
+			m_CanSwitchPlatform = false;
+
+
+		}
+	}
+
+	if (abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
+	{
+		m_BlockedVer = false;
+		//m_BlockedHor = false;
+	}
+
+	if (abs(GetParent()->GetPosition().x - m_BlockedCor.y) > 15)
+	{
+		m_BlockedHor = false;
+		//m_BlockedVer = false;
+	}
+
+	if(abs(GetParent()->GetPosition().y - m_LastSwitchCor.y) > 10)
+	{
+		m_CanSwitchPlatform = true;
+	}
+
+	if (abs(GetParent()->GetPosition().x - m_LastSwitchCor.x) > 10)
+	{
+		m_CanSwitchLadder = true;
+	}
 	
 }
 
@@ -568,6 +580,8 @@ bool dae::BasicEnemyComponent::GetDyingComplete()
 {
 	return m_DyingComplete;
 }
+
+
 
 void dae::BasicEnemyComponent::SetHorizontalDir()
 {

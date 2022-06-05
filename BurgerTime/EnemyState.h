@@ -1,8 +1,10 @@
 #pragma once
+#include <vector>
 
 
 namespace dae
 {
+	class GameObject;
 	class BasicEnemyComponent;
 	class SpriteComponent;
 		
@@ -40,7 +42,11 @@ namespace dae
 		virtual void UpdateSprites(dae::BasicEnemyComponent& enemy);
 		virtual void Enter(dae::BasicEnemyComponent& enemy);
 	private:
+		void SetTarget(dae::BasicEnemyComponent& enemy);
 		dae::SpriteComponent* m_SpriteComp;
+		std::vector<dae::GameObject*> m_Players;
+		bool m_PlayerCountChecked;
+		bool m_UpdateTargets;
 	};
 
 
