@@ -489,14 +489,14 @@ void dae::BasicEnemyComponent::UpdateDirection()
 
 	if (abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
 	{
-		m_BlockedVer = false;
-		//m_BlockedHor = false;
+		//m_BlockedVer = false;
+		m_BlockedHor = false;
 	}
 
-	if (abs(GetParent()->GetPosition().x - m_BlockedCor.y) > 15)
+	if (abs(GetParent()->GetPosition().x - m_BlockedCor.x) > 15)
 	{
-		m_BlockedHor = false;
-		//m_BlockedVer = false;
+		//m_BlockedHor = false;
+		m_BlockedVer = false;
 	}
 
 	if(abs(GetParent()->GetPosition().y - m_LastSwitchCor.y) > 10)
@@ -508,7 +508,148 @@ void dae::BasicEnemyComponent::UpdateDirection()
 	{
 		m_CanSwitchLadder = true;
 	}
-	
+
+	//test3
+
+		//if (m_IsOnPlatform == true && m_IsOnLadder == true)
+		//{
+		//	m_CanSwitch = true;
+		//}
+
+
+		//if (m_CanSwitch == true)
+		//{
+
+		//	//test
+		//	glm::vec3 futurDir;
+		//	if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+		//	{
+
+		//		futurDir.y = -m_MoveSpeed;
+		//	}
+		//	else
+		//	{
+		//		futurDir.y = m_MoveSpeed;
+		//	}
+		//	if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+		//	{
+
+		//		futurDir.x = -m_MoveSpeed;
+		//	}
+		//	else
+		//	{
+		//		futurDir.x = m_MoveSpeed;
+		//	}
+		//	//test
+
+
+
+		//	if (m_IsOnPlatform == true && (abs(m_Target->GetPosition().y - GetParent()->GetPosition().y) < 5.f) && m_BlockedHor == false)
+		//	{
+		//		float prevX = m_Direction.x;
+
+
+		//		if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+		//		{
+
+		//			m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+		//		}
+		//		else
+		//		{
+		//			m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+		//		}
+
+		//		if(prevX == -m_Direction.x)
+		//		{
+		//			m_Direction.x = 0;
+		//			m_Direction.y = futurDir.y;
+		//		}
+
+
+		//		//Return so it doesnt constantly checks
+		//		return;
+		//	}
+
+		//	if (m_IsOnLadder == true && m_BlockedVer == false && ((futurDir.y == m_Direction.y) || m_CanSwitchLadder == true))
+		//	{
+		//		float prevY = m_Direction.y;
+		//		m_Direction = glm::vec3(0, 0, 0);
+
+		//		/*if (m_Target->GetPosition().y < GetParent()->GetPosition().y)
+		//		{
+
+		//			m_Direction = glm::vec3(0, -m_MoveSpeed, 0);
+		//		}
+		//		else
+		//		{
+		//			m_Direction = glm::vec3(0, m_MoveSpeed, 0);
+		//		}*/
+		//		m_Direction.y = futurDir.y;
+
+		//		if(prevY == -m_Direction.y)
+		//		{
+		//			m_Direction.x = futurDir.x;
+		//			m_Direction.y = 0;
+		//		}
+
+		//		m_CanSwitch = false;
+
+		//		m_LastSwitchCor.x = GetParent()->GetPosition().x;
+
+		//		m_CanSwitchLadder = false;
+		//	}
+		//	else if (m_IsOnPlatform == true && m_BlockedHor == false && ((futurDir.x == m_Direction.x) || m_CanSwitchPlatform == true))
+		//	{
+		//		float prevX = m_Direction.x;
+		//		m_Direction = glm::vec3(0, 0, 0);
+
+		//		/*if (m_Target->GetPosition().x < GetParent()->GetPosition().x)
+		//		{
+
+		//			m_Direction = glm::vec3(-m_MoveSpeed, 0, 0);
+		//		}
+		//		else
+		//		{
+		//			m_Direction = glm::vec3(m_MoveSpeed, 0, 0);
+		//		}*/
+		//		m_Direction.x = futurDir.x;
+		//		if (prevX == -m_Direction.x)
+		//		{
+		//			m_Direction.y = futurDir.y;
+		//			m_Direction.x = 0;
+		//		}
+
+		//		m_CanSwitch = false;
+
+		//		m_LastSwitchCor.y = GetParent()->GetPosition().y;
+
+		//		m_CanSwitchPlatform = false;
+
+
+		//	}
+		//}
+
+		//if (abs(GetParent()->GetPosition().y - m_BlockedCor.y) > 15)
+		//{
+		//	//m_BlockedVer = false;
+		//	m_BlockedHor = false;
+		//}
+
+		//if (abs(GetParent()->GetPosition().x - m_BlockedCor.x) > 15)
+		//{
+		//	//m_BlockedHor = false;
+		//	m_BlockedVer = false;
+		//}
+
+		//if (abs(GetParent()->GetPosition().y - m_LastSwitchCor.y) > 10)
+		//{
+		//	m_CanSwitchPlatform = true;
+		//}
+
+		//if (abs(GetParent()->GetPosition().x - m_LastSwitchCor.x) > 10)
+		//{
+		//	m_CanSwitchLadder = true;
+		//}
 }
 
 void dae::BasicEnemyComponent::UpdateSprite()
