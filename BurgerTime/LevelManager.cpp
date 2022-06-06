@@ -615,7 +615,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 	totalIngredient->AddChild(part3);
 	totalIngredient->AddChild(part4);
 
-	for (size_t i{}; i < totalIngredient->GetChildCount(); i++)
+	for (int i{}; i < totalIngredient->GetChildCount(); i++)
 	{
 		switch (ingredientType)
 		{
@@ -625,7 +625,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunL.png"));
 
 			}
-			else if (i == totalIngredient->GetChildCount() - 1)
+			else if (static_cast<size_t>(i) == totalIngredient->GetChildCount() - 1)
 			{
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunR.png"));
 			}
@@ -640,7 +640,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseL.png"));
 
 			}
-			else if (i == totalIngredient->GetChildCount() - 1)
+			else if (static_cast<size_t>(i) == totalIngredient->GetChildCount() - 1)
 			{
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/CheeseR.png"));
 			}
@@ -655,7 +655,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceL.png"));
 
 			}
-			else if (i == totalIngredient->GetChildCount() - 1)
+			else if (static_cast<size_t>(i) == totalIngredient->GetChildCount() - 1)
 			{
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/LettuceR.png"));
 			}
@@ -670,7 +670,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoL.png"));
 
 			}
-			else if (i == totalIngredient->GetChildCount() - 1)
+			else if (static_cast<size_t>(i) == totalIngredient->GetChildCount() - 1)
 			{
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/TomatoR.png"));
 			}
@@ -685,7 +685,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyL.png"));
 
 			}
-			else if (i == totalIngredient->GetChildCount() - 1)
+			else if (static_cast<size_t>(i) == totalIngredient->GetChildCount() - 1)
 			{
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/PattyR.png"));
 			}
@@ -700,7 +700,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotL.png"));
 
 			}
-			else if (i == totalIngredient->GetChildCount() - 1)
+			else if (static_cast<size_t>(i) == totalIngredient->GetChildCount() - 1)
 			{
 				totalIngredient->GetChildAt(i)->AddComponent<dae::TextureComponent>(new dae::TextureComponent("Ingredients/BunBotR.png"));
 			}
