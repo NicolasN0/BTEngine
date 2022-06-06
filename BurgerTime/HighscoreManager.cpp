@@ -58,7 +58,7 @@ std::vector<int> dae::HighscoreManager::GetHighscores(int number)
 	std::sort(m_Highscores.begin(), m_Highscores.end(), std::greater<>());
 	std::vector<int> top;
 	size_t size = m_Highscores.size();;
-	for(size_t i{} ; i < number && i < size;i++)
+	for(size_t i{} ; i < static_cast<size_t>(number) && i < size;i++)
 	{
 		top.push_back(m_Highscores.at(i));
 	}

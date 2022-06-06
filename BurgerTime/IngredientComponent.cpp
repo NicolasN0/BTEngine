@@ -153,7 +153,7 @@ void dae::IngredientComponent::CheckPressedAmount()
 		}
 	}
 
-	if (m_PressedCount == m_pParent->GetChildCount())
+	if (m_PressedCount == static_cast<int>(m_pParent->GetChildCount()))
 	{
 		//Should only happen once per enemyFill
 		if (m_HasMoved == false && m_pParent->IsOverlappingAnyWithTag("Player"))

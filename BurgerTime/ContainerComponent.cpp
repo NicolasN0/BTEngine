@@ -9,7 +9,7 @@ void dae::ContainerComponent::Update(float )
 {
 	if(m_IsFilled == false)
 	{
-		if(m_pParent->GetAllOverlappingWithTag("Ingredient").size() == m_MaxIngredient)
+		if(m_pParent->GetAllOverlappingWithTag("Ingredient").size() == static_cast<size_t>(m_MaxIngredient))
 		{
 			m_IsFilled = true;
 		}

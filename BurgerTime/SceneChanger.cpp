@@ -46,7 +46,7 @@ void SceneChanger::SetCurrentScene(const std::string& name)
 		//Reset scores and text components
 		HighscoreManager::GetInstance().UpdateHighScore();
 		ValuesComponent::Reset();
-		for (int i{}; i < size; i++)
+		for (size_t i{}; i < size; i++)
 		{
 			if (m_pControlObjects.at(i)->GetTag() == "Player")
 			{
@@ -95,7 +95,7 @@ void SceneChanger::SetCurrentScene(const std::string& name)
 
 		std::vector<TextComponent*> compVec = HighscoreManager::GetInstance().GetTextComponents();
 		std::vector<int> highscores = HighscoreManager::GetInstance().GetHighscores(static_cast<int>(compVec.size()));
-		for(int i{}; i < compVec.size() && i < highscores.size();i++)
+		for(size_t i{}; i < compVec.size() && i < highscores.size();i++)
 		{
 			compVec.at(i)->SetText(std::to_string(highscores.at(i)));
 		}
@@ -107,7 +107,7 @@ void SceneChanger::SetCurrentScene(const std::string& name)
 		//Reset values and text comp
 		HighscoreManager::GetInstance().UpdateHighScore();
 		ValuesComponent::Reset();
-		for (int i{}; i < size; i++)
+		for (size_t i{}; i < size; i++)
 		{
 			if (m_pControlObjects.at(i)->GetTag() == "Player")
 			{
@@ -177,7 +177,7 @@ void SceneChanger::SetCurrentScene(const std::string& name)
 		HighscoreManager::GetInstance().UpdateHighScore();
 		//Reset values and text
 		ValuesComponent::Reset();
-		for (int i{}; i < size; i++)
+		for (size_t i{}; i < size; i++)
 		{
 			if (m_pControlObjects.at(i)->GetTag() == "Player")
 			{

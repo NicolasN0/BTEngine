@@ -25,7 +25,7 @@ void dae::Subject::RemoveObserver(Observer* const observer)
 
 void dae::Subject::Notify(const GameObject& go, Event event)
 {
-	for(int i{}; i < m_pObservers.size();i++)
+	for(unsigned int i{}; i < m_pObservers.size();i++)
 	{
 		m_pObservers.at(i)->Notify(go, event);
 	}

@@ -175,7 +175,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		
 		for(size_t i = 0 ; i< m_pLvlBackground.size();i++)
 		{
-			if(i == levelCount-1)
+			if(static_cast<int>(i) == levelCount-1)
 			{
 				m_pLvlBackground.at(i)->SetVisibility(true);
 			} else
@@ -288,7 +288,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 		
 			for (size_t i = 0; i < m_pLvlBackground.size(); i++)
 			{
-				if (i == levelCount -1)
+				if (static_cast<int>(i) == levelCount -1)
 				{
 					m_pLvlBackground.at(i)->SetVisibility(true);
 				}
@@ -419,7 +419,7 @@ void dae::LevelManager::MakeLevel(int levelCount)
 			
 			for (size_t i = 0; i < m_pLvlBackground.size(); i++)
 			{
-				if (i == levelCount - 1)
+				if (static_cast<int>(i) == levelCount - 1)
 				{
 					m_pLvlBackground.at(i)->SetVisibility(true);
 				}
@@ -584,7 +584,7 @@ void dae::LevelManager::CheckLevelCompleted()
 			count++;
 		}
 	}
-	if(count == AllContainers.size())
+	if(static_cast<size_t>(count) == AllContainers.size())
 	{
 		m_Level++;
 		m_LevelMade = false;
@@ -615,7 +615,7 @@ void dae::LevelManager::MakeIngredient(const glm::vec3& pos, EIngredientType ing
 	totalIngredient->AddChild(part3);
 	totalIngredient->AddChild(part4);
 
-	for (int i{}; i < totalIngredient->GetChildCount(); i++)
+	for (size_t i{}; i < totalIngredient->GetChildCount(); i++)
 	{
 		switch (ingredientType)
 		{

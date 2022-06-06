@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Scene.h"
 
+
 dae::BasicEnemyComponent::~BasicEnemyComponent()
 {
 	delete m_pState;
